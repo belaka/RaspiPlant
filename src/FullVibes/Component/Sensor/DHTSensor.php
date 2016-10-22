@@ -91,7 +91,7 @@ class DHTSensor extends AbstractSensor {
             $hum_val=unpack('f*', $h);
             $hum = round($hum_val[1], 2);
             
-            return json_encode(array("temperature" => $t, "humidity" => $hum), true);
+            return json_encode(array('temperature' => $t, 'humidity' => $hum));
             
         } catch (\Exception $exc) {
             
