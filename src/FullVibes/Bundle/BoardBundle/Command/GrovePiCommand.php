@@ -42,21 +42,31 @@ class GrovePiCommand extends Command {
         $moisturePin = 0;
         $airQualityPin = 1;
         $dhtPin = 8;
+        $relay1Pin = 2;
         
         $moisture = new Sensor\MoistureSensor($moisturePin, $debug);
         $airquality = new Sensor\AirQualitySensor($airQualityPin, $debug);
         $temphum = new Sensor\DHTSensor($dhtPin, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-
+        $relay1 =  new Actuator\RelayActuator($relay1Pin, $debug);
+        $relay1->writeStatus(0);
+        
         while (true) {
             
             sleep(3);
+            $relay1->writeStatus(0);
+            $airQualityValue = $airquality->readSensorData();
+            
+            if (is_numeric($airQualityValue) && $airQualityValue > 120) {
+                $relay1->writeStatus(1);
+            }
+            
             echo "###############################################\n";
             echo "#       RasPiPlant                            #\n";
             echo "#                                             #\n";
             echo "#                                             #\n";
             echo "###############################################\n";
             echo "Moisture:" . $moisture->readSensorData() . "\n";
-            echo "Air Quality:" . $airquality->readSensorData() . "\n";
+            echo "Air Quality:" . $airQualityValue . "\n";
             $temphumValues = json_decode($temphum->readSensorData()); 
             echo "Temperature:" . $temphumValues->temperature . "\n";
             echo "Humidity:" . $temphumValues->humidity . "\n";
