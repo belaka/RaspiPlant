@@ -9,6 +9,10 @@ use FullVibes\Component\Device\I2CDevice;
  */
 class AirQualitySensor extends AbstractSensor {
 
+    const RPI_I2C_ADDRESS = 0x04; // I2C Address of Raspberry
+    
+    const I2C_UNUSED_VALUE = 0;
+    
     /**
      *
      * @var boolean
