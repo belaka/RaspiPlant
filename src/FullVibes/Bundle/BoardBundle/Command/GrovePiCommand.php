@@ -49,7 +49,12 @@ class GrovePiCommand extends Command {
 
         while (true) {
             
-            sleep(1);
+            sleep(3);
+            echo "###############################################\n";
+            echo "#       RasPiPlant                            #\n";
+            echo "#                                             #\n";
+            echo "#                                             #\n";
+            echo "###############################################\n";
             echo "Moisture:" . $moisture->readSensorData() . "\n";
             echo "Air Quality:" . $airquality->readSensorData() . "\n";
             $temphumValues = json_decode($temphum->readSensorData()); 
