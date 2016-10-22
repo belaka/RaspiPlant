@@ -95,7 +95,7 @@ class DHTSensor extends AbstractSensor {
             
         } catch (\Exception $exc) {
             
-            json_encode(array('temperature' => $exc->getMessage(), 'humidity' => $exc->getMessage()));
+            return json_encode(array('temperature' => $exc->getMessage(), 'humidity' => $exc->getMessage()));
         }
     }
 }
