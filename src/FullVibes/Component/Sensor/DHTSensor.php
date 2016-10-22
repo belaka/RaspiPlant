@@ -91,35 +91,11 @@ class DHTSensor extends AbstractSensor {
             $hum_val=unpack('f*', $h);
             $hum = round($hum_val[1], 2);
             
-            $json = json_encode(array('temperature' => $t, 'humidity' => $hum));
-            
-            switch(json_last_error())
-            {
-                case JSON_ERROR_DEPTH:
-                    $error =  ' - Maximum stack depth exceeded';
-                    break;
-                case JSON_ERROR_CTRL_CHAR:
-                    $error = ' - Unexpected control character found';
-                    break;
-                case JSON_ERROR_SYNTAX:
-                    $error = ' - Syntax error, malformed JSON';
-                    break;
-                case JSON_ERROR_NONE:
-                default:
-                    $error = '';                   
-            }
-            
-            if (!empty($error)) {
-                //throw new Exception('JSON Error: '.$error);
-                return json_encode(array('temperature' => $error, 'humidity' => $error));
-            }
-
-            return $json;
-        
+            return json_encode(array('temperature' => $t, 'humidity' => $hum));
             
         } catch (\Exception $exc) {
             
-            echo $exc->getMessage();
+            json_encode(array('temperature' => $exc->getMessage(), 'humidity' => $exc->getMessage()));
         }
     }
 }
