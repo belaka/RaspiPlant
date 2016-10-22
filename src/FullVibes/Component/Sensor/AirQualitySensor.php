@@ -7,12 +7,8 @@ use FullVibes\Component\Device\I2CDevice;
 /**
  * 
  */
-class MoistureSensor extends AbstractSensor {
+class AirQualitySensor extends AbstractSensor {
 
-    const RPI_I2C_ADDRESS = 0x04; // I2C Address of Raspberry
-    
-    const I2C_UNUSED_VALUE = 0;
-    
     /**
      *
      * @var boolean
@@ -37,15 +33,17 @@ class MoistureSensor extends AbstractSensor {
      */
     protected $pin;
     
-    function __construct($pin, $debug = false) {
+    function __construct($pin, $type = self::DHT_SENSOR_WHITE, $debug = false) {
         
         $this->debug = $debug;
+        $this->type = $type;
         $this->pin = $pin;
         
         $this->fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
         $this->device = new I2CDevice($this->fd);
         
-        //$this->device->pinMode($this->pin, "OUTPUT");
+        $this->device->pinMode($this->pin, "INPUT");
+        
     }
 
     public function readSensorData() {
