@@ -39,14 +39,17 @@ class GrovePiCommand extends Command {
 
         $debug = false;
 
-        $analogPin = 0;
+        $moisturePin = 0;
+        $dhtPin = 8;
         
-        $display = new Sensor\MoistureSensor($debug);
+        $moisture = new Sensor\MoistureSensor($moisturePin, $debug);
+        $temphum = new Sensor\DHTSensor($dhtPin, Sensor\DHTSensor::DHT_SENSOR_WHITE);
 
         while (true) {
             
             sleep(1);
-            dump($display->readSensorData());
+            echo "Moisture:" . $moisture->readSensorData() . "\n";
+            echo "Temperature/Humidity:" . dump($temphum->readSensorData()) . "\n";
         }
     }
 
