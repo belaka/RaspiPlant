@@ -39,14 +39,14 @@ class GrovePiCommand extends Command {
 
         $debug = false;
 
-        $digitalPin = 4;
+        $analogPin = 0;
         
-        $display = new Display\LcdRgbBacklightDisplay($debug);
+        $display = new Sensor\MoistureSensor($debug);
 
         while (true) {
             
             sleep(1);
-            dump($display->testDisplay());
+            dump($display->readSensorData());
         }
     }
 
