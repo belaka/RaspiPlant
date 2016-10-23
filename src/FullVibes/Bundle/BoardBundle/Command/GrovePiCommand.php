@@ -64,17 +64,17 @@ class GrovePiCommand extends ContainerAwareCommand {
             /*Light get and store*/
             $lightValue = $light->readSensorData();
             $lightAnalytics = new Analytics('light', $lightValue, $firedAt);
-            $analyticsManager->persist($lightAnalytics);
+            $analyticsManager->save($lightAnalytics);
             
             /*Moisture get and store*/
             $moistureValue = $moisture->readSensorData();
             $moistureAnalytics = new Analytics('moisture', $moistureValue, $firedAt);
-            $analyticsManager->persist($moistureAnalytics);
+            $analyticsManager->save($moistureAnalytics);
             
             /*Air quality get and store*/
             $airQualityValue = $airQuality->readSensorData();
             $airQualityAnalytics = new Analytics('air Quality', $airQualityValue, $firedAt);
-            $analyticsManager->persist($airQualityAnalytics);
+            $analyticsManager->save($airQualityAnalytics);
             
             $temphumValues = json_decode($temphum->readSensorData());
             if (!$temphumValues) {
@@ -88,11 +88,11 @@ class GrovePiCommand extends ContainerAwareCommand {
             
             /*Temperature get and store*/
             $temperatureAnalytics = new Analytics('temperature', $temperatureValue, $firedAt);
-            $analyticsManager->persist($temperatureAnalytics);
+            $analyticsManager->save($temperatureAnalytics);
             
             /*Humidity get and store*/
             $humidityAnalytics = new Analytics('humidity', $humidityValue, $firedAt);
-            $analyticsManager->persist($humidityAnalytics);
+            $analyticsManager->save($humidityAnalytics);
             
             
             echo "###############################################\n";
