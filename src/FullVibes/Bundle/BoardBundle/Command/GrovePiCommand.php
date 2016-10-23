@@ -2,14 +2,15 @@
 
 namespace FullVibes\Bundle\BoardBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use FullVibes\Bundle\BoardBundle\Entity\Analytics;
 use FullVibes\Component\Sensor;
 use FullVibes\Component\Actuator;
 use FullVibes\Component\Display;
 
-class GrovePiCommand extends Command {
+class GrovePiCommand extends ContainerAwareCommand {
 
     protected function configure() {
         $this
@@ -43,43 +44,80 @@ class GrovePiCommand extends Command {
         $airQualityPin = 1;
         $lightPin = 2;
         $dhtPin = 8;
-        $relay1Pin = 2;
+        //$relay1Pin = 2;
         
         $light = new Sensor\LightSensor($lightPin, $debug);
         $moisture = new Sensor\MoistureSensor($moisturePin, $debug);
-        $airquality = new Sensor\AirQualitySensor($airQualityPin, $debug);
+        $airQuality = new Sensor\AirQualitySensor($airQualityPin, $debug);
         $temphum = new Sensor\DHTSensor($dhtPin, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-        $relay1 =  new Actuator\RelayActuator($relay1Pin, $debug);
-        $relay1->writeStatus(0);
+        //$relay1 =  new Actuator\RelayActuator($relay1Pin, $debug);
+        //$relay1->writeStatus(0);
         
         while (true) {
             
             sleep(3);
-            $relay1->writeStatus(0);
-            $airQualityValue = $airquality->readSensorData();
             
-            if (is_numeric($airQualityValue) && $airQualityValue > 120) {
-                $relay1->writeStatus(1);
+            $firedAt = new \DateTime();
+            
+            $analyticsManager = $this->getAnalyticsManager();
+            
+            /*Light get and store*/
+            $lightValue = $light->readSensorData();
+            $lightAnalytics = new Analytics('light', $lightValue, $firedAt);
+            $analyticsManager->persist($lightAnalytics);
+            
+            /*Moisture get and store*/
+            $moistureValue = $moisture->readSensorData();
+            $moistureAnalytics = new Analytics('moisture', $moistureValue, $firedAt);
+            $analyticsManager->persist($moistureAnalytics);
+            
+            /*Air quality get and store*/
+            $airQualityValue = $airQuality->readSensorData();
+            $airQualityAnalytics = new Analytics('air Quality', $airQualityValue, $firedAt);
+            $analyticsManager->persist($airQualityAnalytics);
+            
+            $temphumValues = json_decode($temphum->readSensorData());
+            if (!$temphumValues) {
+                $temperatureValue = 0;
+                $humidityValue = 0;
+                
+            } else {
+                $temperatureValue = $temphumValues->temperature;
+                $humidityValue = $temphumValues->humidity;
             }
+            
+            /*Temperature get and store*/
+            $temperatureAnalytics = new Analytics('temperature', $temperatureValue, $firedAt);
+            $analyticsManager->persist($temperatureAnalytics);
+            
+            /*Humidity get and store*/
+            $humidityAnalytics = new Analytics('humidity', $humidityValue, $firedAt);
+            $analyticsManager->persist($humidityAnalytics);
+            
             
             echo "###############################################\n";
             echo "#       RasPiPlant                            #\n";
             echo "#                                             #\n";
             echo "#                                             #\n";
             echo "###############################################\n";
-            echo "Light:" . $light->readSensorData() . "\n";
-            echo "Moisture:" . $moisture->readSensorData() . "\n";
+            echo "Light:" . $lightValue . "\n";
+            echo "Moisture:" . $moistureValue . "\n";
             echo "Air Quality:" . $airQualityValue . "\n";
-            $temphumValues = json_decode($temphum->readSensorData());
-            if (!$temphumValues) {
-                echo "Temperature:N/A\n";
-                echo "Humidity:N/A\n";
-            } else {
-                echo "Temperature:" . $temphumValues->temperature . "\n";
-                echo "Humidity:" . $temphumValues->humidity . "\n";
-            }
+            echo "Temperature:" . $temperatureValue . "\n";
+            echo "Humidity:" . $humidityValue . "\n";
+            echo "\n";
             
         }
+    }
+    
+    /**
+     * 
+     * @return \FullVibes\Bundle\BoardBundle\Manager\AnalyticsManager
+     */
+    protected function getAnalyticsManager() {
+        
+        return $this->getContainer()->get("board.manager.analytics_manager");
+        
     }
 
 }
