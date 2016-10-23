@@ -70,11 +70,15 @@ class GrovePiCommand extends Command {
             echo "Light:" . $light->readSensorData() . "\n";
             echo "Moisture:" . $moisture->readSensorData() . "\n";
             echo "Air Quality:" . $airQualityValue . "\n";
-            $temphumValue = $temphum->readSensorData();
-            dump($temphumValue);
-            $temphumValues = json_decode($temphumValue);
-            echo "Temperature:" . $temphumValues->temperature . "\n";
-            echo "Humidity:" . $temphumValues->humidity . "\n";
+            $temphumValues = $temphum->readSensorData();
+            if (!$temphumValues) {
+                echo "Temperature:N/A\n";
+                echo "Humidity:N/A\n";
+            } else {
+                echo "Temperature:" . $temphumValues->temperature . "\n";
+                echo "Humidity:" . $temphumValues->humidity . "\n";
+            }
+            
         }
     }
 
