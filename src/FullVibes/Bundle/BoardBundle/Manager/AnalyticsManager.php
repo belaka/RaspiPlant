@@ -33,7 +33,7 @@ class AnalyticsManager
     public function __construct(Registry $registry)
     {
         $this->em = $registry->getManager();
-        $this->classNamespace = 'Effinet\Bundle\DataWarehouseBundle\Entity\Contact\Identity';
+        $this->classNamespace = 'FullVibes\Bundle\BoardBundle\Entity\Analytics';
         $this->metadata = $this->em->getClassMetadata($this->classNamespace);
     }
     
