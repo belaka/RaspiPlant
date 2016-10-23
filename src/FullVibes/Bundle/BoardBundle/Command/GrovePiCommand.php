@@ -41,9 +41,11 @@ class GrovePiCommand extends Command {
 
         $moisturePin = 0;
         $airQualityPin = 1;
+        $lightPin = 2;
         $dhtPin = 8;
         $relay1Pin = 2;
         
+        $light = new Sensor\LightSensor($lightPin, $debug);
         $moisture = new Sensor\MoistureSensor($moisturePin, $debug);
         $airquality = new Sensor\AirQualitySensor($airQualityPin, $debug);
         $temphum = new Sensor\DHTSensor($dhtPin, Sensor\DHTSensor::DHT_SENSOR_WHITE);
@@ -65,9 +67,12 @@ class GrovePiCommand extends Command {
             echo "#                                             #\n";
             echo "#                                             #\n";
             echo "###############################################\n";
+            echo "Light:" . $light->readSensorData() . "\n";
             echo "Moisture:" . $moisture->readSensorData() . "\n";
             echo "Air Quality:" . $airQualityValue . "\n";
-            $temphumValues = json_decode($temphum->readSensorData()); 
+            $temphumValue = $temphum->readSensorData();
+            dump($temphumValue);
+            $temphumValues = json_decode($temphumValue);
             echo "Temperature:" . $temphumValues->temperature . "\n";
             echo "Humidity:" . $temphumValues->humidity . "\n";
         }
