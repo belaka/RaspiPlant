@@ -56,25 +56,21 @@ class GrovePiCommand extends ContainerAwareCommand {
         //$relay1 =  new Actuator\RelayActuator($relay1Pin, $debug);
         //$relay1->writeStatus(0);
         
+        $tick = 0;
+        
         while (true) {
             
-            sleep(60);
+            sleep(10);
             $firedAt = new \DateTime();
             
-            /*Light get and store*/
+            /*Light sensor read*/
             $lightValue = $light->readSensorData();
-            $lightAnalytics = new Analytics('light', $lightValue, $firedAt);
-            $analyticsManager->save($lightAnalytics);
             
-            /*Moisture get and store*/
+            /*Moisture sensor read*/
             $moistureValue = $moisture->readSensorData();
-            $moistureAnalytics = new Analytics('moisture', $moistureValue, $firedAt);
-            $analyticsManager->save($moistureAnalytics);
-            
-            /*Air quality get and store*/
+                        
+            /*Air quality sensor read*/
             $airQualityValue = $airQuality->readSensorData();
-            $airQualityAnalytics = new Analytics('air_quality', $airQualityValue, $firedAt);
-            $analyticsManager->save($airQualityAnalytics);
             
             $temphumValues = json_decode($temphum->readSensorData());
             if (!$temphumValues) {
@@ -86,14 +82,28 @@ class GrovePiCommand extends ContainerAwareCommand {
                 $humidityValue = $temphumValues->humidity;
             }
             
-            /*Temperature get and store*/
-            $temperatureAnalytics = new Analytics('temperature', $temperatureValue, $firedAt);
-            $analyticsManager->save($temperatureAnalytics);
-            
-            /*Humidity get and store*/
-            $humidityAnalytics = new Analytics('humidity', $humidityValue, $firedAt);
-            $analyticsManager->save($humidityAnalytics);
-            
+            if (($tick % 110) == 0)  {
+                
+                /*Light value store*/
+                $lightAnalytics = new Analytics('light', $lightValue, $firedAt);
+                $analyticsManager->save($lightAnalytics);
+
+                /*Moisture value store*/
+                $moistureAnalytics = new Analytics('moisture', $moistureValue, $firedAt);
+                $analyticsManager->save($moistureAnalytics);
+
+                /*Air quality value store*/
+                $airQualityAnalytics = new Analytics('air_quality', $airQualityValue, $firedAt);
+                $analyticsManager->save($airQualityAnalytics);
+
+                /*Temperature value store*/
+                $temperatureAnalytics = new Analytics('temperature', $temperatureValue, $firedAt);
+                $analyticsManager->save($temperatureAnalytics);
+
+                /*Humidity value store*/
+                $humidityAnalytics = new Analytics('humidity', $humidityValue, $firedAt);
+                $analyticsManager->save($humidityAnalytics);
+            }
             
             echo "###############################################\n";
             echo "#       RasPiPlant                            #\n";
