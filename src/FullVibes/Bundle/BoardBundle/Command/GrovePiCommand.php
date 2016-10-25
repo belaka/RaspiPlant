@@ -33,6 +33,8 @@ class GrovePiCommand extends ContainerAwareCommand {
             php_uname(),
         ]);
         
+        $analyticsManager = $this->getAnalyticsManager();
+        
         //$wiringFuncs = get_extension_funcs('wiringpi');
         //foreach($wiringFuncs as $wiringFunc) {
         //	$output->writeln($wiringFunc);
@@ -50,16 +52,14 @@ class GrovePiCommand extends ContainerAwareCommand {
         $moisture = new Sensor\MoistureSensor($moisturePin, $debug);
         $airQuality = new Sensor\AirQualitySensor($airQualityPin, $debug);
         $temphum = new Sensor\DHTSensor($dhtPin, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+        
         //$relay1 =  new Actuator\RelayActuator($relay1Pin, $debug);
         //$relay1->writeStatus(0);
         
         while (true) {
             
-            sleep(3);
-            
+            sleep(60);
             $firedAt = new \DateTime();
-            
-            $analyticsManager = $this->getAnalyticsManager();
             
             /*Light get and store*/
             $lightValue = $light->readSensorData();
@@ -73,7 +73,7 @@ class GrovePiCommand extends ContainerAwareCommand {
             
             /*Air quality get and store*/
             $airQualityValue = $airQuality->readSensorData();
-            $airQualityAnalytics = new Analytics('air Quality', $airQualityValue, $firedAt);
+            $airQualityAnalytics = new Analytics('air_quality', $airQualityValue, $firedAt);
             $analyticsManager->save($airQualityAnalytics);
             
             $temphumValues = json_decode($temphum->readSensorData());

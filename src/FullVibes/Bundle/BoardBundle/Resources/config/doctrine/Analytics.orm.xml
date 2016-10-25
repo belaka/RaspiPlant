@@ -14,9 +14,9 @@
             <generator strategy="AUTO" />
         </id>
         
-        <field name="key"       column="key"        type="string" length="255"  nullable="true"/>
-        <field name="value"     column="value"      type="integer"              nullable="true"/> 
-        <field name="firedAt"   column="fired_at"   type="datetime"             nullable="false"/>
+        <field name="eventKey"      column="event_key"     type="string"      length="255"  nullable="true"/>
+        <field name="eventValue"    column="event_value"   type="decimal"     scale="10"    precision="20"    nullable="true"/> 
+        <field name="eventDate"     column="event_date"    type="datetime"    nullable="false"/>
         
     </entity>
 

@@ -9,86 +9,85 @@ class AnalyticsModel
      *
      * @var string
      */
-    protected $key;
+    protected $eventKey;
     
     /**
      *
-     * @var int
+     * @var double
      */
-    protected $value;
+    protected $eventValue;
     
     /**
      *
      * @var string
      */
-    protected $firedAt;
+    protected $eventDate;
     
     /**
      * 
-     * @param string $key
-     * @param int $value
+     * @param string $eventKey
+     * @param int $eventValue
+     * @param \DateTime $eventDate
      */
-    public function __construct($key = null, $value = null, $firedAt = null) {
+    public function __construct($eventKey, $eventValue, \DateTime $eventDate) {
         
-        $this->key = $key;
-        $this->value = $value;
-        
-        if (is_null($firedAt)) {
-            $this->firedAt = new \DateTime();
-        }
+        $this->eventKey = $eventKey;
+        $this->eventValue = $eventValue;
+        $this->eventDate = $eventDate;
     }
+
     
     /**
      * 
      * @return string
      */
-    public function getKey() {
-        return $this->key;
+    public function getEventKey() {
+        return $this->eventKey;
     }
 
     /**
      * 
      * @return scalar
      */
-    public function getValue() {
-        return $this->value;
+    public function getEventValue() {
+        return $this->eventValue;
     }
 
     /**
      * 
      * @return \DateTime
      */
-    public function getFiredAt() {
-        return $this->firedAt;
+    public function getEventDate() {
+        return $this->eventDate;
     }
 
     /**
      * 
-     * @param string $key
+     * @param string $eventKey
      * @return \FullVibes\Bundle\BoardBundle\Model\AnalyticsModel
      */
-    public function setKey($key) {
-        $this->key = $key;
+    public function setEventKey($eventKey) {
+        $this->eventKey = $eventKey;
         return $this;
     }
 
     /**
      * 
-     * @param scalar $value
+     * @param scalar $eventValue
      * @return \FullVibes\Bundle\BoardBundle\Model\AnalyticsModel
      */
-    public function setValue($value) {
-        $this->value = $value;
+    public function setEventValue($eventValue) {
+        $this->eventValue = $eventValue;
         return $this;
     }
 
     /**
      * 
-     * @param \DateTime $firedAt
+     * @param \DateTime $eventDate
      * @return \FullVibes\Bundle\BoardBundle\Model\AnalyticsModel
      */
-    public function setFiredAt(\DateTime $firedAt) {
-        $this->firedAt = $firedAt;
+    public function setEventDate(\DateTime $eventDate) {
+        $this->eventDate = $eventDate;
         return $this;
     }
 
