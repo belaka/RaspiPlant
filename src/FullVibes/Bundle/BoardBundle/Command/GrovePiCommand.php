@@ -61,6 +61,7 @@ class GrovePiCommand extends ContainerAwareCommand {
         while (true) {
             
             sleep(10);
+            
             $firedAt = new \DateTime();
             
             /*Light sensor read*/
@@ -117,6 +118,7 @@ class GrovePiCommand extends ContainerAwareCommand {
             echo "Humidity:" . $humidityValue . "\n";
             echo "\n";
             
+            $tick += 10;
         }
     }
     
