@@ -83,7 +83,7 @@ class GrovePiCommand extends ContainerAwareCommand {
                 $humidityValue = $temphumValues->humidity;
             }
             
-            if (($tick % 110) == 0)  {
+            if (($tick % 120) == 0)  {
                 
                 /*Light value store*/
                 $lightAnalytics = new Analytics('light', $lightValue, $firedAt);
