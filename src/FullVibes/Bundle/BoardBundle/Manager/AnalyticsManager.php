@@ -83,9 +83,9 @@ class AnalyticsManager
     /**
      * 
      */
-    public function findByfiredAt($firedAt)
+    public function findByEventDate($eventDate)
     {
-        return $this->getRepository->findBy(array('firedAt' => $firedAt));
+        return $this->getRepository->findBy(array('eventDate' => $eventDate));
     }
     
     /**
@@ -93,7 +93,7 @@ class AnalyticsManager
      */
     public function findAllByKey($key)
     {
-        return $this->getRepository->findBy(array('key' => $key));
+        return $this->getRepository->findBy(array('eventKey' => $key));
     }
     
     /**

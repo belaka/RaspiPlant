@@ -7,4 +7,9 @@
     <route id="board_main" path="/">
         <default key="_controller">BoardBundle:Board:index</default>
     </route>
+    
+    <route id="dashboard_main" path="/dashboard">
+        <default key="_controller">BoardBundle:Dashboard:index</default>
+    </route>
+    
 </routes>

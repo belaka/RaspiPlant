@@ -8,7 +8,7 @@
 
     <entity name="FullVibes\Bundle\BoardBundle\Entity\Analytics"
             table="analytics" 
-            repository-class="Effinet\Bundle\BoardBundle\Repository\ORM\AnalyticsRepository">
+            repository-class="FullVibes\Bundle\BoardBundle\Repository\ORM\AnalyticsRepository">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO" />

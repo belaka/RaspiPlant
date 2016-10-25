@@ -112,7 +112,7 @@ class GrovePiCommand extends ContainerAwareCommand {
             $output->writeln("###############################################");
             $output->writeln("#                 RasPiPlant                  #");
             $output->writeln("#                                             #");
-            $output->writeln("#     ".$firedAt->format(self::ISO8601)."     #");
+            $output->writeln("#".$firedAt->format(self::ISO8601)."#");
             $output->writeln("###############################################");
             $output->writeln("Light:" . $lightValue);
             $output->writeln("Moisture:" . $moistureValue);
