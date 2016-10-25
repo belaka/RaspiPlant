@@ -12,6 +12,8 @@ use FullVibes\Component\Display;
 
 class GrovePiCommand extends ContainerAwareCommand {
 
+    const ISO8601 = 'Y-m-d\TH:i:sP';
+    
     protected function configure() {
         $this
                 // the name of the command (the part after "bin/console")
@@ -25,6 +27,7 @@ class GrovePiCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        
         // outputs multiple lines to the console (adding "\n" at the end of each line)
         $output->writeln([
             '===================',
@@ -106,17 +109,17 @@ class GrovePiCommand extends ContainerAwareCommand {
                 $analyticsManager->save($humidityAnalytics);
             }
             
-            echo "###############################################\n";
-            echo "#       RasPiPlant                            #\n";
-            echo "#                                             #\n";
-            echo "#                                             #\n";
-            echo "###############################################\n";
-            echo "Light:" . $lightValue . "\n";
-            echo "Moisture:" . $moistureValue . "\n";
-            echo "Air Quality:" . $airQualityValue . "\n";
-            echo "Temperature:" . $temperatureValue . "\n";
-            echo "Humidity:" . $humidityValue . "\n";
-            echo "\n";
+            $output->writeln("###############################################");
+            $output->writeln("#                 RasPiPlant                  #");
+            $output->writeln("#                                             #");
+            $output->writeln("#     ".$firedAt->format(self::ISO8601)."     #");
+            $output->writeln("###############################################");
+            $output->writeln("Light:" . $lightValue);
+            $output->writeln("Moisture:" . $moistureValue);
+            $output->writeln("Air Quality:" . $airQualityValue);
+            $output->writeln("Temperature:" . $temperatureValue . "C°");
+            $output->writeln("Humidity:" . $humidityValue . "%");
+            $output->writeln("");
             
             $tick += 10;
         }
