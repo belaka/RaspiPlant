@@ -17,7 +17,9 @@ class DashboardController extends Controller
             $date = $analytic->getEventDate();
         }
         
-        $temperatures = $this->getAnalyticsManager()->findByKeyAndDate('temperature', new \DateTime);
+        $date = new \DateTime;
+        $date->modify('-2 hour');
+        $temperatures = $this->getAnalyticsManager()->findByKeyAndDate('temperature', $date);
         $tempArray = [];
         
         foreach ($temperatures as $temperature) {
