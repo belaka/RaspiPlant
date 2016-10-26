@@ -228,8 +228,6 @@ var Dashboard = function() {
                 $('#site_statistics_loading').hide();
                 $('#site_statistics_content').show();
 
-                console.log(temperatures);
-                
                 var plot_statistics = $.plot($("#site_statistics"), [{
                         data: temperatures,
                         lines: {
@@ -311,31 +309,17 @@ var Dashboard = function() {
                 $('#site_activities_loading').hide();
                 $('#site_activities_content').show();
 
-                var data1 = [
-                    ['DEC', 300],
-                    ['JAN', 600],
-                    ['FEB', 1100],
-                    ['MAR', 1200],
-                    ['APR', 860],
-                    ['MAY', 1200],
-                    ['JUN', 1450],
-                    ['JUL', 1800],
-                    ['AUG', 1200],
-                    ['SEP', 600]
-                ];
-
-
                 var plot_statistics = $.plot($("#site_activities"),
 
                     [{
-                        data: data1,
+                        data: humidities,
                         lines: {
                             fill: 0.2,
                             lineWidth: 0,
                         },
                         color: ['#BAD9F5']
                     }, {
-                        data: data1,
+                        data: humidities,
                         points: {
                             show: true,
                             fill: true,
@@ -346,7 +330,7 @@ var Dashboard = function() {
                         color: '#9ACAE6',
                         shadowSize: 1
                     }, {
-                        data: data1,
+                        data: humidities,
                         lines: {
                             show: true,
                             fill: false,
@@ -399,7 +383,7 @@ var Dashboard = function() {
                             $("#tooltip").remove();
                             var x = item.datapoint[0].toFixed(2),
                                 y = item.datapoint[1].toFixed(2);
-                            showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + 'M$');
+                            showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + '%');
                         }
                     }
                 });

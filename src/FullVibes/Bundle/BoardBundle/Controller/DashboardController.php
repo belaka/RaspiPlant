@@ -29,12 +29,24 @@ class DashboardController extends Controller
             }
         }
         
+        $humidities = $this->getAnalyticsManager()->findByKeyAndDate('humidity', $date);
+        $humArray = [];
         
-        //$tempArray = [["02/2013",1500],["03/2013",2500],["04/2013",1700],["05/2013",800],["06/2013",1500],["07/2013",2350],["08/2013",1500],["09/2013",1300],["10/2013",4600]];
-                
+        foreach ($humidities as $humidity) {
+            $humValue = round($humidity->getEventValue(), 2);
+            if ($humValue > 0 && $humValue < 90) {
+                $humArray[] = [addslashes($humidity->getEventDate()->format('H:i')), round($humValue, 2)];
+            }
+        }
+               
         return $this->render(
                 'BoardBundle:Dashboard:index.html.twig',
-                array('data' => $data, 'date' => $date, 'temperatures' => json_encode($tempArray, JSON_UNESCAPED_SLASHES))
+                array(
+                    'data' => $data, 
+                    'date' => $date, 
+                    'temperatures' => json_encode($tempArray, JSON_UNESCAPED_SLASHES), 
+                    'humidities' => json_encode($humArray, JSON_UNESCAPED_SLASHES)
+                )
         );
     }
     

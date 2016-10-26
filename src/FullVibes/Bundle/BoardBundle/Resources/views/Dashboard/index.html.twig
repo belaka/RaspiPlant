@@ -270,7 +270,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="caption">
                                             <i class="icon-bar-chart font-dark hide"></i>
                                             <span class="caption-subject font-dark bold uppercase">Temperature</span>
-                                            <span class="caption-helper">Last 2 hours data</span>
+                                            <span class="caption-helper">Last 30 minutes data</span>
                                         </div>
                                         <div class="actions">
                                             <div class="btn-group btn-group-devided" data-toggle="buttons">
@@ -297,8 +297,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="portlet-title">
                                         <div class="caption">
                                             <i class="icon-share font-red-sunglo hide"></i>
-                                            <span class="caption-subject font-dark bold uppercase">Temperature</span>
-                                            <span class="caption-helper">monthly stats...</span>
+                                            <span class="caption-subject font-dark bold uppercase">Humidity</span>
+                                            <span class="caption-helper">Last 30 minutes data</span>
                                         </div>
                                         <div class="actions">
                                             <div class="btn-group">
@@ -378,6 +378,7 @@ License: You must have a valid license purchased only from themeforest(the above
         </div>
         <script type="text/javascript">
             var temperatures = {{ temperatures|raw }};
+            var humidities = {{ humidities|raw }};
         </script>
         <!--[if lt IE 9]>
 <script src="/bundles/board/plugins/respond.min.js"></script>
