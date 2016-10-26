@@ -211,9 +211,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="details">
                                         <div class="number">
-                                            <span data-counter="counterup" data-value="{{ data.temperature }}">C°</span>
+                                            <span data-counter="counterup" data-value="{% if data.temperature is defined %}{{ data.temperature }}{% else %}NaN{% endif %}">C°</span>
                                         </div>
                                         <div class="desc"> Temperature </div>
+                                        <div class="desc"><b>{{ date|date('Y/m/d H:i:s') }}</b></div>
                                     </div>
                                 </a>
                             </div>
@@ -224,8 +225,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="details">
                                         <div class="number">
-                                            <span data-counter="counterup" data-value="{{ data.humidity }}">0</span>% </div>
+                                            <span data-counter="counterup" data-value="{% if data.humidity is defined %}{{ data.humidity }}{% else %}NaN{% endif %}">0</span>% </div>
                                         <div class="desc"> Humidity </div>
+                                        <div class="desc"><b>{{ date|date('Y/m/d H:i:s') }}</b></div>
                                     </div>
                                 </a>
                             </div>
@@ -236,9 +238,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="details">
                                         <div class="number">
-                                            <span data-counter="counterup" data-value="{{ data.air_quality }}"></span>/1000
+                                            <span data-counter="counterup" data-value="{% if data.air_quality is defined %}{{ data.air_quality }}{% else %}NaN{% endif %}"></span>/1000
                                         </div>
                                         <div class="desc"> Air Quality </div>
+                                        <div class="desc"><b>{{ date|date('Y/m/d H:i:s') }}</b></div>
                                     </div>
                                 </a>
                             </div>
@@ -249,9 +252,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="details">
                                         <div class="number"> 
-                                            <span data-counter="counterup" data-value="{{ data.moisture }}"></span>/1000
+                                            <span data-counter="counterup" data-value="{% if data.moisture is defined %}{{ data.moisture }}{% else %}NaN{% endif %}"></span>/1000
                                         </div>
                                         <div class="desc"> Moisture </div>
+                                        <div class="desc"><b>{{ date|date('Y/m/d H:i:s') }}</b></div>
                                     </div>
                                 </a>
                             </div>
