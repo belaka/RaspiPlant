@@ -44,7 +44,7 @@ class DashboardController extends Controller
         
         foreach ($moistures as $moisture) {
             $moistValue = round($moisture->getEventValue(), 2);
-            if ($moistValue > 0 && $moistValue < 90) {
+            if ($moistValue > 0 && $moistValue < 1000) {
                 $moistArray[] = [addslashes($moisture->getEventDate()->format('H:i')), round($moistValue, 2)];
             }
         }
