@@ -18,7 +18,7 @@ class DashboardController extends Controller
         }
         
         $date = new \DateTime;
-        $date->modify('-30 minutes');
+        $date->modify('-2 hours');
         $temperatures = $this->getAnalyticsManager()->findByKeyAndDate('temperature', $date);
         $tempArray = [];
         
