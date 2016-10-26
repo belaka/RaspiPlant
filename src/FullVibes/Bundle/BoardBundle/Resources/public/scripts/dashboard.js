@@ -483,13 +483,13 @@ var Dashboard = function() {
                 });
             }
             
-            if ($('#air_quality').size() != 0) {
+            if ($('#air_qualities').size() != 0) {
                 //site activities
                 var previousPoint2 = null;
                 $('#air_qualities_loading').hide();
                 $('#air_qualities_content').show();
 
-                var plot_statistics = $.plot($("#air_quality"),
+                var plot_statistics = $.plot($("#air_qualities"),
 
                     [{
                         data: air_qualities,
@@ -554,7 +554,7 @@ var Dashboard = function() {
                         }
                     });
 
-                $("#air_quality").bind("plothover", function(event, pos, item) {
+                $("#air_qualities").bind("plothover", function(event, pos, item) {
                     $("#x").text(pos.x.toFixed(2));
                     $("#y").text(pos.y.toFixed(2));
                     if (item) {
@@ -568,7 +568,7 @@ var Dashboard = function() {
                     }
                 });
 
-                $('#air_quality').bind("mouseleave", function() {
+                $('#air_qualities').bind("mouseleave", function() {
                     $("#tooltip").remove();
                 });
             }
