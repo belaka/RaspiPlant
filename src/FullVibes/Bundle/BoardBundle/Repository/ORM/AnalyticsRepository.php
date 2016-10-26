@@ -22,8 +22,10 @@ class AnalyticsRepository extends EntityRepository
  
         $qb->select('a')
             ->from('BoardBundle:Analytics', 'a')
-            ->where('a.eventDate > :datecourant')
-            ->setParameter('datecourant', new \Datetime(date('d-m-Y')))
+            ->where('a.eventDate > :eventDate')
+            ->andWhere('a.eventKey = :eventKey')
+            ->setParameter('eventDate', $date)
+            ->setParameter('eventKey', $key)
             ->orderBy('a.eventDate', 'DESC');
 
              return $qb->getQuery()->getResult();
