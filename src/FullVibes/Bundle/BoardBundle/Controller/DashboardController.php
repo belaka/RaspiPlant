@@ -23,7 +23,11 @@ class DashboardController extends Controller
         $tempArray = [];
         
         foreach ($temperatures as $temperature) {
-            $tempArray[] = [addslashes($temperature->getEventDate()->format('H:i')), round($temperature->getEventValue(), 2)];
+            $tempValue = round($temperature->getEventValue(), 2);
+            if (!($tempValue > 0 && $tempValue < 90)) {
+                $tempValue = 0;
+            }
+            $tempArray[] = [addslashes($temperature->getEventDate()->format('H:i')), round($tempValue, 2)];
         }
         
         
