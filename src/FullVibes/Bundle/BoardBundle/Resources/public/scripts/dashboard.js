@@ -392,6 +392,186 @@ var Dashboard = function() {
                     $("#tooltip").remove();
                 });
             }
+            
+            if ($('#plant_moisture').size() != 0) {
+                //site activities
+                var previousPoint2 = null;
+                $('#plant_moisture_loading').hide();
+                $('#plant_moisture_content').show();
+
+                var plot_statistics = $.plot($("#plant_moisture"),
+
+                    [{
+                        data: moistures,
+                        lines: {
+                            fill: 0.2,
+                            lineWidth: 0,
+                        },
+                        color: ['#BAD9F5']
+                    }, {
+                        data: moistures,
+                        points: {
+                            show: true,
+                            fill: true,
+                            radius: 4,
+                            fillColor: "#9ACAE6",
+                            lineWidth: 2
+                        },
+                        color: '#9ACAE6',
+                        shadowSize: 1
+                    }, {
+                        data: moistures,
+                        lines: {
+                            show: true,
+                            fill: false,
+                            lineWidth: 3
+                        },
+                        color: '#9ACAE6',
+                        shadowSize: 0
+                    }],
+
+                    {
+
+                        xaxis: {
+                            tickLength: 0,
+                            tickDecimals: 0,
+                            mode: "categories",
+                            min: 0,
+                            font: {
+                                lineHeight: 18,
+                                style: "normal",
+                                variant: "small-caps",
+                                color: "#6F7B8A"
+                            }
+                        },
+                        yaxis: {
+                            ticks: 5,
+                            tickDecimals: 0,
+                            tickColor: "#eee",
+                            font: {
+                                lineHeight: 14,
+                                style: "normal",
+                                variant: "small-caps",
+                                color: "#6F7B8A"
+                            }
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true,
+                            tickColor: "#eee",
+                            borderColor: "#eee",
+                            borderWidth: 1
+                        }
+                    });
+
+                $("#plant_moisture").bind("plothover", function(event, pos, item) {
+                    $("#x").text(pos.x.toFixed(2));
+                    $("#y").text(pos.y.toFixed(2));
+                    if (item) {
+                        if (previousPoint2 != item.dataIndex) {
+                            previousPoint2 = item.dataIndex;
+                            $("#tooltip").remove();
+                            var x = item.datapoint[0].toFixed(2),
+                                y = item.datapoint[1].toFixed(2);
+                            showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + '/1000');
+                        }
+                    }
+                });
+
+                $('#plant_moisture').bind("mouseleave", function() {
+                    $("#tooltip").remove();
+                });
+            }
+            
+            if ($('#air_quality').size() != 0) {
+                //site activities
+                var previousPoint2 = null;
+                $('#air_qualities_loading').hide();
+                $('#air_qualities_content').show();
+
+                var plot_statistics = $.plot($("#air_quality"),
+
+                    [{
+                        data: air_qualities,
+                        lines: {
+                            fill: 0.2,
+                            lineWidth: 0,
+                        },
+                        color: ['#BAD9F5']
+                    }, {
+                        data: air_qualities,
+                        points: {
+                            show: true,
+                            fill: true,
+                            radius: 4,
+                            fillColor: "#9ACAE6",
+                            lineWidth: 2
+                        },
+                        color: '#9ACAE6',
+                        shadowSize: 1
+                    }, {
+                        data: air_qualities,
+                        lines: {
+                            show: true,
+                            fill: false,
+                            lineWidth: 3
+                        },
+                        color: '#9ACAE6',
+                        shadowSize: 0
+                    }],
+
+                    {
+
+                        xaxis: {
+                            tickLength: 0,
+                            tickDecimals: 0,
+                            mode: "categories",
+                            min: 0,
+                            font: {
+                                lineHeight: 18,
+                                style: "normal",
+                                variant: "small-caps",
+                                color: "#6F7B8A"
+                            }
+                        },
+                        yaxis: {
+                            ticks: 5,
+                            tickDecimals: 0,
+                            tickColor: "#eee",
+                            font: {
+                                lineHeight: 14,
+                                style: "normal",
+                                variant: "small-caps",
+                                color: "#6F7B8A"
+                            }
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true,
+                            tickColor: "#eee",
+                            borderColor: "#eee",
+                            borderWidth: 1
+                        }
+                    });
+
+                $("#air_quality").bind("plothover", function(event, pos, item) {
+                    $("#x").text(pos.x.toFixed(2));
+                    $("#y").text(pos.y.toFixed(2));
+                    if (item) {
+                        if (previousPoint2 != item.dataIndex) {
+                            previousPoint2 = item.dataIndex;
+                            $("#tooltip").remove();
+                            var x = item.datapoint[0].toFixed(2),
+                                y = item.datapoint[1].toFixed(2);
+                            showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + '/1000');
+                        }
+                    }
+                });
+
+                $('#air_quality').bind("mouseleave", function() {
+                    $("#tooltip").remove();
+                });
+            }
         },
 
         initEasyPieCharts: function() {
