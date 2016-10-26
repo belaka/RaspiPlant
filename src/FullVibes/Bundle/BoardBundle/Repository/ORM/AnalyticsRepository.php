@@ -26,7 +26,7 @@ class AnalyticsRepository extends EntityRepository
             ->andWhere('a.eventKey = :eventKey')
             ->setParameter('eventDate', $date)
             ->setParameter('eventKey', $key)
-            ->orderBy('a.eventDate', 'DESC');
+            ->orderBy('a.eventDate', 'ASC');
 
              return $qb->getQuery()->getResult();
     }

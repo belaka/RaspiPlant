@@ -18,13 +18,13 @@ class DashboardController extends Controller
         }
         
         $date = new \DateTime;
-        $date->modify('-1 hour');
+        $date->modify('-30 minutes');
         $temperatures = $this->getAnalyticsManager()->findByKeyAndDate('temperature', $date);
         $tempArray = [];
         
         foreach ($temperatures as $temperature) {
             $tempValue = round($temperature->getEventValue(), 2);
-            if (!($tempValue > 0 && $tempValue < 90)) {
+            if ($tempValue > 0 && $tempValue < 90) {
                 $tempArray[] = [addslashes($temperature->getEventDate()->format('H:i')), round($tempValue, 2)];
             }
         }
