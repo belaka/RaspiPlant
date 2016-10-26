@@ -85,7 +85,7 @@ class AnalyticsManager
      */
     public function findByEventDate($eventDate)
     {
-        return $this->getRepository->findBy(array('eventDate' => $eventDate));
+        return $this->getRepository()->findBy(array('eventDate' => $eventDate));
     }
     
     /**
@@ -93,7 +93,18 @@ class AnalyticsManager
      */
     public function findAllByKey($key)
     {
-        return $this->getRepository->findBy(array('eventKey' => $key));
+        return $this->getRepository()->findBy(array('eventKey' => $key));
+    }
+    
+    /**
+     * 
+     * @param string $key
+     * @param \DateTime $date
+     * @return array
+     */
+    public function findByKeyAndDate($key, $date)
+    {
+       return $this->getRepository()->findByKeyAndDate($key, $date); 
     }
     
     /**

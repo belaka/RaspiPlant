@@ -13,6 +13,19 @@ class AnalyticsRepository extends EntityRepository
 {
     public function findAll()
     {
-        return $this->findBy(array(), array('eventDate' => 'ASC'));
+        return $this->findBy(array(), array('eventDate' => 'DESC'));
+    }
+    
+    public function findByKeyAndDate($key, $date)
+    {
+        $qb = $this->_em->createQueryBuilder();
+ 
+        $qb->select('a')
+            ->from('BoardBundle:Analytics', 'a')
+            ->where('a.eventDate > :datecourant')
+            ->setParameter('datecourant', new \Datetime(date('d-m-Y')))
+            ->orderBy('a.eventDate', 'DESC');
+
+             return $qb->getQuery()->getResult();
     }
 }
