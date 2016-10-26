@@ -265,7 +265,7 @@ var Dashboard = function() {
                         },
                         yaxis: {
                             ticks: 5,
-                            tickDecimals: 2,
+                            tickDecimals: 0,
                             tickColor: "#eee",
                             font: {
                                 lineHeight: 14,
@@ -295,7 +295,7 @@ var Dashboard = function() {
                             var x = item.datapoint[0].toFixed(2),
                                 y = item.datapoint[1].toFixed(2);
 
-                            showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + ' visits');
+                            showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + ' C°');
                         }
                     } else {
                         $("#tooltip").remove();
