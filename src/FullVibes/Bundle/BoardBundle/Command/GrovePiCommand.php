@@ -49,22 +49,22 @@ class GrovePiCommand extends ContainerAwareCommand {
         $airQualityPin = 1;
         $lightPin = 2;
         $dhtPin = 8;
-        //$relay1Pin = 2;
+        $atomizerPin = 2;
         
         $light = new Sensor\LightSensor($lightPin, $debug);
         $moisture = new Sensor\MoistureSensor($moisturePin, $debug);
         $airQuality = new Sensor\AirQualitySensor($airQualityPin, $debug);
         $temphum = new Sensor\DHTSensor($dhtPin, Sensor\DHTSensor::DHT_SENSOR_WHITE);
         
-        //$relay1 =  new Actuator\RelayActuator($relay1Pin, $debug);
-        //$relay1->writeStatus(0);
+        $atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
+        $atomizer->writeStatus(0);
         
         $tick = 0;
         
         while (true) {
-            
+            $atomizer->writeStatus(1);
             sleep(10);
-            
+            $atomizer->writeStatus(0);
             $firedAt = new \DateTime();
             
             /*Light sensor read*/
