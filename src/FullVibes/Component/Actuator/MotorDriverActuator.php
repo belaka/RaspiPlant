@@ -55,9 +55,9 @@ class MotorDriverActuator extends AbstractActuator {
     }
 
     public function motorSpeedSetAB($motorSpeedA, $motorSpeedB) {
-        $speedA = $this->map_vals($motorSpeedA, 0, 100, 0, 255);
-        $speedB = $this->map_vals($motorSpeedB, 0, 100, 0, 255);
-        wiringPiI2CWriteBuffer (self::I2C_MOTOR_DRIVER_ADD, self::MOTOR_SPEED_SET, $speedA, $speedB, 0, 0, 4);
+        //$speedA = $this->mapVals($motorSpeedA, 0, 100, 0, 255);
+        //$speedB = $this->mapVals($motorSpeedB, 0, 100, 0, 255);
+        wiringPiI2CWriteBuffer (self::I2C_MOTOR_DRIVER_ADD, self::MOTOR_SPEED_SET, $motorSpeedA, $motorSpeedB, 0, 0, 4);
         //bus . write_i2c_block_data(self::I2C_MOTOR_DRIVER_ADD, self::MOTOR_SPEED_SET, []);
         sleep(.02);
     }
