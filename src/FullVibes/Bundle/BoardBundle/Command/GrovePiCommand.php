@@ -59,9 +59,20 @@ class GrovePiCommand extends ContainerAwareCommand {
         $atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
         $atomizer->writeStatus(0);
         
+        $motorDriver = new Actuator\MotorDriverActuator();
+        
         $tick = 0;
         
         while (true) {
+            
+            $motorDriver->motorSpeedSetAB(100,100);
+	    $motorDriver->motorDirectionSet(0b1010);
+            sleep(2);
+            $motorDriver->motorSpeedSetAB(100,100);
+            $motorDriver->motorDirectionSet(0b0101);
+	    sleep(2);
+            $motorDriver->motorSpeedSetAB(0,0);
+            
             $atomizer->writeStatus(1);
             sleep(10);
             $atomizer->writeStatus(0);
