@@ -53,20 +53,22 @@ class GrovePiCommand extends ContainerAwareCommand {
         $dhtPin2 = 6;
         
         
-        //$light = new Sensor\LightSensor($lightPin, $debug);
-        $moisture1 = new Sensor\MoistureSensor($moisturePin1, $debug);
-        $moisture2 = new Sensor\MoistureSensor($moisturePin2, $debug);
-        $airQuality = new Sensor\AirQualitySensor($airQualityPin, $debug);
-        $temphum1 = new Sensor\DHTSensor($dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-        $temphum2 = new Sensor\DHTSensor($dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-        $atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
-        $atomizer->writeStatus(0);
+        
         
         //$motorDriver = new Actuator\MotorDriverActuator();
         
         $tick = 0;
         
         while (true) {
+            
+            //$light = new Sensor\LightSensor($lightPin, $debug);
+            $moisture1 = new Sensor\MoistureSensor($moisturePin1, $debug);
+            $moisture2 = new Sensor\MoistureSensor($moisturePin2, $debug);
+            $airQuality = new Sensor\AirQualitySensor($airQualityPin, $debug);
+            $temphum1 = new Sensor\DHTSensor($dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+            $temphum2 = new Sensor\DHTSensor($dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+            $atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
+            $atomizer->writeStatus(0);
             
 //            $motorDriver->motorSpeedSetAB(100,100);
 //	    $motorDriver->motorDirectionSet(0b1010);
