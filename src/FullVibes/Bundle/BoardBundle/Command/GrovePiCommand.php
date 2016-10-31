@@ -76,9 +76,9 @@ class GrovePiCommand extends ContainerAwareCommand {
 //	    sleep(2);
 //            $motorDriver->motorSpeedSetAB(0,0);
             
-            $atomizer->writeStatus(1);
-            sleep(10);
-            $atomizer->writeStatus(0);
+//            $atomizer->writeStatus(1);
+//            sleep(10);
+//            $atomizer->writeStatus(0);
             $firedAt = new \DateTime();
             
             /*Light sensor read*/
