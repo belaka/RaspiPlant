@@ -48,8 +48,8 @@ class GrovePiCommand extends ContainerAwareCommand {
         $airQualityPin = 2;
         $moisturePin1 = 0;
         $moisturePin2 = 1;
-        $atomizerPin = 3;
-        $dhtPin1 = 2;
+        $atomizerPin = 2;
+        $dhtPin1 = 3;
         $dhtPin2 = 6;
         
         
