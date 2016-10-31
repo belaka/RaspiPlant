@@ -62,13 +62,13 @@ class GrovePiCommand extends ContainerAwareCommand {
         while (true) {
             
             //$light = new Sensor\LightSensor($lightPin, $debug);
-            $moisture1 = new Sensor\MoistureSensor($moisturePin1, $debug);
-            $moisture2 = new Sensor\MoistureSensor($moisturePin2, $debug);
-            $airQuality = new Sensor\AirQualitySensor($airQualityPin, $debug);
-            $temphum1 = new Sensor\DHTSensor($dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-            $temphum2 = new Sensor\DHTSensor($dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-            $atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
-            $atomizer->writeStatus(0);
+            
+            
+            
+            
+            
+//            $atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
+//            $atomizer->writeStatus(0);
             
 //            $motorDriver->motorSpeedSetAB(100,100);
 //	    $motorDriver->motorDirectionSet(0b1010);
@@ -86,13 +86,19 @@ class GrovePiCommand extends ContainerAwareCommand {
             /*Light sensor read*/
             //$lightValue = $light->readSensorData();
             
-            /*Moisture sensor read*/
+            /*Moisture 1 sensor read*/
+            $moisture1 = new Sensor\MoistureSensor($moisturePin1, $debug);
             $moisture1Value = $moisture1->readSensorData();
+            /*Moisture 2 sensor read*/
+            $moisture2 = new Sensor\MoistureSensor($moisturePin2, $debug);
             $moisture2Value = $moisture2->readSensorData();
                         
             /*Air quality sensor read*/
+            $airQuality = new Sensor\AirQualitySensor($airQualityPin, $debug);
             $airQualityValue = $airQuality->readSensorData();
             
+            /*Temperature/Humidity 1 sensor read*/
+            $temphum1 = new Sensor\DHTSensor($dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
             $temphum1Values = json_decode($temphum1->readSensorData());
             if (!$temphum1Values) {
                 $temperature1Value = 0;
@@ -105,6 +111,8 @@ class GrovePiCommand extends ContainerAwareCommand {
             
             //sleep(1);
             
+            /*Temperature/Humidity 2 sensor read*/
+            $temphum2 = new Sensor\DHTSensor($dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
             $temphum2Values = json_decode($temphum2->readSensorData());
             if (!$temphum2Values) {
                 $temperature2Value = 0;
