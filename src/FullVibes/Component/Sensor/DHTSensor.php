@@ -71,7 +71,7 @@ class DHTSensor extends AbstractSensor {
             
             $this->device->digitalWrite(self::DHT_TEMP_CMD, $this->pin, $this->type, 0);
             
-            $number = wiringPiI2CReadBuffer ($this->fd, 7, 0, 0, 32);
+            $number = wiringPiI2CReadBuffer ($this->fd, $this->pin, 0, 0, 32);
             $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
             
             $h = '';
