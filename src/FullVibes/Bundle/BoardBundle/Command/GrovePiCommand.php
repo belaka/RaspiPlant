@@ -101,7 +101,7 @@ class GrovePiCommand extends ContainerAwareCommand {
                 $humidity1Value = $temphum1Values->humidity;
             }
             
-            sleep(1);
+            //sleep(1);
             
             $temphum2Values = json_decode($temphum2->readSensorData());
             if (!$temphum2Values) {

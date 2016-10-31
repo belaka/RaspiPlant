@@ -19,11 +19,6 @@ class DHTSensor extends AbstractSensor {
     
     const DHT_TEMP_CMD = 40;
     
-    const LOW = 0;
-    const HIGH = 1;
-    const INPUT = 0;
-    const OUTPUT = 1;
-
     /**
      *
      * @var boolean
