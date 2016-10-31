@@ -44,34 +44,37 @@ class GrovePiCommand extends ContainerAwareCommand {
         //}
 
         $debug = false;
-
-        $moisturePin = 0;
-        $airQualityPin = 1;
-        $lightPin = 2;
-        $dhtPin = 8;
-        $atomizerPin = 2;
         
-        $light = new Sensor\LightSensor($lightPin, $debug);
-        $moisture = new Sensor\MoistureSensor($moisturePin, $debug);
+        $airQualityPin = 0;
+        $moisturePin1 = 1;
+        $moisturePin2 = 2;
+        $atomizerPin = 3;
+        $dhtPin1 = 2;
+        $dhtPin2 = 6;
+        
+        
+        //$light = new Sensor\LightSensor($lightPin, $debug);
+        $moisture1 = new Sensor\MoistureSensor($moisturePin1, $debug);
+        $moisture2 = new Sensor\MoistureSensor($moisturePin2, $debug);
         $airQuality = new Sensor\AirQualitySensor($airQualityPin, $debug);
-        $temphum = new Sensor\DHTSensor($dhtPin, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-        
+        $temphum1 = new Sensor\DHTSensor($dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+        $temphum2 = new Sensor\DHTSensor($dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
         $atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
         $atomizer->writeStatus(0);
         
-        $motorDriver = new Actuator\MotorDriverActuator();
+        //$motorDriver = new Actuator\MotorDriverActuator();
         
         $tick = 0;
         
         while (true) {
             
-            $motorDriver->motorSpeedSetAB(100,100);
-	    $motorDriver->motorDirectionSet(0b1010);
-            sleep(2);
-            $motorDriver->motorSpeedSetAB(100,100);
-            $motorDriver->motorDirectionSet(0b0101);
-	    sleep(2);
-            $motorDriver->motorSpeedSetAB(0,0);
+//            $motorDriver->motorSpeedSetAB(100,100);
+//	    $motorDriver->motorDirectionSet(0b1010);
+//            sleep(2);
+//            $motorDriver->motorSpeedSetAB(100,100);
+//            $motorDriver->motorDirectionSet(0b0101);
+//	    sleep(2);
+//            $motorDriver->motorSpeedSetAB(0,0);
             
             $atomizer->writeStatus(1);
             sleep(10);
@@ -79,57 +82,83 @@ class GrovePiCommand extends ContainerAwareCommand {
             $firedAt = new \DateTime();
             
             /*Light sensor read*/
-            $lightValue = $light->readSensorData();
+            //$lightValue = $light->readSensorData();
             
             /*Moisture sensor read*/
-            $moistureValue = $moisture->readSensorData();
+            $moisture1Value = $moisture1->readSensorData();
+            $moisture2Value = $moisture2->readSensorData();
                         
             /*Air quality sensor read*/
             $airQualityValue = $airQuality->readSensorData();
             
-            $temphumValues = json_decode($temphum->readSensorData());
-            if (!$temphumValues) {
-                $temperatureValue = 0;
-                $humidityValue = 0;
+            $temphum1Values = json_decode($temphum1->readSensorData());
+            if (!$temphum1Values) {
+                $temperature1Value = 0;
+                $humidity1Value = 0;
                 
             } else {
-                $temperatureValue = $temphumValues->temperature;
-                $humidityValue = $temphumValues->humidity;
+                $temperature1Value = $temphum1Values->temperature;
+                $humidity1Value = $temphum1Values->humidity;
+            }
+            
+            $temphum2Values = json_decode($temphum2->readSensorData());
+            if (!$temphum2Values) {
+                $temperature2Value = 0;
+                $humidity2Value = 0;
+                
+            } else {
+                $temperature2Value = $temphum2Values->temperature;
+                $humidity2Value = $temphum2Values->humidity;
             }
             
             if (($tick % 120) == 0)  {
                 
                 /*Light value store*/
-                $lightAnalytics = new Analytics('light', $lightValue, $firedAt);
-                $analyticsManager->save($lightAnalytics);
+//                $lightAnalytics = new Analytics('light', $lightValue, $firedAt);
+//                $analyticsManager->save($lightAnalytics);
 
                 /*Moisture value store*/
-                $moistureAnalytics = new Analytics('moisture', $moistureValue, $firedAt);
-                $analyticsManager->save($moistureAnalytics);
+                $moisture1Analytics = new Analytics('moisture_1', $moisture1Value, $firedAt);
+                $analyticsManager->save($moisture1Analytics);
+                
+                /*Moisture value store*/
+                $moisture2Analytics = new Analytics('moisture_2', $moisture2Value, $firedAt);
+                $analyticsManager->save($moisture2Analytics);
 
                 /*Air quality value store*/
                 $airQualityAnalytics = new Analytics('air_quality', $airQualityValue, $firedAt);
                 $analyticsManager->save($airQualityAnalytics);
 
                 /*Temperature value store*/
-                $temperatureAnalytics = new Analytics('temperature', $temperatureValue, $firedAt);
-                $analyticsManager->save($temperatureAnalytics);
+                $temperature1Analytics = new Analytics('temperature_1', $temperature1Value, $firedAt);
+                $analyticsManager->save($temperature1Analytics);
 
                 /*Humidity value store*/
-                $humidityAnalytics = new Analytics('humidity', $humidityValue, $firedAt);
-                $analyticsManager->save($humidityAnalytics);
+                $humidity1Analytics = new Analytics('humidity_1', $humidity1Value, $firedAt);
+                $analyticsManager->save($humidity1Analytics);
+                
+                /*Temperature value store*/
+                $temperature2Analytics = new Analytics('temperature_2', $temperature2Value, $firedAt);
+                $analyticsManager->save($temperature2Analytics);
+
+                /*Humidity value store*/
+                $humidity2Analytics = new Analytics('humidity_2', $humidity2Value, $firedAt);
+                $analyticsManager->save($humidity2Analytics);
             }
             
             $output->writeln("###############################################");
             $output->writeln("#                 RasPiPlant                  #");
             $output->writeln("#                                             #");
-            $output->writeln("#".$firedAt->format(self::ISO8601)."#");
+            $output->writeln("#".$firedAt->format(self::ISO8601).                    "#");
             $output->writeln("###############################################");
-            $output->writeln("Light:" . $lightValue);
-            $output->writeln("Moisture:" . $moistureValue);
+            //$output->writeln("Light:" . $lightValue);
+            $output->writeln("Moisture 1 :" . $moisture1Value);
+            $output->writeln("Moisture 2 :" . $moisture2Value);
             $output->writeln("Air Quality:" . $airQualityValue);
-            $output->writeln("Temperature:" . $temperatureValue . "C°");
-            $output->writeln("Humidity:" . $humidityValue . "%");
+            $output->writeln("Temperature 1 :" . $temperature1Value . "C°");
+            $output->writeln("Humidity 1 :" . $humidity1Value . "%");
+            $output->writeln("Temperature 2 :" . $temperature2Value . "C°");
+            $output->writeln("Humidity 2 :" . $humidity2Value . "%");
             $output->writeln("");
             
             $tick += 10;
