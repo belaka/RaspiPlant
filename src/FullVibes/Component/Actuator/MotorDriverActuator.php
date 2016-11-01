@@ -49,7 +49,7 @@ class MotorDriverActuator extends AbstractActuator {
     }
 
     public function motorDirectionSet($direction) {
-        wiringPiI2CWriteBuffer (self::I2C_MOTOR_DRIVER_ADD, self::DIRECTION_SET, $direction, 0, 0, 0, 4);
+        wiringPiI2CWriteBuffer (self::I2C_MOTOR_DRIVER_ADD, 1, self::DIRECTION_SET, $direction, 0, 0, 4);
         //bus . write_i2c_block_data(self::I2C_MOTOR_DRIVER_ADD, self::DIRECTION_SET, [$direction, 0]);
         sleep(.02);
     }
@@ -57,9 +57,9 @@ class MotorDriverActuator extends AbstractActuator {
     public function motorSpeedSetAB($motorSpeedA, $motorSpeedB) {
         //$speedA = $this->mapVals($motorSpeedA, 0, 100, 0, 255);
         //$speedB = $this->mapVals($motorSpeedB, 0, 100, 0, 255);
-        wiringPiI2CWriteBuffer (self::I2C_MOTOR_DRIVER_ADD, self::MOTOR_SPEED_SET, $motorSpeedA, $motorSpeedB, 0, 0, 4);
+        wiringPiI2CWriteBuffer (self::I2C_MOTOR_DRIVER_ADD, 1, self::MOTOR_SPEED_SET, $motorSpeedA, $motorSpeedB, 0, 4);
         //bus . write_i2c_block_data(self::I2C_MOTOR_DRIVER_ADD, self::MOTOR_SPEED_SET, []);
-        sleep(.02);
+        sleep(60000);
     }
 
     //Maps speed from 0-100 to 0-255
@@ -70,7 +70,7 @@ class MotorDriverActuator extends AbstractActuator {
         $rightSpan = $rightMax - $rightMin;
 
         # Convert the left range into a 0-1 range (float)
-        $valueScaled = float($value - $leftMin) / float($leftSpan);
+        $valueScaled = floatval($value - $leftMin) / floatval($leftSpan);
 
         # Convert the 0-1 range into a value in the right range.
         return intval($rightMin + ($valueScaled * $rightSpan));
