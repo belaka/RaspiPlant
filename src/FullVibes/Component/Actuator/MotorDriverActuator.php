@@ -27,8 +27,8 @@ class MotorDriverActuator extends AbstractActuator {
 
         $this->debug = $debug;
 
-        $this->fd = wiringpii2csetup(self::I2C_MOTOR_DRIVER_ADD);
-        $this->device = new I2CDevice($this->fd);
+        //$this->fd = wiringpii2csetup(self::I2C_MOTOR_DRIVER_ADD);
+        //$this->device = new I2CDevice($this->fd);
     }
 
     /**
@@ -49,7 +49,7 @@ class MotorDriverActuator extends AbstractActuator {
     }
 
     public function motorDirectionSet($direction) {
-        wiringPiI2CWriteBuffer (self::I2C_MOTOR_DRIVER_ADD, 1, self::DIRECTION_SET, $direction, 0, 0, 4);
+        wiringPiI2CWriteBuffer(self::I2C_MOTOR_DRIVER_ADD, 1, self::DIRECTION_SET, $direction, 0, 0, 4);
         //bus . write_i2c_block_data(self::I2C_MOTOR_DRIVER_ADD, self::DIRECTION_SET, [$direction, 0]);
         sleep(.02);
     }
