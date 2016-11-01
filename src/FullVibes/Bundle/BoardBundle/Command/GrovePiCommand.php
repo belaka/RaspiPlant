@@ -71,7 +71,7 @@ class GrovePiCommand extends ContainerAwareCommand {
             $atomizer->writeStatus(0);
             
 
-            $motorDriver->motorSpeedSetAB(0,100);
+            $motorDriver->motorSpeedSetAB(0,255);
             $atomizer->writeStatus(1);
             sleep(10);
             $atomizer->writeStatus(0);
