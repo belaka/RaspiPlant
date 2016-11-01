@@ -27,8 +27,8 @@ class MotorDriverActuator extends AbstractActuator {
 
         $this->debug = $debug;
 
-        //$this->fd = wiringpii2csetup(self::I2C_MOTOR_DRIVER_ADD);
-        //$this->device = new I2CDevice($this->fd);
+        $this->fd = wiringpii2csetup(self::I2C_MOTOR_DRIVER_ADD);
+        $this->device = new I2CDevice($this->fd);
     }
 
     /**
@@ -48,18 +48,18 @@ class MotorDriverActuator extends AbstractActuator {
         throw new \Exception('NOT IMPLEMENTED');
     }
 
-    public function motorDirectionSet($direction) {
-        wiringPiI2CWriteBuffer(self::I2C_MOTOR_DRIVER_ADD, 1, self::DIRECTION_SET, $direction, 0, 0, 4);
+    public function motorDirectionSet() {
+        wiringPiI2CWriteBuffer($this->fd, self::DIRECTION_SET, 0b1010, 0, 0, 0, 9);
         //bus . write_i2c_block_data(self::I2C_MOTOR_DRIVER_ADD, self::DIRECTION_SET, [$direction, 0]);
-        sleep(.02);
+        usleep(20000);
     }
 
     public function motorSpeedSetAB($motorSpeedA, $motorSpeedB) {
-        $speedA = $this->mapVals($motorSpeedA, 0, 100, 0, 255);
-        $speedB = $this->mapVals($motorSpeedB, 0, 100, 0, 255);
-        wiringPiI2CWriteBuffer (self::I2C_MOTOR_DRIVER_ADD, 1, self::MOTOR_SPEED_SET, $speedA, $speedB, 0, 4);
+        //$speedA = $this->mapVals($motorSpeedA, 0, 100, 0, 255);
+        //$speedB = $this->mapVals($motorSpeedB, 0, 100, 0, 255);
+        wiringPiI2CWriteBuffer ($this->fd, self::MOTOR_SPEED_SET, $motorSpeedA, $motorSpeedB, 0, 0 ,12); //$motorSpeedA, $motorSpeedB, 0, 0, 10);
         //bus . write_i2c_block_data(self::I2C_MOTOR_DRIVER_ADD, self::MOTOR_SPEED_SET, []);
-        sleep(60000);
+        usleep(60000);
     }
 
     //Maps speed from 0-100 to 0-255
@@ -80,7 +80,7 @@ class MotorDriverActuator extends AbstractActuator {
      * 
      */
     public function __destruct() {
-        wiringPiI2CWriteBuffer ($this->fd, self::MOTOR_SPEED_SET, 0, 0, 0, 0, 4);
+        wiringPiI2CWriteBuffer ($this->fd, 1, self::MOTOR_SPEED_SET, 0, 0, 0, 4);
     }
 
 }

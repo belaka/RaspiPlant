@@ -59,36 +59,36 @@ class GrovePiCommand extends ContainerAwareCommand {
             
             //$light = new Sensor\LightSensor($lightPin, $debug);
             
+            //$atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
+            //$atomizer->writeStatus(0);
             
-            
-            
-            
-            $atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
-            $atomizer->writeStatus(0);
-            
-            $motorDriver = new Actuator\MotorDriverActuator();
-            //$motorDriver->motorDirectionSet(0b1010);
-            $motorDriver->motorSpeedSetAB(100, 100);
-            $atomizer->writeStatus(1);
-            sleep(10);
-            $atomizer->writeStatus(0);
-            $motorDriver->motorSpeedSetAB(0,0);
+            //$motorDriver = new Actuator\MotorDriverActuator();
+            //$motorDriver->motorDirectionSet();
+            //$motorDriver->motorSpeedSetAB(255, 255);
+            //$atomizer->writeStatus(1);
+            //sleep(10);
+            //$atomizer->writeStatus(0);
+            //$motorDriver->motorSpeedSetAB(0,0);
             $firedAt = new \DateTime();
             
             /*Light sensor read*/
             //$lightValue = $light->readSensorData();
-            
+            sleep(2);
             /*Moisture 1 sensor read*/
             $moisture1 = new Sensor\MoistureSensor($moisturePin1, $debug);
             $moisture1Value = $moisture1->readSensorData();
+
+            usleep(60000);
             /*Moisture 2 sensor read*/
             $moisture2 = new Sensor\MoistureSensor($moisturePin2, $debug);
             $moisture2Value = $moisture2->readSensorData();
                         
+            usleep(60000);
             /*Air quality sensor read*/
             $airQuality = new Sensor\AirQualitySensor($airQualityPin, $debug);
             $airQualityValue = $airQuality->readSensorData();
             
+            usleep(60000);
             /*Temperature/Humidity 1 sensor read*/
             $temphum1 = new Sensor\DHTSensor($dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
             $temphum1Values = json_decode($temphum1->readSensorData());
@@ -103,6 +103,7 @@ class GrovePiCommand extends ContainerAwareCommand {
             
             //sleep(1);
             
+            usleep(60000);
             /*Temperature/Humidity 2 sensor read*/
             $temphum2 = new Sensor\DHTSensor($dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
             $temphum2Values = json_decode($temphum2->readSensorData());
@@ -165,6 +166,15 @@ class GrovePiCommand extends ContainerAwareCommand {
             $output->writeln("Humidity 2 :" . $humidity2Value . "%");
             $output->writeln("");
             
+	    	
+            //sleep(10);
+
+            $motorDriver = new Actuator\MotorDriverActuator();
+            $motorDriver->motorDirectionSet();
+            usleep(60000);
+            $motorDriver->motorSpeedSetAB(255, 0);
+            sleep(10);
+            $motorDriver->motorSpeedSetAB(0, 0);
             $tick += 10;
         }
     }
