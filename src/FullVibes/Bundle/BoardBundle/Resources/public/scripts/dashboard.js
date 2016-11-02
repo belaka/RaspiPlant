@@ -187,7 +187,7 @@ var Dashboard = function() {
             }
 
             function showChartTooltip(x, y, xValue, yValue) {
-                $('<div id="tooltip" class="chart-tooltip">' + yValue + '<\/div>').css({
+                $('<div id="tooltip" class="chart-tooltip">' + xValue + ' | ' + yValue + '<\/div>').css({
                     position: 'absolute',
                     display: 'none',
                     top: y - 40,
