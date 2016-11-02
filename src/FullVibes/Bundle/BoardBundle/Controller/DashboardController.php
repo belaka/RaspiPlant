@@ -20,7 +20,8 @@ class DashboardController extends Controller
      
         }
         
-        $date = new \DateTime;
+        $date = new \DateTime();
+        $date->setTimezone("Europe/Paris");
         $date->modify('-3 hours');
         $temperatures = $this->getAnalyticsManager()->findByKeyAndDate('temperature_1', $date);
         $tempArray = [];

@@ -225,7 +225,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                     <div class="details">
                                         <div class="number">
-                                            <span data-counter="counterup" data-value="{% if data.humidity is defined %}{{ data.humidity_1.value }}{% else %}NaN{% endif %}">0</span>% </div>
+                                            <span data-counter="counterup" data-value="{% if data.humidity_1 is defined %}{{ data.humidity_1.value }}{% else %}NaN{% endif %}">0</span>% </div>
                                         <div class="desc"> Humidity </div>
                                         <div class="desc"><b>{% if data.humidity_1 is defined %}{{ data.humidity_1.date|date('Y/m/d H:i:s') }}{% else %}{{ date|date('Y/m/d H:i:s') }}{% endif %}</b></div>
                                     </div>
