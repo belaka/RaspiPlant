@@ -8,18 +8,21 @@ class DashboardController extends Controller
 {
     public function indexAction()
     {
-        $keys = array('temperature','humidity','light','air_quality', 'moisture');
+        $keys = array('temperature_1','humidity_1','temperature_2','humidity_2', 'air_quality', 'moisture_1', 'moisture_2');
         $lastEvents = $this->getAnalyticsManager()->getRepository()->findBy(array('eventKey' => $keys), array('eventDate' => 'DESC'), count($keys));
         $data = [];
         
         foreach ($lastEvents as $analytic)  {
-            $data[$analytic->getEventKey()] = round($analytic->getEventValue(),2);
-            $date = $analytic->getEventDate();
+            $data[$analytic->getEventKey()] = array(
+                'value' => round($analytic->getEventValue(),2),
+                'date' => $analytic->getEventDate()
+            );
+     
         }
         
         $date = new \DateTime;
-        $date->modify('-2 hours');
-        $temperatures = $this->getAnalyticsManager()->findByKeyAndDate('temperature', $date);
+        $date->modify('-3 hours');
+        $temperatures = $this->getAnalyticsManager()->findByKeyAndDate('temperature_1', $date);
         $tempArray = [];
         
         foreach ($temperatures as $temperature) {
@@ -29,7 +32,7 @@ class DashboardController extends Controller
             }
         }
         
-        $humidities = $this->getAnalyticsManager()->findByKeyAndDate('humidity', $date);
+        $humidities = $this->getAnalyticsManager()->findByKeyAndDate('humidity_1', $date);
         $humArray = [];
         
         foreach ($humidities as $humidity) {
@@ -39,7 +42,7 @@ class DashboardController extends Controller
             }
         }
         
-        $moistures = $this->getAnalyticsManager()->findByKeyAndDate('moisture', $date);
+        $moistures = $this->getAnalyticsManager()->findByKeyAndDate('moisture_1', $date);
         $moistArray = [];
         
         foreach ($moistures as $moisture) {
