@@ -223,10 +223,11 @@ var Dashboard = function() {
                 return (Math.floor(Math.random() * (1 + 50 - 20))) + 10;
             }
             
-            for (index = 0; index < analytics.length; ++index) {
-                console.log(analytics[index]);
-            }
-
+            jQuery.each(analytics, function(i, val) {
+                console.log(i);
+                console.log(val);
+            });
+            
             if ($('#site_statistics').size() != 0) {
 
                 $('#site_statistics_loading').hide();
