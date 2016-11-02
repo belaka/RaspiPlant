@@ -296,7 +296,6 @@ var Dashboard = function() {
                         });
 
                     $("#plant_"+i).bind("plothover", function(event, pos, item) {
-                        console.log(item);
                         $("#x").text(pos.x.toFixed(2));
                         $("#y").text(pos.y.toFixed(2));
                         if (item) {
@@ -305,7 +304,7 @@ var Dashboard = function() {
                                 $("#tooltip").remove();
                                 var x = item.datapoint[0].toFixed(2),
                                     y = item.datapoint[1].toFixed(2);
-                                showChartTooltip(item.pageX, item.pageY, item.series.data[item.datapoint[0]], item.datapoint[1] + '');
+                                showChartTooltip(item.pageX, item.pageY, item.series.data[item.datapoint[0]][0], item.datapoint[1] + '');
                             }
                         }
                     });
