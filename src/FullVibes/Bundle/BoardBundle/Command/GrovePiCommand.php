@@ -171,17 +171,12 @@ class GrovePiCommand extends ContainerAwareCommand {
             $output->writeln("Humidity 2 :" . $humidity2Value . "%");
             $output->writeln("");
             
-	    	
-            //sleep(10);
-
-            //$motorDriver = new Actuator\MotorDriverActuator();
-            //$motorDriver->motorDirectionSet();
-            //usleep(60000);
-            //$motorDriver->motorSpeedSetAB(255, 0);
+            $atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
+            $atomizer->writeStatus(1);
             sleep(10);
-            //$motorDriver->motorSpeedSetAB(0, 0);
+            $atomizer->writeStatus(0);
+            
             $tick += 10;
-            //$motorDriver->__destruct();
         }
     }
     
