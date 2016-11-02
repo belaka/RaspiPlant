@@ -296,6 +296,7 @@ var Dashboard = function() {
                         });
 
                     $("#plant_"+i).bind("plothover", function(event, pos, item) {
+                        console.log(item);
                         $("#x").text(pos.x.toFixed(2));
                         $("#y").text(pos.y.toFixed(2));
                         if (item) {
