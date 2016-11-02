@@ -222,6 +222,10 @@ var Dashboard = function() {
             function randValue() {
                 return (Math.floor(Math.random() * (1 + 50 - 20))) + 10;
             }
+            
+            for (index = 0; index < analytics.length; ++index) {
+                console.log(analytics[index]);
+            }
 
             if ($('#site_statistics').size() != 0) {
 
