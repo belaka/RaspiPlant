@@ -9,23 +9,12 @@ class DashboardController extends Controller
     public function indexAction()
     {
         $keys = array('temperature_1','humidity_1','moisture_1','air_quality', 'temperature_2', 'humidity_2', 'moisture_2');
-        $lastEvents = $this->getAnalyticsManager()->getRepository()->findBy(array('eventKey' => $keys), array('eventDate' => 'DESC'), count($keys));
-        $data = [];
-        
-        foreach ($lastEvents as $analytic)  {
-            $data[$analytic->getEventKey()] = array(
-                'value' => round($analytic->getEventValue(),2),
-                'date' => $analytic->getEventDate()
-            );
-     
-        }
         
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('Europe/Paris'));
         $date->modify('-3 hours');
         
-        
-        $analytics = array();
+        $analytics = $data = array();
         
         foreach ($keys as $key) {
             $keyDatas = $this->getAnalyticsManager()->findByKeyAndDate($key, $date);
@@ -35,6 +24,10 @@ class DashboardController extends Controller
                     $analytics[$key][] = [addslashes($keyData->getEventDate()->format('H:i')), round($keyValue, 2)];
                 }
             }
+            $data[$key] = array(
+                'value' => end($analytics[$key])[1],
+                'date' => end($analytics[$key])[0]
+            );
         }
         
         //die(dump($analytics));
