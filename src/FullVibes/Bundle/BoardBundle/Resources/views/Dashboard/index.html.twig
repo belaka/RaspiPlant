@@ -223,94 +223,30 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                         <div class="clearfix"></div>
                         <!-- END DASHBOARD STATS 1-->
-                        <div class="row">
-                            <div class="col-lg-12 col-xs-12 col-sm-12">
-                                <!-- BEGIN PORTLET-->
-                                <div class="portlet light bordered">
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            <i class="icon-bar-chart font-dark hide"></i>
-                                            <span class="caption-subject font-dark bold uppercase">Temperature</span>
-                                            <span class="caption-helper">Last 30 minutes data</span>
+                        {% for key in keys %}
+                            <div class="row">
+                                <div class="col-lg-12 col-xs-12 col-sm-12">
+                                    <!-- BEGIN PORTLET-->
+                                    <div class="portlet light bordered">
+                                        <div class="portlet-title">
+                                            <div class="caption">
+                                                <i class="icon-share font-red-sunglo hide"></i>
+                                                <span class="caption-subject font-dark bold uppercase">{{ key|e }}</span>
+                                                <span class="caption-helper">Last 30 minutes data</span>
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body">
+                                            <div id="plant_{{ key }}_loading">
+                                                <img src="/bundles/board/img/loading.gif" alt="loading" /> </div>
+                                            <div id="plant_{{ key }}_content" class="display-none">
+                                                <div id="plant_{{ key }}" style="height: 228px;"> </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="portlet-body">
-                                        <div id="site_statistics_loading">
-                                            <img src="/bundles/board/img/loading.gif" alt="loading" /> </div>
-                                        <div id="site_statistics_content" class="display-none">
-                                            <div id="site_statistics" class="chart"> </div>
-                                        </div>
-                                    </div>
+                                    <!-- END PORTLET-->
                                 </div>
-                                <!-- END PORTLET-->
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-xs-12 col-sm-12">
-                                <!-- BEGIN PORTLET-->
-                                <div class="portlet light bordered">
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            <i class="icon-share font-red-sunglo hide"></i>
-                                            <span class="caption-subject font-dark bold uppercase">Humidity</span>
-                                            <span class="caption-helper">Last 30 minutes data</span>
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body">
-                                        <div id="site_activities_loading">
-                                            <img src="/bundles/board/img/loading.gif" alt="loading" /> </div>
-                                        <div id="site_activities_content" class="display-none">
-                                            <div id="site_activities" style="height: 228px;"> </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- END PORTLET-->
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-xs-12 col-sm-12">
-                                <!-- BEGIN PORTLET-->
-                                <div class="portlet light bordered">
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            <i class="icon-share font-red-sunglo hide"></i>
-                                            <span class="caption-subject font-dark bold uppercase">Moisture</span>
-                                            <span class="caption-helper">Last 30 minutes data</span>
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body">
-                                        <div id="plant_moisture_loading">
-                                            <img src="/bundles/board/img/loading.gif" alt="loading" /> </div>
-                                        <div id="plant_moisture_content" class="display-none">
-                                            <div id="plant_moisture" style="height: 228px;"> </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- END PORTLET-->
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-xs-12 col-sm-12">
-                                <!-- BEGIN PORTLET-->
-                                <div class="portlet light bordered">
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            <i class="icon-share font-red-sunglo hide"></i>
-                                            <span class="caption-subject font-dark bold uppercase">Air Quality</span>
-                                            <span class="caption-helper">Last 30 minutes data</span>
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body">
-                                        <div id="air_qualities_loading">
-                                            <img src="/bundles/board/img/loading.gif" alt="loading" /> </div>
-                                        <div id="air_qualities_content" class="display-none">
-                                            <div id="air_qualities" style="height: 228px;"> </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- END PORTLET-->
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                     <!-- END CONTENT BODY -->
                 </div>
