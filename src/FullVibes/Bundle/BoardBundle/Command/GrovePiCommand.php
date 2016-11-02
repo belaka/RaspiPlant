@@ -54,6 +54,11 @@ class GrovePiCommand extends ContainerAwareCommand {
         
         
         $tick = 0;
+
+	$motorDriver = new Actuator\MotorDriverActuator();
+        $motorDriver->motorDirectionSet();
+        //usleep(60000);
+        $motorDriver->motorSpeedSetAB(255, 0);
         
         while (true) {
             
@@ -73,7 +78,7 @@ class GrovePiCommand extends ContainerAwareCommand {
             
             /*Light sensor read*/
             //$lightValue = $light->readSensorData();
-            sleep(2);
+            usleep(60000);
             /*Moisture 1 sensor read*/
             $moisture1 = new Sensor\MoistureSensor($moisturePin1, $debug);
             $moisture1Value = $moisture1->readSensorData();
@@ -169,13 +174,14 @@ class GrovePiCommand extends ContainerAwareCommand {
 	    	
             //sleep(10);
 
-            $motorDriver = new Actuator\MotorDriverActuator();
-            $motorDriver->motorDirectionSet();
-            usleep(60000);
-            $motorDriver->motorSpeedSetAB(255, 0);
+            //$motorDriver = new Actuator\MotorDriverActuator();
+            //$motorDriver->motorDirectionSet();
+            //usleep(60000);
+            //$motorDriver->motorSpeedSetAB(255, 0);
             sleep(10);
-            $motorDriver->motorSpeedSetAB(0, 0);
+            //$motorDriver->motorSpeedSetAB(0, 0);
             $tick += 10;
+            //$motorDriver->__destruct();
         }
     }
     
