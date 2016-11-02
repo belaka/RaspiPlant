@@ -42,6 +42,7 @@ class DashboardController extends Controller
         return $this->render(
                 'BoardBundle:Dashboard:index.html.twig',
                 array(
+                    'keys' => $key,
                     'data' => $data, 
                     'date' => $date,
                     'analytics' => json_encode($analytics, JSON_UNESCAPED_SLASHES)

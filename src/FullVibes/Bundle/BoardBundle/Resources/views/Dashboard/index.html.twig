@@ -204,61 +204,22 @@ License: You must have a valid license purchased only from themeforest(the above
                         <!-- END PAGE HEADER-->
                         <!-- BEGIN DASHBOARD STATS 1-->
                         <div class="row">
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <a class="dashboard-stat dashboard-stat-v2 blue" href="#">
-                                    <div class="visual">
-                                        <i class="fa fa-comments"></i>
-                                    </div>
-                                    <div class="details">
-                                        <div class="number">
-                                            <span data-counter="counterup" data-value="{% if data.temperature_1 is defined %}{{ data.temperature_1.value }}{% else %}NaN{% endif %}">C°</span>
+                            {% for key in keys %}
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <a class="dashboard-stat dashboard-stat-v2 green" href="#">
+                                        <div class="visual">
+                                            <i class="fa fa-comments"></i>
                                         </div>
-                                        <div class="desc"> Temperature </div>
-                                        <div class="desc"><b>{% if data.temperature_1 is defined %}{{ data.temperature_1.date|date('Y/m/d H:i:s') }}{% else %}{{ date|date('Y/m/d H:i:s') }}{% endif %}</b></div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <a class="dashboard-stat dashboard-stat-v2 red" href="#">
-                                    <div class="visual">
-                                        <i class="fa fa-bar-chart-o"></i>
-                                    </div>
-                                    <div class="details">
-                                        <div class="number">
-                                            <span data-counter="counterup" data-value="{% if data.humidity_1 is defined %}{{ data.humidity_1.value }}{% else %}NaN{% endif %}">0</span>% </div>
-                                        <div class="desc"> Humidity </div>
-                                        <div class="desc"><b>{% if data.humidity_1 is defined %}{{ data.humidity_1.date|date('Y/m/d H:i:s') }}{% else %}{{ date|date('Y/m/d H:i:s') }}{% endif %}</b></div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <a class="dashboard-stat dashboard-stat-v2 green" href="#">
-                                    <div class="visual">
-                                        <i class="fa fa-shopping-cart"></i>
-                                    </div>
-                                    <div class="details">
-                                        <div class="number">
-                                            <span data-counter="counterup" data-value="{% if data.air_quality is defined %}{{ data.air_quality.value }}{% else %}NaN{% endif %}"></span>/1000
+                                        <div class="details">
+                                            <div class="number">
+                                                <span data-counter="counterup" data-value="{{ data[key].value }}">C°</span>
+                                            </div>
+                                            <div class="desc"> {{ key|e }} </div>
+                                            <div class="desc"><b>{{ data[key].date|date('Y/m/d H:i:s') }}</b></div>
                                         </div>
-                                        <div class="desc"> Air Quality </div>
-                                        <div class="desc"><b>{% if data.air_quality is defined %}{{ data.air_quality.date|date('Y/m/d H:i:s') }}{% else %}{{ date|date('Y/m/d H:i:s') }}{% endif %}</b></div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <a class="dashboard-stat dashboard-stat-v2 purple" href="#">
-                                    <div class="visual">
-                                        <i class="fa fa-globe"></i>
-                                    </div>
-                                    <div class="details">
-                                        <div class="number"> 
-                                            <span data-counter="counterup" data-value="{% if data.moisture_1 is defined %}{{ data.moisture_1.value }}{% else %}NaN{% endif %}"></span>/1000
-                                        </div>
-                                        <div class="desc"> Moisture </div>
-                                        <div class="desc"><b>{% if data.moisture_1 is defined %}{{ data.moisture_1.date|date('Y/m/d H:i:s') }}{% else %}{{ date|date('Y/m/d H:i:s') }}{% endif %}</b></div>
-                                    </div>
-                                </a>
-                            </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
                         </div>
                         <div class="clearfix"></div>
                         <!-- END DASHBOARD STATS 1-->
@@ -358,7 +319,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- END CONTAINER -->
             <!-- BEGIN FOOTER -->
             <div class="page-footer">
-                <div class="page-footer-inner"> 2016 &copy; Metronic Theme By notMe</div>
+                <div class="page-footer-inner"> 2016 &copy; Metronic TaMere</div>
                 <div class="scroll-to-top">
                     <i class="icon-arrow-up"></i>
                 </div>
@@ -366,10 +327,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- END FOOTER -->
         </div>
         <script type="text/javascript">
-            var temperatures = {{ temperatures|raw }};
-            var humidities = {{ humidities|raw }};
-            var moistures = {{ moistures|raw }};
-            var air_qualities = {{ air_qualities|raw }};
+            var analytics = {{ analytics|raw }};
         </script>
         <!--[if lt IE 9]>
 <script src="/bundles/board/plugins/respond.min.js"></script>
