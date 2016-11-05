@@ -126,7 +126,7 @@ class GrovePiCommand extends ContainerAwareCommand {
             }
             
             if (($tick % 120) == 0)  {
-                
+		$output->writeln("Data added to database " .  $firedAt->format(self::ISO8601));                
                 /*Light value store*/
 //                $lightAnalytics = new Analytics('light', $lightValue, $firedAt);
 //                $analyticsManager->save($lightAnalytics);
