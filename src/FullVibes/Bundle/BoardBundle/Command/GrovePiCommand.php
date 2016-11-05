@@ -55,11 +55,15 @@ class GrovePiCommand extends ContainerAwareCommand {
         
         $tick = 0;
 
-	$motorDriver = new Actuator\MotorDriverActuator();
-        $motorDriver->motorDirectionSet();
+	//$motorDriver = new Actuator\MotorDriverActuator();
+        //$motorDriver->motorDirectionSet(0b1010);
         //usleep(60000);
-        $motorDriver->motorSpeedSetAB(255, 0);
-        
+        //$motorDriver->motorSpeedSetAB(255, 255);
+
+	//usleep(60000);
+        //$motorDriver->motorSpeedSetAB(0, 255);
+
+
         while (true) {
             
             //$light = new Sensor\LightSensor($lightPin, $debug);
@@ -171,12 +175,12 @@ class GrovePiCommand extends ContainerAwareCommand {
             $output->writeln("Humidity 2 :" . $humidity2Value . "%");
             $output->writeln("");
             
-            $atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
-            $atomizer->writeStatus(1);
-            sleep(10);
-            $atomizer->writeStatus(0);
+            //$atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
+            //$atomizer->writeStatus(0);
+            sleep(4);
+//            $atomizer->writeStatus(0);
             
-            $tick += 10;
+            $tick += 5;
         }
     }
     
