@@ -69,7 +69,7 @@ class GrovePiCommand extends ContainerAwareCommand {
             //$light = new Sensor\LightSensor($lightPin, $debug);
             
             //$atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
-            //$atomizer->writeStatus(0);
+            //$atomizer->writeStatus(1);
             
             //$motorDriver = new Actuator\MotorDriverActuator();
             //$motorDriver->motorDirectionSet();
@@ -177,10 +177,10 @@ class GrovePiCommand extends ContainerAwareCommand {
             
             //$atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
             //$atomizer->writeStatus(0);
-            sleep(4);
-//            $atomizer->writeStatus(0);
+            sleep(10);
+            //$atomizer->writeStatus(0);
             
-            $tick += 5;
+            $tick += 10;
         }
     }
     

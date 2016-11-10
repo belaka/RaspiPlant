@@ -52,10 +52,10 @@ try:
         print("Start Motor 1 et 2")
 	m.MotorSpeedSetAB(100,100)
         #print("Start Motor 2")
-        time.sleep(15)
-        #m.MotorSpeedSetAB(0, 100)	#defines the speed of motor 1 and motor 2;
+        time.sleep(10)
+        m.MotorSpeedSetAB(100, 100)	#defines the speed of motor 1 and motor 2;
 	#m.MotorDirectionSet(0b1010)	#"0b1010" defines the output polarity, "10" means the M+ is "positive" while the M- is "negtive"
-	time.sleep(10)
+	time.sleep(15)
 
 	#BACK
 #	print("Back")
