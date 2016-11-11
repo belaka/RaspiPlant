@@ -52,7 +52,10 @@ class MoistureSensor extends AbstractSensor {
         		
         try {
             
-            usleep(20000);
+            $this->device->pinMode($this->pin, "INPUT");
+            
+            usleep(1800);
+            
             $value = $this->device->analogRead($this->pin);
             
             return $value;
