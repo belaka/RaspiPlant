@@ -53,8 +53,6 @@ class MoistureSensor extends AbstractSensor {
         		
         try {
             
-            usleep(18000);
-            
             return $this->device->analogRead($this->pin);
             
         } catch (\Exception $exc) {

@@ -49,14 +49,14 @@ class I2CDevice extends AbstractDevice
         $this->address = $address;
     }
     
-    public function readBuffer($cmd, $pin, $length) {
+    public function readBuffer($reg, $cmd, $pin, $length) {
         //wiringPiI2CReadBuffer($fd,$reg,$cmd,$pin,$length);
-        return wiringPiI2CReadBuffer ($this->address, 0, $cmd, $pin, $length);
+        return wiringPiI2CReadBuffer ($this->address, $reg, $cmd, $pin, 0, 0, $length);
     }
     
-    public function writeBuffer($cmd, $pin, $value1, $value2, $length) {
+    public function writeBuffer($reg, $cmd, $pin, $value1, $value2, $length) {
         //wiringPiI2CWriteBuffer($fd,$reg,$cmd,$val1,$val2,$val3,$length)
-        return wiringPiI2CWriteBuffer ($this->address, 1, $cmd, $pin, $value1, $value2, $length);
+        return wiringPiI2CWriteBuffer ($this->address, $reg, $cmd, $pin, $value1, $value2, $length);
     }
 
     /**
@@ -109,7 +109,7 @@ class I2CDevice extends AbstractDevice
     public function digitalRead($cmd, $pin) {
         
         wiringPiI2CWriteBuffer ($this->address, 1, $cmd, $pin, 0, 0, 4);
-        usleep(1800);
+        usleep(18000);
         return wiringPiI2CReadReg8($this->address, 1);
         
     }
@@ -126,7 +126,7 @@ class I2CDevice extends AbstractDevice
     public function analogRead($pin) {
         
         wiringPiI2CWriteBuffer ($this->address, 1, 3, $pin, 0, 0, 4);
-        usleep(1800);
+        usleep(18000);
         $number = wiringPiI2CReadBuffer ($this->address, 1, 0, 0, 4);
         $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
         

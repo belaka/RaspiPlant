@@ -48,7 +48,6 @@ class AirQualitySensor extends AbstractSensor {
     public function readSensorData() {
         		
         try {
-            usleep(18000);
             
             return $this->device->analogRead($this->pin);
             
