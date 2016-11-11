@@ -2,6 +2,8 @@
 
 namespace FullVibes\Component\Sensor;
 
+use FullVibes\Component\Device\I2CDevice;
+
 /**
  * 
  */
@@ -11,11 +13,15 @@ class DHTSensor extends AbstractSensor {
     
     const DHT_SENSOR_BLUE = 0;
     
+    const RPI_I2C_ADDRESS = 0x04; // I2C Address of Raspberry
+    
+    const I2C_UNUSED_VALUE = 0;
+    
     const DHT_TEMP_CMD = 40;
     
     const DHT_TEMPERATURE_MIN_VALUE = 0;
     
-    const DHT_TEMPERATURE_MAX_VALUE = 90;
+    const ADHT_TEMPERATURE_MAX_VALUE = 90;
     
     const DHT_HUMIDITY_MIN_VALUE = 0;
     
@@ -60,15 +66,9 @@ class DHTSensor extends AbstractSensor {
         		
         try {
             
-            $this->device->pinMode($this->pin, "OUTPUT");
-            usleep(1800);
             $this->device->digitalWrite(self::DHT_TEMP_CMD, $this->pin, $this->type, 0);
-            
-//            usleep(20000);
-//            
-//            $this->device->pinMode($this->pin, "INPUT");
-            usleep(1800);
-            $number = $this->device->readBuffer($this->pin, 0, 32);
+            usleep(600000);
+            $number = $this->device->readBuffer(1, $this->pin, 32);
             $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
             
             $h = '';
