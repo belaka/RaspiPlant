@@ -2,8 +2,6 @@
 
 namespace FullVibes\Component\Sensor;
 
-use FullVibes\Component\Device\I2CDevice;
-
 /**
  * 
  */
