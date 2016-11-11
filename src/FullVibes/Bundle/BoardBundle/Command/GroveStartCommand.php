@@ -58,12 +58,13 @@ class GroveStartCommand extends ContainerAwareCommand {
             
             /*Moisture 1 sensor read*/
             $moisture1Value = $moisture1->readSensorData();
-
+            usleep(1800);
             /*Moisture 2 sensor read*/
             $moisture2Value = $moisture2->readSensorData();
-            
+            usleep(1800);
             /*Air quality sensor read*/
             $airQualityValue = $airQuality->readSensorData();
+            usleep(1800);
             
             $output->writeln("###############################################");
             $output->writeln("#                 RasPiPlant                  #");

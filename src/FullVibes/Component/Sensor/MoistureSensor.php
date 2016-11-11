@@ -21,12 +21,6 @@ class MoistureSensor extends AbstractSensor {
     
     /**
      *
-     * @var type 
-     */
-    protected $fd;
-    
-    /**
-     *
      * @var int
      */
     protected $pin;
@@ -36,6 +30,7 @@ class MoistureSensor extends AbstractSensor {
         $this->debug = $debug;
         $this->pin = $pin;
         $this->device = $device;
+        $this->device->pinMode($this->pin, "INPUT");
     }
 
     public function readSensorData() {
