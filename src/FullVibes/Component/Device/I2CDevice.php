@@ -48,16 +48,6 @@ class I2CDevice extends AbstractDevice
     public function __construct($address) {
         $this->address = $address;
     }
-    
-    public function readBuffer($cmd, $pin, $length) {
-        //wiringPiI2CReadBuffer($fd,$reg,$cmd,$pin,$length);
-        return wiringPiI2CReadBuffer ($this->address, 1, $cmd, $pin, $length);
-    }
-    
-    public function writeBuffer($reg, $cmd, $pin, $value1, $value2, $length) {
-        //wiringPiI2CWriteBuffer($fd,$reg,$cmd,$val1,$val2,$val3,$length)
-        return wiringPiI2CWriteBuffer ($this->address, $reg, $cmd, $pin, $value1, $value2, $length);
-    }
 
     /**
      * Write an 8-bit value on the bus (without register).
@@ -109,7 +99,7 @@ class I2CDevice extends AbstractDevice
     public function digitalRead($cmd, $pin) {
         
         wiringPiI2CWriteBuffer ($this->address, 1, $cmd, $pin, 0, 0, 4);
-        usleep(18000);
+        sleep(0.1);
         return wiringPiI2CReadReg8($this->address, 1);
         
     }
@@ -126,7 +116,7 @@ class I2CDevice extends AbstractDevice
     public function analogRead($pin) {
         
         wiringPiI2CWriteBuffer ($this->address, 1, 3, $pin, 0, 0, 4);
-        usleep(18000);
+        sleep(0.1);
         $number = wiringPiI2CReadBuffer ($this->address, 1, 0, 0, 4);
         $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
         

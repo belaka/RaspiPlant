@@ -2,6 +2,8 @@
 
 namespace FullVibes\Component\Sensor;
 
+use FullVibes\Component\Device\I2CDevice;
+
 /**
  * 
  */
@@ -16,16 +18,6 @@ class DHTSensor extends AbstractSensor {
     const I2C_UNUSED_VALUE = 0;
     
     const DHT_TEMP_CMD = 40;
-    
-    const DHT_TEMPERATURE_MIN_VALUE = 0;
-    
-    const ADHT_TEMPERATURE_MAX_VALUE = 90;
-    
-    const DHT_HUMIDITY_MIN_VALUE = 0;
-    
-    const ADHT_HUMIDITY_MAX_VALUE = 100;
-    
-    const DHT_KEYS = array('temperature','humidity');
     
     /**
      *
@@ -47,16 +39,25 @@ class DHTSensor extends AbstractSensor {
     
     /**
      *
+     * @var type 
+     */
+    protected $fd;
+    
+    /**
+     *
      * @var int
      */
     protected $pin;
     
-    function __construct($device, $pin, $type = self::DHT_SENSOR_WHITE, $debug = false) {
+    function __construct($pin, $type = self::DHT_SENSOR_WHITE, $debug = false) {
         
         $this->debug = $debug;
         $this->type = $type;
         $this->pin = $pin;
-        $this->device = $device;        
+        
+        $this->fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
+        $this->device = new I2CDevice($this->fd);
+        
     }
 
     public function readSensorData() {
@@ -64,8 +65,8 @@ class DHTSensor extends AbstractSensor {
         try {
             
             $this->device->digitalWrite(self::DHT_TEMP_CMD, $this->pin, $this->type, 0);
-            usleep(18000);
-            $number = $this->device->readBuffer(1, $this->pin, 32);
+            usleep(600000);
+            $number = wiringPiI2CReadBuffer ($this->fd, $this->pin, 0, 0, 32);
             $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
             
             $h = '';
@@ -91,24 +92,5 @@ class DHTSensor extends AbstractSensor {
             
             return json_encode(array('temperature' => $exc->getMessage(), 'humidity' => $exc->getMessage()));
         }
-    }
-    
-    public function getRange()
-    {
-        return array(
-            'temperature' => array(
-                'min' => self::DHT_TEMPERATURE_MIN_VALUE,
-                'max' => self::DHT_TEMPERATURE_MAX_VALUE
-            ),
-            'humidity' => array(
-                'min' => self::DHT_HUMIDITY_MIN_VALUE,
-                'max' => self::DHT_HUMIDITY_MAX_VALUE
-            )
-        );
-    }
-    
-    public function getKeys()
-    {
-        return self::DHT_KEYS;
     }
 }
