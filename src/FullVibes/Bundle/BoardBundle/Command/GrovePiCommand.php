@@ -67,8 +67,8 @@ class GrovePiCommand extends ContainerAwareCommand {
         $moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
         $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
         $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
-        $temphum1 = new Sensor\DHTSensor($grovepi, $dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-        $temphum2 = new Sensor\DHTSensor($grovepi, $dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+//        $temphum1 = new Sensor\DHTSensor($grovepi, $dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+//        $temphum2 = new Sensor\DHTSensor($grovepi, $dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
 
 	//$motorDriver = new Actuator\MotorDriverActuator();
         //$motorDriver->motorDirectionSet(0b1010);
@@ -113,15 +113,15 @@ class GrovePiCommand extends ContainerAwareCommand {
             //usleep(60000);
             /*Temperature/Humidity 1 sensor read*/
             
-            $temphum1Values = json_decode($temphum1->readSensorData());
-            if (!$temphum1Values) {
-                $temperature1Value = 0;
-                $humidity1Value = 0;
-                
-            } else {
-                $temperature1Value = $temphum1Values->temperature;
-                $humidity1Value = $temphum1Values->humidity;
-            }
+//            $temphum1Values = json_decode($temphum1->readSensorData());
+//            if (!$temphum1Values) {
+//                $temperature1Value = 0;
+//                $humidity1Value = 0;
+//                
+//            } else {
+//                $temperature1Value = $temphum1Values->temperature;
+//                $humidity1Value = $temphum1Values->humidity;
+//            }
             
             //sleep(1);
             
@@ -129,17 +129,18 @@ class GrovePiCommand extends ContainerAwareCommand {
             
             /*Temperature/Humidity 2 sensor read*/
             
-            $temphum2Values = json_decode($temphum2->readSensorData());
-            if (!$temphum2Values) {
-                $temperature2Value = 0;
-                $humidity2Value = 0;
+//            $temphum2Values = json_decode($temphum2->readSensorData());
+//            if (!$temphum2Values) {
+//                $temperature2Value = 0;
+//                $humidity2Value = 0;
+//                
+//            } else {
+//                $temperature2Value = $temphum2Values->temperature;
+//                $humidity2Value = $temphum2Values->humidity;
+//            }
+//            
+            if (($tick % 120) === 0)  {
                 
-            } else {
-                $temperature2Value = $temphum2Values->temperature;
-                $humidity2Value = $temphum2Values->humidity;
-            }
-            
-            if (($tick % 120) == 0)  {
 		$output->writeln("Data added to database " .  $firedAt->format(self::ISO8601));                
                 /*Light value store*/
 //                $lightAnalytics = new Analytics('light', $lightValue, $firedAt);
@@ -157,21 +158,21 @@ class GrovePiCommand extends ContainerAwareCommand {
                 $airQualityAnalytics = new Analytics('air_quality', $airQualityValue, $firedAt);
                 $analyticsManager->save($airQualityAnalytics);
 
-                /*Temperature value store*/
+                /*Temperature value store
                 $temperature1Analytics = new Analytics('temperature_1', $temperature1Value, $firedAt);
                 $analyticsManager->save($temperature1Analytics);
-
-                /*Humidity value store*/
+*/
+                /*Humidity value store
                 $humidity1Analytics = new Analytics('humidity_1', $humidity1Value, $firedAt);
                 $analyticsManager->save($humidity1Analytics);
-                
-                /*Temperature value store*/
+ */               
+                /*Temperature value store
                 $temperature2Analytics = new Analytics('temperature_2', $temperature2Value, $firedAt);
                 $analyticsManager->save($temperature2Analytics);
-
-                /*Humidity value store*/
+*/
+                /*Humidity value store
                 $humidity2Analytics = new Analytics('humidity_2', $humidity2Value, $firedAt);
-                $analyticsManager->save($humidity2Analytics);
+                $analyticsManager->save($humidity2Analytics);*/
             }
             
             $output->writeln("###############################################");
@@ -183,10 +184,10 @@ class GrovePiCommand extends ContainerAwareCommand {
             $output->writeln("Moisture 1 :" . $moisture1Value);
             $output->writeln("Moisture 2 :" . $moisture2Value);
             $output->writeln("Air Quality:" . $airQualityValue);
-            $output->writeln("Temperature 1 :" . $temperature1Value . "C°");
-            $output->writeln("Humidity 1 :" . $humidity1Value . "%");
-            $output->writeln("Temperature 2 :" . $temperature2Value . "C°");
-            $output->writeln("Humidity 2 :" . $humidity2Value . "%");
+//            $output->writeln("Temperature 1 :" . $temperature1Value . "C°");
+//            $output->writeln("Humidity 1 :" . $humidity1Value . "%");
+//            $output->writeln("Temperature 2 :" . $temperature2Value . "C°");
+//            $output->writeln("Humidity 2 :" . $humidity2Value . "%");
             $output->writeln("");
             
             //$atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
