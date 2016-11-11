@@ -54,6 +54,8 @@ class DHTSensor extends AbstractSensor {
         $this->pin = $pin;
         $this->device = $device;
         
+        $this->device->pinMode($this->pin, "INPUT");
+        
     }
 
     public function readSensorData() {
@@ -63,6 +65,8 @@ class DHTSensor extends AbstractSensor {
             $this->device->digitalWrite(self::DHT_TEMP_CMD, $this->pin, $this->type, 0);
             usleep(20000);
             
+            $this->device->pinMode($this->pin, "OUTPUT");
+            usleep(20000);
             $number = $this->device->readBuffer(self::DHT_TEMP_CMD, $this->pin, 32);
             $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
             
