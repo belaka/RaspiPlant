@@ -70,7 +70,7 @@ class GroveStartCommand extends ContainerAwareCommand {
             $output->writeln("#                                             #");
             $output->writeln("#".$firedAt->format(self::ISO8601).                    "#");
             $output->writeln("###############################################");
-            //$output->writeln("Light:" . $lightValue);
+            
             $output->writeln("Moisture 1 :" . $moisture1Value);
             $output->writeln("Moisture 2 :" . $moisture2Value);
             $output->writeln("Air Quality:" . $airQualityValue);
@@ -79,8 +79,10 @@ class GroveStartCommand extends ContainerAwareCommand {
             
             if (($tick % 120) == 0)  {
                 $this->persistValues(array(
-                    
-                ));
+                    'moisture_1' => $moisture1Value,
+                    'moisture_2' => $moisture2Value,
+                    'air_quality' => $airQualityValue
+                ), $firedAt, $output);
             }
             
             sleep(10);
