@@ -46,11 +46,13 @@ class GroveStartCommand extends ContainerAwareCommand {
         $fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
         $grovepi = new I2CDevice($fd);
         
+        $grovepi2 = new I2CDevice($fd);
+        
         $moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
         $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
         $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
         $temphum1 = new Sensor\DHTSensor($grovepi, $dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-        $temphum2 = new Sensor\DHTSensor($grovepi, $dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+        $temphum2 = new Sensor\DHTSensor($grovepi2, $dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
         
         $tick = 0;
 
