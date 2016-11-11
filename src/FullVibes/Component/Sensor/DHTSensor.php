@@ -13,10 +13,6 @@ class DHTSensor extends AbstractSensor {
     
     const DHT_SENSOR_BLUE = 0;
     
-    const RPI_I2C_ADDRESS = 0x04; // I2C Address of Raspberry
-    
-    const I2C_UNUSED_VALUE = 0;
-    
     const DHT_TEMP_CMD = 40;
     
     /**
@@ -39,24 +35,16 @@ class DHTSensor extends AbstractSensor {
     
     /**
      *
-     * @var type 
-     */
-    protected $fd;
-    
-    /**
-     *
      * @var int
      */
     protected $pin;
     
-    function __construct($pin, $type = self::DHT_SENSOR_WHITE, $debug = false) {
+    function __construct($device, $pin, $type = self::DHT_SENSOR_WHITE, $debug = false) {
         
         $this->debug = $debug;
         $this->type = $type;
         $this->pin = $pin;
-        
-        $this->fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
-        $this->device = new I2CDevice($this->fd);
+        $this->device = $device;
         
     }
 
@@ -65,7 +53,7 @@ class DHTSensor extends AbstractSensor {
         try {
             
             $this->device->digitalWrite(self::DHT_TEMP_CMD, $this->pin, $this->type, 0);
-            usleep(600000);
+            usleep(60000);
             $number = wiringPiI2CReadBuffer ($this->fd, $this->pin, 0, 0, 32);
             $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
             
