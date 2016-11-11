@@ -50,7 +50,7 @@ class I2CDevice extends AbstractDevice
     }
     
     public function readBuffer($pin, $length) {
-        return wiringPiI2CReadBuffer ($this->address, $pin, 0, 0, $length);
+        return wiringPiI2CReadBuffer ($this->address, 1, $pin, 0, $length);
     }
     
     public function writeBuffer($pin, $length) {
@@ -115,7 +115,7 @@ class I2CDevice extends AbstractDevice
     # Arduino Digital Write
     public function digitalWrite($cmd, $value1, $value2, $value3) {
         
-        wiringPiI2CWriteBuffer($this->address, $cmd, $value1, $value2, $value3, 0, 4);
+        wiringPiI2CWriteBuffer($this->address, 1, $cmd, $value1, $value2, $value3, 4);
     
 	return 1;
     }
