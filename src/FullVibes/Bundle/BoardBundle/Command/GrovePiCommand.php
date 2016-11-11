@@ -18,11 +18,8 @@ class GrovePiCommand extends ContainerAwareCommand {
     const RPI_I2C_ADDRESS = 0x04; // I2C Address of GrovePi
     
     /**
-     *
-     * @var \FullVibes\Component\Device\I2CDevice
+     * 
      */
-    protected $grovepi;
-    
     protected function configure() {
         $this
                 // the name of the command (the part after "bin/console")
@@ -65,13 +62,13 @@ class GrovePiCommand extends ContainerAwareCommand {
         $tick = 0;
         
         $fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
-        $this->grovepi = new I2CDevice($fd);
+        $grovepi = new I2CDevice($fd);
         
-        $moisture1 = new Sensor\MoistureSensor($this->grovepi, $moisturePin1, $debug);
-        $moisture2 = new Sensor\MoistureSensor($this->grovepi, $moisturePin2, $debug);
-        $airQuality = new Sensor\AirQualitySensor($this->grovepi, $airQualityPin, $debug);
-        $temphum1 = new Sensor\DHTSensor($this->grovepi, $dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-        $temphum2 = new Sensor\DHTSensor($this->grovepi, $dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+        $moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
+        $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
+        $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
+        $temphum1 = new Sensor\DHTSensor($grovepi, $dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+        $temphum2 = new Sensor\DHTSensor($grovepi, $dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
 
 	//$motorDriver = new Actuator\MotorDriverActuator();
         //$motorDriver->motorDirectionSet(0b1010);
