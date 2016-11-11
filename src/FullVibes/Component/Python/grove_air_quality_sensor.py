@@ -41,7 +41,7 @@ import grovepi
 
 # Connect the Grove Air Quality Sensor to analog port A0
 # SIG,NC,VCC,GND
-air_sensor = 0
+air_sensor = 2
 
 grovepi.pinMode(air_sensor,"INPUT")
 
