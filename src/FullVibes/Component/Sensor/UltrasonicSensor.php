@@ -63,7 +63,7 @@ class UltrasonicSensor extends AbstractSensor {
             $this->device->digitalWrite(self::ULTRASONIC_READ_CMD, $this->pin, self::I2C_UNUSED_VALUE, self::I2C_UNUSED_VALUE);
             sleep(0.2);
             
-            $number = wiringPiI2CReadBuffer ($this->fd, 7, 0, 0, 32);
+            $number = wiringPiI2CReadBuffer ($this->fd, self::ULTRASONIC_READ_CMD, 0, 0, 32);
             $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
             
             return ($result[2] * 256 + $result[3]);

@@ -42,6 +42,7 @@ class MoistureSensor extends AbstractSensor {
         $this->debug = $debug;
         $this->pin = $pin;
         $this->device = $device;
+        $this->device->pinMode($this->pin, "OUTPUT");
     }
 
     /**
@@ -51,8 +52,6 @@ class MoistureSensor extends AbstractSensor {
     public function readSensorData() {
         		
         try {
-            
-            $this->device->pinMode($this->pin, "OUTPUT");
             
             usleep(18000);
             
