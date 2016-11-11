@@ -50,7 +50,7 @@ class I2CDevice extends AbstractDevice
     }
     
     public function readBuffer($pin, $length) {
-        return wiringPiI2CReadBuffer ($this->address, $pin, $pin, $pin, $length);
+        return wiringPiI2CReadBuffer ($this->address, 1, $pin, $pin, $length);
     }
     
     public function writeBuffer($pin, $value1, $value2, $value3, $length) {
