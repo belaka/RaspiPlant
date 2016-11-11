@@ -63,13 +63,13 @@ class GroveStartCommand extends ContainerAwareCommand {
             
             /*Moisture 1 sensor read*/
             $moisture1Value = $moisture1->readSensorData();
-            usleep(1800);
+            usleep(18000);
             /*Moisture 2 sensor read*/
             $moisture2Value = $moisture2->readSensorData();
-            usleep(1800);
+            usleep(18000);
             /*Air quality sensor read*/
             $airQualityValue = $airQuality->readSensorData();
-            usleep(1800);
+            usleep(18000);
             
             $temphum1 = new Sensor\DHTSensor($grovepi, $dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
             $temphum1Values = json_decode($temphum1->readSensorData());
@@ -81,7 +81,8 @@ class GroveStartCommand extends ContainerAwareCommand {
                 $temperature1Value = $temphum1Values->temperature;
                 $humidity1Value = $temphum1Values->humidity;
             }
-            usleep(1800);
+            
+            usleep(18000);
             
             $temphum2 = new Sensor\DHTSensor($grovepi2, $dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
             $temphum2Values = json_decode($temphum2->readSensorData());
@@ -93,7 +94,7 @@ class GroveStartCommand extends ContainerAwareCommand {
                 $temperature2Value = $temphum2Values->temperature;
                 $humidity2Value = $temphum2Values->humidity;
             }
-            usleep(1800);
+            usleep(18000);
                         
             $output->writeln("###############################################");
             $output->writeln("#                 RasPiPlant                  #");
