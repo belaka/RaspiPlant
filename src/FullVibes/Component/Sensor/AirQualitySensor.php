@@ -49,6 +49,10 @@ class AirQualitySensor extends AbstractSensor {
         		
         try {
             
+            $this->device->pinMode($this->pin, "OUTPUT");
+            
+            usleep(18000);
+            
             return $this->device->analogRead($this->pin);
             
         } catch (\Exception $exc) {
