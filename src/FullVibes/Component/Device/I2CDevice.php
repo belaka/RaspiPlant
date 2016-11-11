@@ -48,6 +48,10 @@ class I2CDevice extends AbstractDevice
     public function __construct($address) {
         $this->address = $address;
     }
+    
+    public function readBuffer($value1, $value2, $value3, $length) {
+        return wiringPiI2CReadBuffer ($this->fd, $value1, $value2, $value3, $length);
+    }
 
     /**
      * Write an 8-bit value on the bus (without register).
