@@ -124,7 +124,7 @@ class I2CDevice extends AbstractDevice
     public function analogRead($pin) {
         
         wiringPiI2CWriteBuffer ($this->address, 1, 3, $pin, 0, 0, 4);
-        sleep(0.1);
+        usleep(10000);
         $number = wiringPiI2CReadBuffer ($this->address, 1, 0, 0, 4);
         $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
         
