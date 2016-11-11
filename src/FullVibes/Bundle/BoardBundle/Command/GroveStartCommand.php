@@ -10,6 +10,10 @@ use FullVibes\Component\Sensor;
 
 class GroveStartCommand extends ContainerAwareCommand {
 
+    const RPI_I2C_ADDRESS = 0x04; // I2C Address of Raspberry
+    
+    const I2C_UNUSED_VALUE = 0;
+    
     const ISO8601 = 'Y-m-d\TH:i:sP';
     
     protected function configure() {
@@ -40,6 +44,9 @@ class GroveStartCommand extends ContainerAwareCommand {
 //        $dhtPin1 = 3;
 //        $dhtPin2 = 6;
         
+        $fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
+        $grovepi = new I2CDevice($fd);
+        
         
         $tick = 0;
 
@@ -48,15 +55,15 @@ class GroveStartCommand extends ContainerAwareCommand {
             $firedAt = new \DateTime();
             
             /*Moisture 1 sensor read*/
-            $moisture1 = new Sensor\MoistureSensor($moisturePin1, $debug);
+            $moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
             $moisture1Value = $moisture1->readSensorData();
 
             /*Moisture 2 sensor read*/
-            $moisture2 = new Sensor\MoistureSensor($moisturePin2, $debug);
+            $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
             $moisture2Value = $moisture2->readSensorData();
             
             /*Air quality sensor read*/
-            $airQuality = new Sensor\AirQualitySensor($airQualityPin, $debug);
+            $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
             $airQualityValue = $airQuality->readSensorData();
             
             $output->writeln("###############################################");
