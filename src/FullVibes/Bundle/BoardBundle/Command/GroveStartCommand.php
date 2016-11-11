@@ -58,15 +58,6 @@ class GroveStartCommand extends ContainerAwareCommand {
             
             $firedAt = new \DateTime();
             
-            /*Moisture 1 sensor read*/
-            $moisture1Value = $moisture1->readSensorData();
-            usleep(1800);
-            /*Moisture 2 sensor read*/
-            $moisture2Value = $moisture2->readSensorData();
-            usleep(1800);
-            /*Air quality sensor read*/
-            $airQualityValue = $airQuality->readSensorData();
-            usleep(1800);
             $temphum1Values = json_decode($temphum1->readSensorData());
             if (!$temphum1Values) {
                 $temperature1Value = 0;
@@ -77,6 +68,17 @@ class GroveStartCommand extends ContainerAwareCommand {
                 $humidity1Value = $temphum1Values->humidity;
             }
             usleep(1800);
+            
+            /*Moisture 1 sensor read*/
+            $moisture1Value = $moisture1->readSensorData();
+            usleep(1800);
+            /*Moisture 2 sensor read*/
+            $moisture2Value = $moisture2->readSensorData();
+            usleep(1800);
+            /*Air quality sensor read*/
+            $airQualityValue = $airQuality->readSensorData();
+            usleep(1800);
+            
             $temphum2Values = json_decode($temphum2->readSensorData());
             if (!$temphum2Values) {
                 $temperature2Value = 0;
