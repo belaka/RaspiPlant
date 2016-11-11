@@ -60,8 +60,8 @@ class DHTSensor extends AbstractSensor {
         		
         try {
             
-//            $this->device->pinMode($this->pin, "OUTPUT");
-//            usleep(1800);
+            $this->device->pinMode($this->pin, "OUTPUT");
+            usleep(1800);
             $this->device->digitalWrite(self::DHT_TEMP_CMD, $this->pin, $this->type, 0);
             
 //            usleep(20000);
