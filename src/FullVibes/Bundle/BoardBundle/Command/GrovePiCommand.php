@@ -9,10 +9,19 @@ use FullVibes\Bundle\BoardBundle\Entity\Analytics;
 use FullVibes\Component\Sensor;
 use FullVibes\Component\Actuator;
 use FullVibes\Component\Display;
+use FullVibes\Component\Device\I2CDevice;
 
 class GrovePiCommand extends ContainerAwareCommand {
 
     const ISO8601 = 'Y-m-d\TH:i:sP';
+    
+    const RPI_I2C_ADDRESS = 0x04; // I2C Address of GrovePi
+    
+    /**
+     *
+     * @var \FullVibes\Component\Device\I2CDevice
+     */
+    protected $grovepi;
     
     protected function configure() {
         $this
@@ -54,6 +63,9 @@ class GrovePiCommand extends ContainerAwareCommand {
         
         
         $tick = 0;
+        
+        $fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
+        $this->grovepi = new I2CDevice($fd);
 
 	//$motorDriver = new Actuator\MotorDriverActuator();
         //$motorDriver->motorDirectionSet(0b1010);
@@ -84,22 +96,22 @@ class GrovePiCommand extends ContainerAwareCommand {
             //$lightValue = $light->readSensorData();
             usleep(60000);
             /*Moisture 1 sensor read*/
-            $moisture1 = new Sensor\MoistureSensor($moisturePin1, $debug);
+            $moisture1 = new Sensor\MoistureSensor($this->grovepi, $moisturePin1, $debug);
             $moisture1Value = $moisture1->readSensorData();
 
             usleep(60000);
             /*Moisture 2 sensor read*/
-            $moisture2 = new Sensor\MoistureSensor($moisturePin2, $debug);
+            $moisture2 = new Sensor\MoistureSensor($this->grovepi, $moisturePin2, $debug);
             $moisture2Value = $moisture2->readSensorData();
                         
             usleep(60000);
             /*Air quality sensor read*/
-            $airQuality = new Sensor\AirQualitySensor($airQualityPin, $debug);
+            $airQuality = new Sensor\AirQualitySensor($this->grovepi, $airQualityPin, $debug);
             $airQualityValue = $airQuality->readSensorData();
             
             usleep(60000);
             /*Temperature/Humidity 1 sensor read*/
-            $temphum1 = new Sensor\DHTSensor($dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+            $temphum1 = new Sensor\DHTSensor($this->grovepi, $dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
             $temphum1Values = json_decode($temphum1->readSensorData());
             if (!$temphum1Values) {
                 $temperature1Value = 0;
@@ -114,7 +126,7 @@ class GrovePiCommand extends ContainerAwareCommand {
             
             usleep(60000);
             /*Temperature/Humidity 2 sensor read*/
-            $temphum2 = new Sensor\DHTSensor($dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+            $temphum2 = new Sensor\DHTSensor($this->grovepi, $dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
             $temphum2Values = json_decode($temphum2->readSensorData());
             if (!$temphum2Values) {
                 $temperature2Value = 0;

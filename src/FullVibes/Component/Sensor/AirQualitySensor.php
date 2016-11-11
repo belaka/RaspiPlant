@@ -2,16 +2,16 @@
 
 namespace FullVibes\Component\Sensor;
 
-use FullVibes\Component\Device\I2CDevice;
-
 /**
  * 
  */
 class AirQualitySensor extends AbstractSensor {
 
-    const RPI_I2C_ADDRESS = 0x04; // I2C Address of Raspberry
+    const AIR_QUALITY_MIN_VALUE = 0;
     
-    const I2C_UNUSED_VALUE = 0;
+    const AIR_QUALITY_MAX_VALUE = 1000;
+    
+    const AIR_QUALITY_KEYS = array('air_quality');
     
     /**
      *
@@ -37,14 +37,11 @@ class AirQualitySensor extends AbstractSensor {
      */
     protected $pin;
     
-    function __construct($pin, $type = self::DHT_SENSOR_WHITE, $debug = false) {
+    function __construct($device, $pin, $debug = false) {
         
         $this->debug = $debug;
-        $this->type = $type;
         $this->pin = $pin;
-        
-        $this->fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
-        $this->device = new I2CDevice($this->fd);
+        $this->device = $device;
         
         $this->device->pinMode($this->pin, "INPUT");
         
@@ -54,8 +51,9 @@ class AirQualitySensor extends AbstractSensor {
         		
         try {
             
+            usleep(20000);
+            
             $value = $this->device->analogRead($this->pin);
-            sleep(0.2);
             
             return $value;
             
@@ -63,5 +61,21 @@ class AirQualitySensor extends AbstractSensor {
             
             echo $exc->getMessage();
         }
+    }
+    
+    
+    public function getRange()
+    {
+        return array(
+            'air_quality' => array(
+                'min' => self::AIR_QUALITY_MIN_VALUE,
+                'max' => self::AIR_QUALITY_MAX_VALUE
+            )
+        );
+    }
+    
+    public function getKeys()
+    {
+        return self::AIR_QUALITY_KEYS;
     }
 }

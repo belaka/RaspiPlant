@@ -2,16 +2,16 @@
 
 namespace FullVibes\Component\Sensor;
 
-use FullVibes\Component\Device\I2CDevice;
-
 /**
  * 
  */
 class MoistureSensor extends AbstractSensor {
 
-    const RPI_I2C_ADDRESS = 0x04; // I2C Address of Raspberry
+    const MOISTURE_MIN_VALUE = 0;
     
-    const I2C_UNUSED_VALUE = 0;
+    const MOISTURE_MAX_VALUE = 1000;
+    
+    const MOISTURE_KEYS = array('moisture');
     
     /**
      *
@@ -27,33 +27,33 @@ class MoistureSensor extends AbstractSensor {
     
     /**
      *
-     * @var type 
-     */
-    protected $fd;
-    
-    /**
-     *
      * @var int
      */
     protected $pin;
     
-    function __construct($pin, $debug = false) {
+    /**
+     * 
+     * @param type $device
+     * @param type $pin
+     * @param type $debug
+     */
+    function __construct($device, $pin, $debug = false) {
         
         $this->debug = $debug;
         $this->pin = $pin;
-        
-        $this->fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
-        $this->device = new I2CDevice($this->fd);
-        
-        //$this->device->pinMode($this->pin, "OUTPUT");
+        $this->device = $device;
     }
 
+    /**
+     * 
+     * @return int
+     */
     public function readSensorData() {
         		
         try {
             
+            usleep(20000);
             $value = $this->device->analogRead($this->pin);
-            sleep(0.2);
             
             return $value;
             
@@ -61,5 +61,20 @@ class MoistureSensor extends AbstractSensor {
             
             echo $exc->getMessage();
         }
+    }
+    
+    public function getRange()
+    {
+        return array(
+            'moisture' => array(
+                'min' => self::MOISTURE_MIN_VALUE,
+                'max' => self::MOISTURE_MAX_VALUE
+            )
+        );
+    }
+    
+    public function getKeys()
+    {
+        return self::DHT_KEYS;
     }
 }
