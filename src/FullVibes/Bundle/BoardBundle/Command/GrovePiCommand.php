@@ -64,9 +64,9 @@ class GrovePiCommand extends ContainerAwareCommand {
         $fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
         $grovepi = new I2CDevice($fd);
         
-        $moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
-        $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
-        $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
+        
+        
+        
 //        $temphum1 = new Sensor\DHTSensor($grovepi, $dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
 //        $temphum2 = new Sensor\DHTSensor($grovepi, $dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
 
@@ -80,7 +80,7 @@ class GrovePiCommand extends ContainerAwareCommand {
 
 
         while (true) {
-            
+            $output->writeln("START LOOP");
             //$light = new Sensor\LightSensor($lightPin, $debug);
             
             //$atomizer =  new Actuator\WaterAtomizationActuator($atomizerPin, $debug);
@@ -99,15 +99,17 @@ class GrovePiCommand extends ContainerAwareCommand {
             //$lightValue = $light->readSensorData();
             //usleep(60000);
             /*Moisture 1 sensor read*/
+            $moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
             $moisture1Value = $moisture1->readSensorData();
 
             //usleep(60000);
             /*Moisture 2 sensor read*/
+            $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
             $moisture2Value = $moisture2->readSensorData();
                         
             //usleep(60000);
             /*Air quality sensor read*/
-            
+            $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
             $airQualityValue = $airQuality->readSensorData();
             
             //usleep(60000);
@@ -139,7 +141,7 @@ class GrovePiCommand extends ContainerAwareCommand {
 //                $humidity2Value = $temphum2Values->humidity;
 //            }
 //            
-            if (($tick % 120) === 0)  {
+            if (($tick % 120) == 0)  {
                 
 		$output->writeln("Data added to database " .  $firedAt->format(self::ISO8601));                
                 /*Light value store*/
