@@ -50,6 +50,7 @@ class GroveStartCommand extends ContainerAwareCommand {
         $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
         $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
         $temphum1 = new Sensor\DHTSensor($grovepi);
+        $temphum2 = new Sensor\DHTSensor($grovepi);
         
         $tick = 0;
 
@@ -82,7 +83,7 @@ class GroveStartCommand extends ContainerAwareCommand {
             
             usleep(18000);
             
-            $temphum2Values = json_decode($temphum1->readSensorData($dhtPin2));
+            $temphum2Values = json_decode($temphum2->readSensorData($dhtPin2));
             if (!$temphum2Values) {
                 $temperature2Value = 0;
                 $humidity2Value = 0;
