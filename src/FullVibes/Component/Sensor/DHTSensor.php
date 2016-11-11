@@ -37,22 +37,22 @@ class DHTSensor extends AbstractSensor {
      */
     protected $pin;
     
-    function __construct($device, $pin, $type = self::DHT_SENSOR_WHITE, $debug = false) {
+    function __construct($device, $debug = false) {
         
         $this->debug = $debug;
-        $this->type = $type;
-        $this->pin = $pin;
+        $this->type = self::DHT_SENSOR_WHITE;
         $this->device = $device;
-        $this->device->pinMode($this->pin, "OUTPUT");
     }
 
-    public function readSensorData() {
+    public function readSensorData($pin) {
         		
         try {
             
-            $this->device->digitalWrite(self::DHT_TEMP_CMD, $this->pin, $this->type, 0);
-            usleep(18000);
-            $number = $this->device->readBuffer(1, $this->pin, 32);
+            $this->device->pinMode($pin, "OUTPUT");
+            
+            $this->device->digitalWrite(self::DHT_TEMP_CMD, $pin, $this->type, 0);
+            usleep(10000);
+            $number = $this->device->readBuffer(1, $pin, 32);
             $this->device->pinMode($this->pin, "OUTPUT");
             $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
             
@@ -72,6 +72,8 @@ class DHTSensor extends AbstractSensor {
             // Unpack float
             $hum_val=unpack('f*', $h);
             $hum = round($hum_val[1], 2);
+            
+            $this->device->pinMode($pin, "OUTPUT");
             
             return json_encode(array('temperature' => $t, 'humidity' => $hum));
             

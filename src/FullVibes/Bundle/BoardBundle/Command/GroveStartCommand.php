@@ -46,12 +46,10 @@ class GroveStartCommand extends ContainerAwareCommand {
         $fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
         $grovepi = new I2CDevice($fd);
         
-        $fd2 = wiringpii2csetup(self::RPI_I2C_ADDRESS);
-        $grovepi2 = new I2CDevice($fd2);
-        
         $moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
         $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
         $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
+        $temphum1 = new Sensor\DHTSensor($grovepi);
         
         $tick = 0;
 
@@ -71,8 +69,8 @@ class GroveStartCommand extends ContainerAwareCommand {
             $airQualityValue = $airQuality->readSensorData();
             usleep(18000);
             
-            $temphum1 = new Sensor\DHTSensor($grovepi, $dhtPin1, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-            $temphum1Values = json_decode($temphum1->readSensorData());
+            
+            $temphum1Values = json_decode($temphum1->readSensorData($dhtPin1));
             if (!$temphum1Values) {
                 $temperature1Value = 0;
                 $humidity1Value = 0;
@@ -84,8 +82,7 @@ class GroveStartCommand extends ContainerAwareCommand {
             
             usleep(18000);
             
-            $temphum2 = new Sensor\DHTSensor($grovepi2, $dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
-            $temphum2Values = json_decode($temphum2->readSensorData());
+            $temphum2Values = json_decode($temphum1->readSensorData($dhtPin2));
             if (!$temphum2Values) {
                 $temperature2Value = 0;
                 $humidity2Value = 0;
