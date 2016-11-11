@@ -115,7 +115,7 @@ class I2CDevice extends AbstractDevice
     # Arduino Digital Write
     public function digitalWrite($cmd, $value1, $value2, $value3) {
         
-        wiringPiI2CWriteBuffer($this->address, 1, $cmd, $value1, $value2, $value3, 4);
+        wiringPiI2CWriteBuffer($this->address, $cmd, $value1, $value2, $value3, 0, 4);
     
 	return 1;
     }
