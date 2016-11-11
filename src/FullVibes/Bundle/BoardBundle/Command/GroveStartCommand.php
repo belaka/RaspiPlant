@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use FullVibes\Component\Device\I2CDevice;
-//use FullVibes\Bundle\BoardBundle\Entity\Analytics;
+use FullVibes\Bundle\BoardBundle\Entity\Analytics;
 use FullVibes\Component\Sensor;
 
 class GroveStartCommand extends ContainerAwareCommand {
@@ -34,8 +34,6 @@ class GroveStartCommand extends ContainerAwareCommand {
             php_uname(),
         ]);
         
-        $analyticsManager = $this->getAnalyticsManager();
-        
         $debug = false;
         
         $airQualityPin = 2;
@@ -48,6 +46,9 @@ class GroveStartCommand extends ContainerAwareCommand {
         $fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
         $grovepi = new I2CDevice($fd);
         
+        $moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
+        $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
+        $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
         
         $tick = 0;
 
@@ -56,15 +57,12 @@ class GroveStartCommand extends ContainerAwareCommand {
             $firedAt = new \DateTime();
             
             /*Moisture 1 sensor read*/
-            $moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
             $moisture1Value = $moisture1->readSensorData();
 
             /*Moisture 2 sensor read*/
-            $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
             $moisture2Value = $moisture2->readSensorData();
             
             /*Air quality sensor read*/
-            $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
             $airQualityValue = $airQuality->readSensorData();
             
             $output->writeln("###############################################");
@@ -79,9 +77,27 @@ class GroveStartCommand extends ContainerAwareCommand {
             
             $output->writeln("");
             
+            if (($tick % 120) == 0)  {
+                $this->persistValues(array(
+                    
+                ));
+            }
+            
             sleep(10);
             $tick += 10;
         }
+    }
+    
+    protected function persistValues($data, $firedAt, $output)
+    {
+        $analyticsManager = $this->getAnalyticsManager();
+        $output->writeln("Data added to database " .  $firedAt->format(self::ISO8601));                
+
+        foreach ($data as $key => $value) {
+            $analytics = new Analytics($key, $value, $firedAt);
+            $analyticsManager->save($analytics);
+        }
+        
     }
     
     /**
