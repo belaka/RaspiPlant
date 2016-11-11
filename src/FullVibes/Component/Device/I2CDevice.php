@@ -109,7 +109,7 @@ class I2CDevice extends AbstractDevice
     public function digitalRead($cmd, $pin) {
         
         wiringPiI2CWriteBuffer ($this->address, 1, $cmd, $pin, 0, 0, 4);
-        sleep(1800);
+        usleep(1800);
         return wiringPiI2CReadReg8($this->address, 1);
         
     }

@@ -66,7 +66,6 @@ class DHTSensor extends AbstractSensor {
         		
         try {
             
-            
             $this->device->digitalWrite(self::DHT_TEMP_CMD, $this->pin, $this->type, 0);
             usleep(60000);
             $number = $this->device->readBuffer($this->pin, $this->pin, 32);

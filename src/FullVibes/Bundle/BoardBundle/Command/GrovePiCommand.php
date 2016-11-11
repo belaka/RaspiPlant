@@ -104,16 +104,16 @@ class GrovePiCommand extends ContainerAwareCommand {
             /*Moisture 1 sensor read*/
             $moisture1Value = $moisture1->readSensorData();
 
-            usleep(60000);
+            //usleep(60000);
             /*Moisture 2 sensor read*/
             $moisture2Value = $moisture2->readSensorData();
                         
-            usleep(60000);
+            //usleep(60000);
             /*Air quality sensor read*/
             
             $airQualityValue = $airQuality->readSensorData();
             
-            usleep(60000);
+            //usleep(60000);
             /*Temperature/Humidity 1 sensor read*/
             
             $temphum1Values = json_decode($temphum1->readSensorData());
@@ -128,7 +128,7 @@ class GrovePiCommand extends ContainerAwareCommand {
             
             //sleep(1);
             
-            usleep(60000);
+            //usleep(60000);
             
             /*Temperature/Humidity 2 sensor read*/
             
