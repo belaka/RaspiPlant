@@ -68,7 +68,7 @@ class DHTSensor extends AbstractSensor {
 //            
 //            $this->device->pinMode($this->pin, "INPUT");
             usleep(1800);
-            $number = $this->device->readBuffer(self::DHT_TEMP_CMD, $this->pin, 32);
+            $number = $this->device->readBuffer(0, $this->pin, 32);
             $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
             
             $h = '';
