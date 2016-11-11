@@ -5,6 +5,7 @@ namespace FullVibes\Bundle\BoardBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use FullVibes\Component\Device\I2CDevice;
 //use FullVibes\Bundle\BoardBundle\Entity\Analytics;
 use FullVibes\Component\Sensor;
 
