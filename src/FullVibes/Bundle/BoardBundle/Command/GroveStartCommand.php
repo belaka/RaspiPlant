@@ -49,7 +49,7 @@ class GroveStartCommand extends ContainerAwareCommand {
         $moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
         $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
         $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
-        $temphum2 = new Sensor\DHTSensor($dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
+        $temphum2 = new Sensor\DHTSensor($grovepi, $dhtPin2, Sensor\DHTSensor::DHT_SENSOR_WHITE);
         
         $tick = 0;
 
