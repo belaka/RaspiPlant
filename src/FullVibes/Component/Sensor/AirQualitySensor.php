@@ -42,13 +42,12 @@ class AirQualitySensor extends AbstractSensor {
         $this->debug = $debug;
         $this->pin = $pin;
         $this->device = $device;
+        $this->device->pinMode($this->pin, "INPUT");   
     }
 
     public function readSensorData() {
         		
         try {
-            
-            $this->device->pinMode($this->pin, "INPUT");   
             
             return $this->device->analogRead($this->pin);
             

@@ -52,8 +52,6 @@ class MoistureSensor extends AbstractSensor {
         		
         try {
             
-            $this->device->pinMode($this->pin, "INPUT");
-            
             return $this->device->analogRead($this->pin);
             
         } catch (\Exception $exc) {
