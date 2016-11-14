@@ -113,7 +113,7 @@ class GroveStartCommand extends ContainerAwareCommand {
             sleep(10);
             $tick += 10;
             
-            $atomizer->writeStatus(1);
+            $atomizer->writeStatus(0);
         }
     }
     
