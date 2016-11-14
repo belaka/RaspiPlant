@@ -15,4 +15,4 @@
 /vendor/
 /web/bundles/
 /nbproject
-oauth.json
+auth.json
