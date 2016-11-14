@@ -8,7 +8,7 @@ class DashboardController extends Controller
 {
     public function indexAction()
     {
-        $keys = array('temperature_1','humidity_1','moisture_1','air_quality', 'temperature_2', 'humidity_2', 'moisture_2');
+        $keys = array('temperature', 'humidity', 'moisture_1', 'moisture_2', 'air_quality');
         
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('Europe/Paris'));

@@ -39,9 +39,9 @@ class GroveStartCommand extends ContainerAwareCommand {
         $airQualityPin = 2;
         $moisturePin1 = 0;
         $moisturePin2 = 1;
-//        $atomizerPin = 2;
-        $dhtPin1 = 3;
-        $dhtPin2 = 6;
+        //$atomizerPin = 2;
+        //$dhtPin1 = 3;
+        $dhtPin = 6;
         
         $fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
         $grovepi = new I2CDevice($fd);
@@ -49,8 +49,8 @@ class GroveStartCommand extends ContainerAwareCommand {
         $moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
         $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
         $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
-        $temphum1 = new Sensor\DHTSensor($grovepi);
-        $temphum2 = new Sensor\DHTSensor($grovepi);
+        $temphum = new Sensor\DHTSensor($grovepi);
+        //$temphum2 = new Sensor\DHTSensor($grovepi);
         
         $tick = 0;
 
@@ -71,29 +71,16 @@ class GroveStartCommand extends ContainerAwareCommand {
             usleep(18000);
             
             
-            $temphum1Values = json_decode($temphum1->readSensorData($dhtPin1));
-            if (!$temphum1Values) {
-                $temperature1Value = 0;
-                $humidity1Value = 0;
+            $temphumValues = json_decode($temphum->readSensorData($dhtPin));
+            if (!$temphumValues) {
+                $temperatureValue = 0;
+                $humidityValue = 0;
                 
             } else {
-                $temperature1Value = $temphum1Values->temperature;
-                $humidity1Value = $temphum1Values->humidity;
+                $temperatureValue = $temphumValues->temperature;
+                $humidityValue = $temphumValues->humidity;
             }
-            
-            usleep(18000);
-            
-            $temphum2Values = json_decode($temphum2->readSensorData($dhtPin2));
-            if (!$temphum2Values) {
-                $temperature2Value = 0;
-                $humidity2Value = 0;
-                
-            } else {
-                $temperature2Value = $temphum2Values->temperature;
-                $humidity2Value = $temphum2Values->humidity;
-            }
-            usleep(18000);
-                        
+                     
             $output->writeln("###############################################");
             $output->writeln("#                 RasPiPlant                  #");
             $output->writeln("#                                             #");
@@ -103,10 +90,9 @@ class GroveStartCommand extends ContainerAwareCommand {
             $output->writeln("Moisture 1 :" . $moisture1Value);
             $output->writeln("Moisture 2 :" . $moisture2Value);
             $output->writeln("Air Quality:" . $airQualityValue);
-            $output->writeln("Temperature 1 :" . $temperature1Value . "C°");
-            $output->writeln("Humidity 1 :" . $humidity1Value . "%");
-            $output->writeln("Temperature 2 :" . $temperature2Value . "C°");
-            $output->writeln("Humidity 2 :" . $humidity2Value . "%");
+            $output->writeln("Temperature :" . $temperatureValue . "C°");
+            $output->writeln("Humidity :" . $humidityValue . "%");
+            
             $output->writeln("");
             
             if (($tick % 120) == 0)  {
@@ -114,10 +100,8 @@ class GroveStartCommand extends ContainerAwareCommand {
                     'moisture_1' => $moisture1Value,
                     'moisture_2' => $moisture2Value,
                     'air_quality' => $airQualityValue,
-                    'temperature_1' => $temperature1Value,
-                    'humidity 1' => $humidity1Value,
-                    'temperature_2' => $temperature2Value,
-                    'humidity 2' => $humidity2Value
+                    'temperature' => $temperatureValue,
+                    'humidity' => $humidityValue
                 ), $firedAt, $output);
             }
             
