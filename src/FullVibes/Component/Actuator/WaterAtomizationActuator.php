@@ -33,7 +33,7 @@ class WaterAtomizationActuator extends AbstractActuator {
      */
     public function writeStatus($status) {
 
-        # switch water atomization on relay on
+        # switch water atomization on
         $this->device->digitalWrite(self::DIGITAL_WRITE_COMMAND, $this->pin, $status, 0);
         
         return 1;

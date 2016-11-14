@@ -39,7 +39,7 @@ class GroveStartCommand extends ContainerAwareCommand {
         $airQualityPin = 2;
         $moisturePin1 = 0;
         $moisturePin2 = 1;
-        //$atomizerPin = 2;
+        $atomizerPin = 2;
         //$dhtPin1 = 3;
         $dhtPin = 6;
         
@@ -50,6 +50,7 @@ class GroveStartCommand extends ContainerAwareCommand {
         $moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
         $airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
         $temphum = new Sensor\DHTSensor($grovepi, $dhtPin, $debug);
+        $atomizer = new Actuator\WaterAtomizationActuator($grovepi, $atomizerPin, $debug);
         
         $tick = 0;
 
@@ -57,7 +58,7 @@ class GroveStartCommand extends ContainerAwareCommand {
             
             $firedAt = new \DateTime();
             
-            
+            $atomizer->writeStatus(1);
             
             /*Moisture 1 sensor read*/
             $moisture1Value = $moisture1->readSensorData();
@@ -106,6 +107,8 @@ class GroveStartCommand extends ContainerAwareCommand {
             
             sleep(10);
             $tick += 10;
+            
+            $atomizer->writeStatus(1);
         }
     }
     

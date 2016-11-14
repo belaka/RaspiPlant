@@ -2,28 +2,16 @@
 
 namespace FullVibes\Component\Sensor;
 
-use FullVibes\Component\Device\I2CDevice;
-
 /**
  * 
  */
 class LightSensor extends AbstractSensor {
 
-    const RPI_I2C_ADDRESS = 0x04; // I2C Address of Raspberry
-    
-    const I2C_UNUSED_VALUE = 0;
-    
     /**
      *
      * @var boolean
      */
     protected $debug;
-    
-    /**
-     *
-     * @var int
-     */
-    protected $type;
     
     /**
      *
@@ -33,35 +21,23 @@ class LightSensor extends AbstractSensor {
     
     /**
      *
-     * @var type 
-     */
-    protected $fd;
-    
-    /**
-     *
      * @var int
      */
     protected $pin;
     
-    function __construct($pin, $debug = false) {
+    function __construct($device, $pin, $debug = false) {
         
         $this->debug = $debug;
         $this->pin = $pin;
-        
-        $this->fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
-        $this->device = new I2CDevice($this->fd);
-        
-        $this->device->pinMode($this->pin, "OUTPUT");
+        $this->device = $device;
+        $this->device->pinMode($this->pin, "INPUT");
     }
 
     public function readSensorData() {
         		
         try {
             
-            $value = $this->device->analogRead($this->pin);
-            sleep(0.2);
-            
-            return $value;
+            return $this->device->analogRead($this->pin);
             
         } catch (\Exception $exc) {
             
