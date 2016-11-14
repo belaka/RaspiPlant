@@ -28,15 +28,7 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
 
     // This is a normal Command::initialize() method and it's called exactly once before the first execute call
     protected function initialize(InputInterface $input, OutputInterface $output) {
-        // Do one time initialization here
-
-        $output->writeln([
-            '===================',
-            '  RASPIPLANT START ',
-            '===================',
-            php_uname(),
-        ]);
-
+        
         $debug = false;
         $this->tick = 0;
 
@@ -108,7 +100,8 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
         $output->writeln("");
 
         if (($this->tick % 120) == 0) {
-            $this->persistValues(array(
+            $this->persistValues(
+                    array(
                 'moisture_1' => $moisture1Value,
                 'moisture_2' => $moisture2Value,
                 'air_quality' => $airQualityValue,
@@ -121,6 +114,7 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
     }
 
     protected function persistValues($data, $firedAt, $output) {
+        
         $analyticsManager = $this->getAnalyticsManager();
         $output->writeln("Data added to database " . $firedAt->format(self::ISO8601));
 
