@@ -8,10 +8,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 use FullVibes\Component\Device\I2CDevice;
 use FullVibes\Bundle\BoardBundle\Entity\Analytics;
 use FullVibes\Component\Sensor;
+use FullVibes\Component\Actuator;
 
 class GroveStartCommand extends ContainerAwareCommand {
 
     const RPI_I2C_ADDRESS = 0x04; // I2C Address of Raspberry
+    
+    const MOTOR_I2C_ADDRESS_1 = 0x0f;
+    
+    const MOTOR_I2C_ADDRESS_2 = 0x0f;
     
     const I2C_UNUSED_VALUE = 0;
     

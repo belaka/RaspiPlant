@@ -14,7 +14,6 @@ class WaterAtomizationActuator extends AbstractActuator {
         $this->debug = $debug;
         $this->pin = $pin;
         $this->device = $device;
-        
         $this->device->pinMode($this->pin, "INPUT");
     }
 
