@@ -10,6 +10,7 @@ use FullVibes\Component\Form\Type\AtomizerFormType;
 use FullVibes\Component\Actuator;
 use FullVibes\Component\Actuator\AbstractActuator;
 use FullVibes\Component\Device\I2CDevice;
+use FullVibes\Bundle\BoardBundle\Event\EventSubscriber;
 
 class DashboardController extends Controller
 {
