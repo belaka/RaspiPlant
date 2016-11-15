@@ -9,6 +9,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use FullVibes\Component\Form\Type\AtomizerFormType;
 use FullVibes\Component\Actuator;
 use FullVibes\Component\Actuator\AbstractActuator;
+use FullVibes\Component\Device\I2CDevice;
 
 class DashboardController extends Controller
 {
@@ -91,7 +92,7 @@ class DashboardController extends Controller
         $dispatcher = new EventDispatcher();
         $dispatcher->addSubscriber(new EventSubscriber());
         $event = new Event\AtomizerActuatorEvent($device, $value);
-        $dispatcher->dispatch(Event\TrackShowEvent::NAME, $event);
+        $dispatcher->dispatch(Event\AtomizerActuatorEvent::NAME, $event);
     }
     
 }
