@@ -2,7 +2,13 @@
 
 namespace FullVibes\Bundle\BoardBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FullVibes\Bundle\BoardBundle\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use FullVibes\Component\Form\Type\AtomizerFormType;
+use FullVibes\Component\Actuator;
+use FullVibes\Component\Actuator\AbstractActuator;
 
 class DashboardController extends Controller
 {
@@ -43,8 +49,49 @@ class DashboardController extends Controller
         );
     }
     
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function atomizerAction(Request $request)
+    {
+        $form = $this->createForm(AtomizerFormType::class, null, array('method' => 'POST'));
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $form_values = $request->request->get("atomizer_form");
+            
+            $atomizerPin = 2;
+            $fd = wiringpii2csetup(AbstractActuator::RPI_I2C_ADDRESS);
+            $device = new I2CDevice($fd);
+            $atomizer = new Actuator\WaterAtomizationActuator($device, $atomizerPin);
+            $this->dispatchEvents($atomizer, $form_values['state']);
+        }
+
+        return $this->render(
+            'BoardBundle:Board:atomizer.html.twig', 
+            array(
+                'form' => $form->createView(),
+            )
+        );
+
+    }
+    
     protected function getAnalyticsManager()
     {
         return $this->container->get("board.manager.analytics_manager");
     }
+        
+    /**
+     * @param Actuator $device
+     * @param int $value
+     */
+    protected function dispatchEvents($device, $value)
+    {
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addSubscriber(new EventSubscriber());
+        $event = new Event\AtomizerActuatorEvent($device, $value);
+        $dispatcher->dispatch(Event\TrackShowEvent::NAME, $event);
+    }
+    
 }
