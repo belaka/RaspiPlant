@@ -19,8 +19,8 @@ class AtomizerFormType extends AbstractType  {
         $builder
             ->add('state', Type\ChoiceType::class, array(
                 'choices' => array(
-                    0 => 'On',
-                    1 => 'Off'
+                    'ON' => 1, 
+                    'OFF' => 0
                 ),
                 'expanded'  => true,
                 'multiple'  => false,
