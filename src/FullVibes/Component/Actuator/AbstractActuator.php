@@ -21,12 +21,6 @@ abstract class AbstractActuator {
     
     /**
      *
-     * @var FileHandler
-     */
-    protected $fd;
-    
-    /**
-     *
      * @var I2CDevice
      */
     protected $device;
@@ -42,14 +36,13 @@ abstract class AbstractActuator {
      * @param int $pin
      * @param boolean $debug
      */
-    public function __construct($pin, $debug = false) {
+    public function __construct($device, $pin, $debug = false) {
 
         $this->debug = $debug;
 
         $this->pin = $pin;
         
-        $this->fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
-        $this->device = new I2CDevice($this->fd);
+        $this->device = $device;
         
         $this->device->pinMode($this->pin, "OUTPUT");
     }
