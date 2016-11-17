@@ -38,16 +38,11 @@ class GpioController extends Controller
         
         $gpioArray = array();
         
-        for ($i = 3; $i < (count($gpioArray) - 3); $i++) {
+        for ($i = 3; $i < (count($gpioArray) - 4); $i++) {
             $response .= '<tr class="' . (($even) ? 'even' : 'odd') . '">';
             
             $row = array_map(function($v){ return trim($v);}, explode('|', $gpioArray[$i]));
-//            $row = explode('|', $readall[$i]);
-//            $pin = intval(trim($row[1]));
-//            if (in_array($pin, $pins)) {
-//                $mode = trim($row[5]);
-//                $value = trim($row[6]);
-//
+
             $response .= '<tr class="' . (($even) ? 'even' : 'odd') . '">';
             //BCM
             $response .= '<td>' . trim($row[1]) . '</td>';
@@ -58,13 +53,13 @@ class GpioController extends Controller
             //Mode
             $response .= '<td>' . trim($row[4]) . '</td>';
             //Value
-            $response .= '<td>' . trim($row[5]) . '</td>';
+            $response .= '<td>' . intval(trim($row[5])) . '</td>';
             //Physical 
             $response .= '<td>' . trim($row[6]) . '</td>';
             //Physical 
             $response .= '<td>' . trim($row[7]) . '</td>';
             //Value
-            $response .= '<td>' . trim($row[8]) . '</td>';
+            $response .= '<td>' . intval(trim($row[8])) . '</td>';
             //Mode
             $response .= '<td>' . trim($row[9]) . '</td>';
             //Name 
@@ -79,7 +74,7 @@ class GpioController extends Controller
             //$response .= '<td class="' . (($value == 'High') ? 'green' : 'red') . '"><a href="?c=dw&p=' . $pin . '&v=' . (($value == 'High') ? '0' : '1') . '">' . $value . '</a></td>';
             $response .= '</tr>';
 //
-//                $even = !$even;
+                $even = !$even;
 //            }
         }
         
