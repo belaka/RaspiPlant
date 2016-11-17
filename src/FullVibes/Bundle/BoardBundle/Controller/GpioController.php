@@ -44,29 +44,29 @@ class GpioController extends Controller
 
             $response .= '<tr class="' . (($even) ? 'even' : 'odd') . '">';
             //BCM
-            $response .= '<td>' . trim($row[1]) . '</td>';
+            $response .= '<td>' . trim($row[0]) . '</td>';
             //Wpi
-            $response .= '<td>' . trim($row[2]) . '</td>';
+            $response .= '<td>' . trim($row[1]) . '</td>';
             //Name 
-            $response .= '<td>' . trim($row[3]) . '</td>';
+            $response .= '<td>' . trim($row[2]) . '</td>';
             //Mode
-            $response .= '<td>' . trim($row[4]) . '</td>';
+            $response .= '<td>' . trim($row[3]) . '</td>';
             //Value
-            $response .= '<td>' . intval(trim($row[5])) . '</td>';
+            $response .= '<td>' . intval(trim($row[4])) . '</td>';
+            //Physical 
+            $response .= '<td>' . trim($row[5]) . '</td>';
             //Physical 
             $response .= '<td>' . trim($row[6]) . '</td>';
-            //Physical 
-            $response .= '<td>' . trim($row[7]) . '</td>';
             //Value
-            $response .= '<td>' . intval(trim($row[8])) . '</td>';
+            $response .= '<td>' . intval(trim($row[7])) . '</td>';
             //Mode
-            $response .= '<td>' . trim($row[9]) . '</td>';
+            $response .= '<td>' . trim($row[8]) . '</td>';
             //Name 
-            $response .= '<td>' . trim($row[10]) . '</td>';
+            $response .= '<td>' . trim($row[9]) . '</td>';
             //Wpi
-            $response .= '<td>' . trim($row[11]) . '</td>';
+            $response .= '<td>' . trim($row[10]) . '</td>';
             //BCM
-            $response .= '<td>' . trim($row[12]) . '</td>';
+            $response .= '<td>' . trim($row[11]) . '</td>';
             
             //$response .= '<td class="' . (($mode == 'IN') ? 'orange' : 'blue') . '"><a href="?c=pm&p=' . $pin . '&v=' . (($mode == 'IN') ? '1' : '0') . '">' . $mode . '</a></td>';
             //$response .= '<td class="' . (($value == 'High') ? 'green' : 'red') . '"><a href="?c=dw&p=' . $pin . '&v=' . (($value == 'High') ? '0' : '1') . '">' . $value . '</a></td>';
