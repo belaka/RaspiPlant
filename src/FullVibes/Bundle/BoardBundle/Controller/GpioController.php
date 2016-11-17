@@ -32,7 +32,7 @@ class GpioController extends Controller
             throw new ProcessFailedException($process);
         }
 
-        $gpioTable = explode('\n', $process->getOutput());
+        $gpioTable = explode(PHP_EOL, $process->getOutput());
         
         $response = "<pre>" . print_r($gpioTable, 1) . "</pre>\n";
         
