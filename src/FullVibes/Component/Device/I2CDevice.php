@@ -2,6 +2,8 @@
 
 namespace FullVibes\Component\Device;
 
+use FullVibes\Component\WiringPi\WiringPi;
+
 /**
  * Class for communicating with an I2C device using the wiringPi I2C interface. 
  * Allows reading and writing 8-bit, 16-bit, and byte array values to registers
@@ -51,12 +53,12 @@ class I2CDevice extends AbstractDevice
     
     public function readBuffer($cmd, $pin, $length) {
         
-        return wiringPiI2CReadBuffer ($this->address, 1, $cmd, $pin, $length);
+        return WiringPi::wiringPiI2CReadBuffer ($this->address, 1, $cmd, $pin, $length);
     }
     
     public function writeBuffer($cmd, $value1, $value2, $value3, $value4, $length) {
         
-        return wiringPiI2CWriteBuffer($this->address, $cmd, $value1, $value2, $value3, $value4, $length);
+        return WiringPi::wiringPiI2CWriteBuffer($this->address, $cmd, $value1, $value2, $value3, $value4, $length);
     }
 
     /**
@@ -64,7 +66,7 @@ class I2CDevice extends AbstractDevice
      */
     public function writeRaw8($v) {
         $value = $v & 0xFF;
-        wiringPiI2CWrite($this->address, $value);
+        WiringPi::wiringPiI2CWrite($this->address, $value);
     }
 
     /*
@@ -72,7 +74,7 @@ class I2CDevice extends AbstractDevice
      */
     public function write8($register, $v) {
         //$value = $v & 0xFF;
-        wiringPiI2CWriteReg8($this->address, $register, $v);
+        WiringPi::wiringPiI2CWriteReg8($this->address, $register, $v);
     }
 
     /**
@@ -80,7 +82,7 @@ class I2CDevice extends AbstractDevice
      */
     public function write16($register, $v) {
         //$value = $v & 0xFF;
-        wiringPiI2CWriteReg16($this->address, $register, $v);
+        WiringPi::wiringPiI2CWriteReg16($this->address, $register, $v);
     }
 
     /**
@@ -100,7 +102,7 @@ class I2CDevice extends AbstractDevice
             $mode = 1;
         } 
         
-        wiringPiI2CWriteBuffer($this->address, 1, 5, $pin, $mode, 0, 4);
+        WiringPi::wiringPiI2CWriteBuffer($this->address, 1, 5, $pin, $mode, 0, 4);
     
         return 1;
     }
@@ -108,16 +110,16 @@ class I2CDevice extends AbstractDevice
     # Arduino Digital Read
     public function digitalRead($cmd, $pin) {
         
-        wiringPiI2CWriteBuffer ($this->address, 1, $cmd, $pin, 0, 0, 4);
+        WiringPi::wiringPiI2CWriteBuffer ($this->address, 1, $cmd, $pin, 0, 0, 4);
         sleep(0.1);
-        return wiringPiI2CReadReg8($this->address, 1);
+        return WiringPi::wiringPiI2CReadReg8($this->address, 1);
         
     }
 	
     # Arduino Digital Write
     public function digitalWrite($cmd, $value1, $value2, $value3) {
         
-        wiringPiI2CWriteBuffer($this->address, 1, $cmd, $value1, $value2, $value3, 4);
+        WiringPi::wiringPiI2CWriteBuffer($this->address, 1, $cmd, $value1, $value2, $value3, 4);
     
 	return 1;
     }
@@ -125,9 +127,9 @@ class I2CDevice extends AbstractDevice
     # Arduino Digital Read
     public function analogRead($pin) {
         
-        wiringPiI2CWriteBuffer ($this->address, 1, 3, $pin, 0, 0, 4);
+        WiringPi::wiringPiI2CWriteBuffer ($this->address, 1, 3, $pin, 0, 0, 4);
         sleep(0.1);
-        $number = wiringPiI2CReadBuffer ($this->address, 1, 0, 0, 4);
+        $number = WiringPi::wiringPiI2CReadBuffer ($this->address, 1, 0, 0, 4);
         $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
         
         return $result[2] * 256 + $result[3];
@@ -136,7 +138,7 @@ class I2CDevice extends AbstractDevice
     # Arduino Digital Write
     public function analogWrite($pin, $value2, $value3) {
         
-        wiringPiI2CWriteBuffer($this->address, 1, 4, $pin, $value2, $value3, 4);
+        WiringPi::wiringPiI2CWriteBuffer($this->address, 1, 4, $pin, $value2, $value3, 4);
     
 	return 1;
     }
@@ -163,7 +165,7 @@ class I2CDevice extends AbstractDevice
         $data = array();
         
         for ($i = 0; $i < $length; $i++) {
-           $data[] =  wiringPiI2CRead($this->address) & 0xFF;
+           $data[] =  WiringPi::wiringPiI2CRead($this->address) & 0xFF;
         }
         
         return $data;
@@ -173,14 +175,14 @@ class I2CDevice extends AbstractDevice
      * Read an 8-bit value on the bus (without register).
      */
     public function readRaw8() {
-        return wiringPiI2CRead($this->address) & 0xFF;
+        return WiringPi::wiringPiI2CRead($this->address) & 0xFF;
     }
 
     /**
      * Read an unsigned byte from the specified register.
      */
     public function readU8($register) {
-        return wiringPiI2CReadReg8($this->address, $register) & 0xFF;
+        return WiringPi::wiringPiI2CReadReg8($this->address, $register) & 0xFF;
     }
 
     /**
@@ -199,7 +201,7 @@ class I2CDevice extends AbstractDevice
      * specified endianness (default little endian, or least significant byte first).
      */
     public function readU16($register, $little_endian = true) {
-        $result = wiringPiI2CReadReg16($this->address, $register);
+        $result = WiringPi::wiringPiI2CReadReg16($this->address, $register);
         /* Swap bytes if using big endian because read_word_data assumes little
          endian on ARM (little endian) systems. */
         if (!$little_endian) {

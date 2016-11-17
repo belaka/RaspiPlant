@@ -16,4 +16,8 @@
         <default key="_controller">BoardBundle:Dashboard:atomizer</default>
     </route>
     
+    <route id="gpio.main" path="/gpio">
+        <default key="_controller">BoardBundle:Gpio:index</default>
+    </route>
+    
 </routes>

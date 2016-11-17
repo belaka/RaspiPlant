@@ -9,6 +9,7 @@ use FullVibes\Component\Device\I2CDevice;
 use FullVibes\Bundle\BoardBundle\Entity\Analytics;
 use FullVibes\Component\Sensor;
 use FullVibes\Component\Actuator;
+use FullVibes\Component\WiringPi\WiringPi;
 
 class GroveStartCommand extends EndlessContainerAwareCommand {
 
@@ -39,7 +40,7 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
         //$dhtPin1 = 3;
         $dhtPin = 6;
 
-        $fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
+        $fd = WiringPi::wiringPiI2CSetup(self::RPI_I2C_ADDRESS);
         $grovepi = new I2CDevice($fd);
 
         $this->moisture1 = new Sensor\MoistureSensor($grovepi, $moisturePin1, $debug);
