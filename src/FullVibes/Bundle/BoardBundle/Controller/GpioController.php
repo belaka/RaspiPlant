@@ -21,12 +21,15 @@ class GpioController extends Controller
                 }
         }
         
-        $response = "";
+        
         $readall = array();
         
         $even = false;
         exec('gpio readall', $readall);
-        for ($i = 3; $i < (count($readall) - 1); $i++) {
+        
+        $response = dump($readall) . "\n";
+        
+        for ($i = 3; $i < (count($readall) - 3); $i++) {
             $row = explode('|', $readall[$i]);
             $pin = intval(trim($row[1]));
             if (in_array($pin, $pins)) {
