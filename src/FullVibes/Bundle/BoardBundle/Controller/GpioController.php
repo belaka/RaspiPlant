@@ -4,6 +4,7 @@ namespace FullVibes\Bundle\BoardBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FullVibes\Component\WiringPi\WiringPi;
+use Symfony\Component\HttpFoundation\Request;
 
 class GpioController extends Controller
 {
