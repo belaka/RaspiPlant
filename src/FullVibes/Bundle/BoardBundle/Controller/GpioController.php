@@ -23,11 +23,8 @@ class GpioController extends Controller
                 }
         }
         
-        
-        $readall = array();
-        
         $even = false;
-        $process = new Process('ls -lsa');
+        $process = new Process('gpio readall');
         $process->run();
 
         // executes after the command finishes
