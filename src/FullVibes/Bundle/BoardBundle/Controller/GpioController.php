@@ -36,12 +36,11 @@ class GpioController extends Controller
         
         $response = "<pre>" . print_r($gpioTable, 1) . "</pre>\n";
         
-        $gpioArray = array();
-        
-        for ($i = 3; $i < (count($gpioArray) - 4); $i++) {
+        for ($i = 3; $i < (count($gpioTable) - 4); $i++) {
+            
             $response .= '<tr class="' . (($even) ? 'even' : 'odd') . '">';
             
-            $row = array_map(function($v){ return trim($v);}, explode('|', $gpioArray[$i]));
+            $row = array_map(function($v){ return trim($v);}, explode('|', $gpioTable[$i]));
 
             $response .= '<tr class="' . (($even) ? 'even' : 'odd') . '">';
             //BCM
@@ -73,9 +72,8 @@ class GpioController extends Controller
             //$response .= '<td class="' . (($mode == 'IN') ? 'orange' : 'blue') . '"><a href="?c=pm&p=' . $pin . '&v=' . (($mode == 'IN') ? '1' : '0') . '">' . $mode . '</a></td>';
             //$response .= '<td class="' . (($value == 'High') ? 'green' : 'red') . '"><a href="?c=dw&p=' . $pin . '&v=' . (($value == 'High') ? '0' : '1') . '">' . $value . '</a></td>';
             $response .= '</tr>';
-//
-                $even = !$even;
-//            }
+
+            $even = !$even;
         }
         
         return $this->render(
