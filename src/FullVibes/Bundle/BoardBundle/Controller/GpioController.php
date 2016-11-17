@@ -27,7 +27,7 @@ class GpioController extends Controller
         $even = false;
         exec('gpio readall', $readall);
         
-        $response = dump($readall) . "\n";
+        $response = print_r($readall, 1) . "\n";
         
         for ($i = 3; $i < (count($readall) - 3); $i++) {
             $row = explode('|', $readall[$i]);
