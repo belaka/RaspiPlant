@@ -68,7 +68,6 @@ class GpioController extends Controller
             //BCM
             $response .= '<td>' . trim($row[12]) . '</td>';
             
-            
             //$response .= '<td class="' . (($mode == 'IN') ? 'orange' : 'blue') . '"><a href="?c=pm&p=' . $pin . '&v=' . (($mode == 'IN') ? '1' : '0') . '">' . $mode . '</a></td>';
             //$response .= '<td class="' . (($value == 'High') ? 'green' : 'red') . '"><a href="?c=dw&p=' . $pin . '&v=' . (($value == 'High') ? '0' : '1') . '">' . $value . '</a></td>';
             $response .= '</tr>';
