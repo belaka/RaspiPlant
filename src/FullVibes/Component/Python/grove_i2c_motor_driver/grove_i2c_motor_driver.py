@@ -55,9 +55,9 @@ class motor_driver:
 	EnableStepper             = 0x1a
 	UnenableStepper           = 0x1b
 	Stepernu                  = 0x1c
-	I2CMotorDriverAdd         = 0x0f  #Set the address of the I2CMotorDriver
+	I2CMotorDriverAdd         = 0x0a  #Set the address of the I2CMotorDriver
 
-	def __init__(self,address=0x0f):
+	def __init__(self,address=0x0a):
 		self.I2CMotorDriverAdd=address
 
 	#Maps speed from 0-100 to 0-255

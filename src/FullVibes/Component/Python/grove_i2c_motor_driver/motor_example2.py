@@ -43,7 +43,7 @@ import time
 
 try:
 	# You can initialize with a different address too: grove_i2c_motor_driver.motor_driver(address=0x0a)
-	m= grove_i2c_motor_driver.motor_driver(0x0f)
+	m= grove_i2c_motor_driver.motor_driver(0x0a)
 
 	#FORWARD
 	print("Forward")
