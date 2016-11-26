@@ -241,8 +241,8 @@ class BME280Sensor extends AbstractSensor {
      * @param int $rawTemp
      */
     protected function _compensateTemp($rawTemp) {
-        $t1 = ((($rawTemp >> 3) - ($this->cal_t1 << 1)) * ($this->cal_t2)) >> 11;
-        $t2 = ((((($rawTemp >> 4) - ($this->cal_t1)) * (($rawTemp >> 4) - ($this->cal_t1))) >> 12) * ($this->cal_t3)) >> 14;
+        $t1 = ((($rawTemp >> 3) - ($this->dig_t1 << 1)) * ($this->dig_t2)) >> 11;
+        $t2 = ((((($rawTemp >> 4) - ($this->dig_t1)) * (($rawTemp >> 4) - ($this->dig_t1))) >> 12) * ($this->dig_t3)) >> 14;
 
         return $t1 + $t2;
     }
@@ -284,9 +284,9 @@ class BME280Sensor extends AbstractSensor {
         $rawPressure = $this->readRaw(self::BME280_REG_PRESSUREDATA);
         $p1 = $compensatedTemp - 128000;
         //Since raspberry php 
-        $p2 = bcadd(bcadd(bcmul(bcmul($p1, $p1), $this->cal_p6), bcmul(bcmul($p1, $this->cal_p5), bcpow(2, 17))), bcmul($this->cal_p4, bcpow(2, 35)));
-        $p1 = bcadd(bcmul(bcdiv(bcmul($p1, $p1), $this->cal_p3), bcpow(2, 8)), bcmul(bcmul($p1, $this->cal_p2), bcpow(2, 12)));
-        $p1 = bcdiv(bcmul(bcadd(bcmul(1, bcpow(2, 47)), $p1), $this->cal_p1), bcpow(2, 33));
+        $p2 = bcadd(bcadd(bcmul(bcmul($p1, $p1), $this->dig_p6), bcmul(bcmul($p1, $this->dig_p5), bcpow(2, 17))), bcmul($this->dig_p4, bcpow(2, 35)));
+        $p1 = bcadd(bcmul(bcdiv(bcmul($p1, $p1), $this->dig_p3), bcpow(2, 8)), bcmul(bcmul($p1, $this->dig_p2), bcpow(2, 12)));
+        $p1 = bcdiv(bcmul(bcadd(bcmul(1, bcpow(2, 47)), $p1), $this->dig_p1), bcpow(2, 33));
 
         if ('0' == $p1) {
             return 0;
@@ -295,10 +295,10 @@ class BME280Sensor extends AbstractSensor {
         $p = 1048576 - $rawPressure;
         $p = bcdiv(bcmul(bcsub(bcmul($p, bcpow(2, 31)), $p2), 3125), $p1);
         $y = bcmul(bcdiv($p, bcpow(2, 13)), bcdiv($p, bcpow(2, 13)));
-        $z = bcmul($this->cal_p9, $y);
+        $z = bcmul($this->dig_p9, $y);
         $p1 = bcdiv($z, bcpow(2, 25));
-        $p2 = bcdiv(bcmul($this->cal_p8, $p), bcpow(2, 19));
-        $p = bcadd(bcdiv(bcadd(bcadd($p, $p1), $p2), bcpow(2, 8)), bcmul($this->cal_p7, bcpow(2, 4)));
+        $p2 = bcdiv(bcmul($this->dig_p8, $p), bcpow(2, 19));
+        $p = bcadd(bcdiv(bcadd(bcadd($p, $p1), $p2), bcpow(2, 8)), bcmul($this->dig_p7, bcpow(2, 4)));
 
         $this->pressure = floatval(intval($p) / 256);
         
