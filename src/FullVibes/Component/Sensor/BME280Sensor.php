@@ -99,6 +99,7 @@ class BME280Sensor extends AbstractSensor {
     protected $humidity;
     protected $altitude;
     protected $pressure;
+    protected $dewPoint;
 
     /**
      *
@@ -123,6 +124,7 @@ class BME280Sensor extends AbstractSensor {
         $this->humidity = null;
         $this->altitude = null;
         $this->pressure = null;
+        $this->dewPoint = null;
 
         $this->dig_t1 = $this->device->readU16LE(self::BME280_REG_DIG_T1);
         $this->dig_t2 = $this->device->readS16LE(self::BME280_REG_DIG_T2);
@@ -248,18 +250,27 @@ class BME280Sensor extends AbstractSensor {
     
     protected function getHumidity() {
         
+        if (!is_null($this->humidity))  {
+            return $this->humidity;
+        }
+
+        if (is_null($this->temperature))  {
+            // Call getTemperature to get t_fine
+            $this->getTemperature();
+        }
+        
         $adc = $this->readRawHumidity();
         // print 'Raw humidity = {0:d}'.format (adc)
         $h = $this->t_fine - 76800.0;
-        $h = ($adc - ($this->dig_h4 * 64.0 + $this->dig_h5 / 16384.8 * $h)) * ($this->dig_h2 / 65536.0 * (1.0 + $this->dig_h6 / 67108864.0 * $h * (1.0 + $this->dig_h3 / 67108864.0 * $h)));
-        $h = $h * (1.0 - $this->dig_h1 * $h / 524288.0);
-        if ($h > 100) {
-            $h = 100;
-        } elseif ($h < 0) {
-            $h = 0;
+        $hum = ($adc - ($this->dig_h4 * 64.0 + $this->dig_h5 / 16384.8 * $h)) * ($this->dig_h2 / 65536.0 * (1.0 + $this->dig_h6 / 67108864.0 * $h * (1.0 + $this->dig_h3 / 67108864.0 * $h)));
+        $this->humidity = $hum * (1.0 - $this->dig_h1 * $hum / 524288.0);
+        if ($this->humidity > 100) {
+            $this->humidity = 100;
+        } elseif ($this->humidity < 0) {
+            $this->humidity = 0;
         }
             
-        return $h;
+        return $this->humidity;
     } 
 
     protected function getTemperature() {
@@ -286,31 +297,6 @@ class BME280Sensor extends AbstractSensor {
         $t2 = ((((($rawTemp >> 4) - ($this->dig_t1)) * (($rawTemp >> 4) - ($this->dig_t1))) >> 12) * ($this->dig_t3)) >> 14;
 
         return $t1 + $t2;
-    }
-
-    protected function readHumidity() {
-        
-        if (!is_null($this->humidity))  {
-            return $this->humidity;
-        }
-
-        if (is_null($this->temperature))  {
-            // Call getTemperature to get t_fine
-            $this->getTemperature();
-        }
-        
-
-        $adc_H = $this->device->readU16(self::BME280_REG_HUMIDITYDATA);
-
-        $v_x1_u32r = ($this->t_fine - (76800)); //(int32_t)
-        $v_x1_u32r = ((((($adc_H << 14) - (($this->dig_h4) << 20) - (($this->dig_h5) * $v_x1_u32r)) + (16384)) >> 15) * ((((((($v_x1_u32r * ($this->dig_h6)) >> 10) * ((($v_x1_u32r * ($this->dig_h3)) >> 11) + (32768))) >> 10) + (2097152)) * ($this->dig_h2) + 8192) >> 14));
-        $v_x1_u32r = ($v_x1_u32r - ((((($v_x1_u32r >> 15) * ($v_x1_u32r >> 15)) >> 7) * ($this->dig_h1)) >> 4));
-        $v_x1_u32r = ($v_x1_u32r < 0 ? 0 : $v_x1_u32r);
-        $v_x1_u32r = ($v_x1_u32r > 419430400 ? 419430400 : $v_x1_u32r);
-        
-        $this->humidity =  ($v_x1_u32r >> 12) / 1024.0; // (uint32_t)
-        
-        return $this->humidity;
     }
 
     public function getPressure() {
@@ -362,6 +348,25 @@ class BME280Sensor extends AbstractSensor {
 
         return $this->altitude / 0.0000225577;
     }
+    
+    protected function getDewPoint() {
+        
+        if (!is_null($this->dewPoint))  {
+            return $this->dewPoint;
+        }
+        
+        if (is_null($this->temperature))  {
+            $this->getTemperature();
+        }
+        
+        if (is_null($this->humidity))  {
+            $this->getHumidity();
+        }
+        
+        $this->dewpoint = round(((pow(($this->humidity/100), 0.125))*(112+0.9*$this->temperature)+(0.1*$this->temperature)-112),1);
+        
+        return $this->dewPoint;
+    }
 
     protected function getSealevelPressure($altitudeM = 0.0) {
 
@@ -401,7 +406,7 @@ class BME280Sensor extends AbstractSensor {
                     'humidity' => $this->getHumidity(),
                     'altitude' => $this->getAltitude(),
                     'sea_level_pressure' => $this->getSealevelPressure(),
-                    'dew_point' => 0,
+                    'dew_point' => $this->getDewPoint(),
                     't_fine' => $this->t_fine
                 )
         );
