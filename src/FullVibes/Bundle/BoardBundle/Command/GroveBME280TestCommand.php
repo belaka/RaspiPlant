@@ -21,7 +21,7 @@ class GroveBME280TestCommand extends EndlessContainerAwareCommand {
     protected  $barometer;
 
     protected function configure() {
-        $this->setName('raspiplant:grove:start')
+        $this->setName('raspiplant:grove:test:bme280')
                 ->setDescription('Test GrovePi BME280 test command.')
                 ->setHelp("This command allows you to test your BME280 sensor loop...")
                 ->setTimeout(10) // Set the timeout in seconds between two calls to the "execute" method
