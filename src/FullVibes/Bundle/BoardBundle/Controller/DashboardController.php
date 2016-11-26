@@ -16,7 +16,7 @@ class DashboardController extends Controller
 {
     public function indexAction()
     {
-        $keys = array('temperature', 'humidity', 'moisture_1', 'moisture_2', 'air_quality');
+        $keys = array('temperature', 'humidity', 'moisture_1', 'moisture_2', 'air_quality', 'i2c_temperature', 'i2c_humidity', 'i2c_pressure', 'i2c_dewPoint');
         
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('Europe/Paris'));
