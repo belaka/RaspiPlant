@@ -247,7 +247,7 @@ class BME280Sensor extends AbstractSensor {
         return $t1 + $t2;
     }
 
-    protected function readHumidity() {
+    protected function getHumidity() {
         
         if (!is_null($this->humidity))  {
             return $this->humidity;
