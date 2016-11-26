@@ -116,6 +116,12 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
         $output->writeln("Air Quality:" . $airQualityValue);
         $output->writeln("Temperature :" . $temperatureValue . "C°");
         $output->writeln("Humidity :" . $humidityValue . "%");
+        
+        $output->writeln("I2C Temperature :" . $i2c_temperature . "C°");
+        $output->writeln("I2C Humidity :" . $i2c_humidity . "%");
+        $output->writeln("I2C Pressure :" . $i2c_pressure . "mBar");
+        $output->writeln("I2C Dew Point:" . $i2c_dewPoint . "C°");
+        
 
         $output->writeln("");
 
