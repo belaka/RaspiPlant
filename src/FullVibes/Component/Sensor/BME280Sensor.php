@@ -108,6 +108,8 @@ class BME280Sensor extends AbstractSensor {
         if ($this->device->readU8(self::BME280_REG_CHIPID) != 0x60) {
             throw new \Exception("Unsupported chip!!");
         }
+        
+        $this->init();
     }
 
     protected function init() {
@@ -347,7 +349,7 @@ class BME280Sensor extends AbstractSensor {
 
     public function readSensorData() {
 
-        $this->init();
+        
 
         return json_encode(
                 array(
