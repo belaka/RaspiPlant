@@ -118,8 +118,7 @@ class BME280(object):
 
         h5 = self._device.readS8(BME280_REGISTER_DIG_H6)
         h5 = (h5 << 24) >> 20
-        self.dig_H5 = h5 | (
-        self._device.readU8(BME280_REGISTER_DIG_H5) >> 4 & 0x0F)
+        self.dig_H5 = h5 | (self._device.readU8(BME280_REGISTER_DIG_H5) >> 4 & 0x0F)
 
         '''
         print '0xE4 = {0:2x}'.format (self._device.readU8 (BME280_REGISTER_DIG_H4))

@@ -41,12 +41,14 @@ class BME280Sensor extends AbstractSensor {
     /*
      * BME280 humidity registry.
      */
-    const BME280_REG_DIG_H1 = 0xA1;   // R   Unsigned Calibration data (8 bits)
-    const BME280_REG_DIG_H2 = 0xE1;   // R   Signed Calibration data (16 bits)
-    const BME280_REG_DIG_H3 = 0xE3;   // R   Signed Calibration data (8 bits)
-    const BME280_REG_DIG_H4 = 0xE4;   // R   Signed Calibration data (16 bits)
-    const BME280_REG_DIG_H5 = 0xE5;   // R   Signed Calibration data (16 bits)
-    const BME280_REG_DIG_H6 = 0xE7;   // R   Signed Calibration data (8 bits)
+    const BME280_REG_DIG_H1 = 0xA1;
+    const BME280_REG_DIG_H2 = 0xE1;
+    const BME280_REG_DIG_H3 = 0xE3;
+    const BME280_REG_DIG_H4 = 0xE4;
+    const BME280_REG_DIG_H5 = 0xE5;
+    const BME280_REG_DIG_H6 = 0xE6;
+    const BME280_REG_DIG_H7 = 0xE7;
+    
 
     /*
      * BME280 service registry.
@@ -137,11 +139,18 @@ class BME280Sensor extends AbstractSensor {
         $this->dig_p9 = $this->device->readS16LE(self::BME280_REG_DIG_P9);
 
         $this->dig_h1 = $this->device->readU8(self::BME280_REG_DIG_H1);
-        $this->dig_h2 = $this->device->readU16LE(self::BME280_REG_DIG_H2);
+        $this->dig_h2 = $this->device->readS16LE(self::BME280_REG_DIG_H2);
         $this->dig_h3 = $this->device->readU8(self::BME280_REG_DIG_H3);
-        $this->dig_h4 = ($this->device->readU8(self::BME280_REG_DIG_H4) << 4) | (0x0F & $this->device->readU8(self::BME280_REG_DIG_H4 + 1));
-        $this->dig_h5 = ($this->device->readU8(self::BME280_REG_DIG_H5 + 1) << 4) | (0x0F & $this->device->readU8(self::BME280_REG_DIG_H5) >> 4);
-        $this->dig_h6 = $this->device->readU8(self::BME280_REG_DIG_H6);
+        $this->dig_h6 = $this->device->readS8(self::BME280_REG_DIG_H7);
+        
+        $h4 = $this->device->readS8(self::BME280_REG_DIG_H4);
+        $h4 = ($h4 << 24) >> 20;
+        $this->dig_h4 = $h4 | ($this->device->readS8(self::BME280_REG_DIG_H5) & 0x0F);
+        
+        $h5 = $this->device->readS8(self::BME280_REG_DIG_H6);
+        $h5 = ($h5 << 24) >> 20;
+        $this->dig_h5 = $h5 | ($this->device->readS8(self::BME280_REG_DIG_H5) >> 4 & 0x0F);
+        
 
         //writeRegister
         $this->device->write8(self::BME280_REG_CONTROLHUMID, 0x05);  //Choose 16X oversampling
@@ -364,7 +373,8 @@ class BME280Sensor extends AbstractSensor {
                     'humidity' => $this->getHumidity(),
                     'altitude' => $this->getAltitude(),
                     'sea_level_pressure' => $this->getSealevelPressure(),
-                    'dew_point' => 0
+                    'dew_point' => 0,
+                    't_fine' => $this->t_fine
                 )
         );
     }
