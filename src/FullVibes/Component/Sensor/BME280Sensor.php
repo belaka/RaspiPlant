@@ -227,7 +227,7 @@ class BME280Sensor extends AbstractSensor {
             return $this->temperature;
         }
         
-        $rawTemperature = $this->readRaw(self::BME280_REG_TEMPDATA);
+        $rawTemperature = $this->device->readRaw(self::BME280_REG_TEMPDATA);
         
         /* Gets the compensated temperature in degrees celsius. */
         $this->t_fine = $this->_compensateTemp($rawTemperature);
@@ -279,9 +279,9 @@ class BME280Sensor extends AbstractSensor {
         }
         
         //@TODO clean all that shit and spread bcMath usage all over ;) 
-        $rawTemp = $this->readRaw(self::BME280_REG_TEMPDATA);
+        $rawTemp = $this->device->readRaw(self::BME280_REG_TEMPDATA);
         $compensatedTemp = $this->_compensateTemp($rawTemp);
-        $rawPressure = $this->readRaw(self::BME280_REG_PRESSUREDATA);
+        $rawPressure = $this->device->readRaw(self::BME280_REG_PRESSUREDATA);
         $p1 = $compensatedTemp - 128000;
         //Since raspberry php 
         $p2 = bcadd(bcadd(bcmul(bcmul($p1, $p1), $this->cal_p6), bcmul(bcmul($p1, $this->cal_p5), bcpow(2, 17))), bcmul($this->cal_p4, bcpow(2, 35)));
