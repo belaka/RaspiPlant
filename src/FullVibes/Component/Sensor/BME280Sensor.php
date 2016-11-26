@@ -10,6 +10,13 @@ class BME280Sensor extends AbstractSensor {
      */
 
     const BME280_ADDRESS = 0x76;
+    
+    # Operating Modes
+    const BME280_OSAMPLE_1 = 1;
+    const BME280_OSAMPLE_2 = 2;
+    const BME280_OSAMPLE_4 = 3;
+    const BME280_OSAMPLE_8 = 4;
+    const BME280_OSAMPLE_16 = 5;
 
     /*
      * BME280 temperature registry.
@@ -44,11 +51,8 @@ class BME280Sensor extends AbstractSensor {
     /*
      * BME280 service registry.
      */
-    #define BME280_REG_CHIPID          0xD0
     const BME280_REG_CHIPID = 0xD0;
-    #define BME280_REG_VERSION         0xD1
     const BME280_REG_VERSION = 0xD1;
-    #define BME280_REG_SOFTRESET       0xE0
     const BME280_REG_SOFTRESET = 0xE0;
 
     /*
@@ -100,7 +104,7 @@ class BME280Sensor extends AbstractSensor {
      */
     protected $debug;
 
-    public function __construct($device, $debug = false) {
+    public function __construct(I2CDevice $device, $debug = false) {
 
         $this->debug = $debug;
         $this->device = $device;
