@@ -338,18 +338,21 @@ class BME280Sensor extends AbstractSensor {
             return $this->altitude;
         }
         
+        if (is_null($this->pressure)) {
+            $this->getPressure();
+        }
+        
         /* 
          * Calculates the altitude in meters.
          * 
          */
         //Calculation taken straight from section 3.6 of the datasheet.
-        $pressure = $this->getPressure();
-        $this->altitude = 44330.0 * (1.0 - pow($pressure / $sealevelPa, (1.0 / 5.25588)));
+        $this->altitude = 44330.0 * (1.0 - pow($this->pressure / $sealevelPa, (1.0 / 5.25588)));
 
-        return $this->altitude / 0.0000225577;
+        return $this->altitude;
     }
     
-    protected function getDewPoint() {
+    public function getDewPoint() {
         
         if (!is_null($this->dewPoint))  {
             return $this->dewPoint;
@@ -375,8 +378,11 @@ class BME280Sensor extends AbstractSensor {
          *  meters. Returns a value in Pascals.
          * 
          */
-        $pressure = $this->getPressure();
-        $p0 = $pressure / pow((1.0 - $altitudeM) / 44330.0, 5.25588);
+        if (is_null($this->pressure)) {
+            $this->getPressure();
+        }
+        
+        $p0 = $this->pressure / pow((1.0 - $altitudeM) / 44330.0, 5.25588);
         
         return $p0;
     }
