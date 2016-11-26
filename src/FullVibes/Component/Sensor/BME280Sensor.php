@@ -251,8 +251,8 @@ class BME280Sensor extends AbstractSensor {
         $adc = $this->readRawHumidity();
         // print 'Raw humidity = {0:d}'.format (adc)
         $h = $this->t_fine - 76800.0;
-        $h = ($adc - ($this->dig_H4 * 64.0 + $this->dig_H5 / 16384.8 * $h)) * ($this->dig_H2 / 65536.0 * (1.0 + $this->dig_H6 / 67108864.0 * $h * (1.0 + $this->dig_H3 / 67108864.0 * $h)));
-        $h = $h * (1.0 - $this->dig_H1 * $h / 524288.0);
+        $h = ($adc - ($this->dig_h4 * 64.0 + $this->dig_h5 / 16384.8 * $h)) * ($this->dig_h2 / 65536.0 * (1.0 + $this->dig_h6 / 67108864.0 * $h * (1.0 + $this->dig_h3 / 67108864.0 * $h)));
+        $h = $h * (1.0 - $this->dig_h1 * $h / 524288.0);
         if ($h > 100) {
             $h = 100;
         } elseif ($h < 0) {
