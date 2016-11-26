@@ -28,7 +28,7 @@ class DashboardController extends Controller
             $keyDatas = $this->getAnalyticsManager()->findByKeyAndDate($key, $date);
             foreach ($keyDatas as $keyData) {
                 $keyValue = round($keyData->getEventValue(), 2);
-                if ($keyValue > 0 && $keyValue < 1000) {
+                if ($keyValue > 0 && $keyValue < 1500) {
                     $analytics[$key][] = [addslashes($keyData->getEventDate()->format('H:i')), round($keyValue, 2)];
                 }
             }
