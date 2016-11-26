@@ -66,14 +66,14 @@ class DashboardController extends Controller
             
             $value = (int) $form_values['atomizer_form']['state'];
            	
-            $atomizerPin = 2;
+            $atomizerPin = 5;
             $fd = wiringpii2csetup(AbstractActuator::RPI_I2C_ADDRESS);
             $device = new I2CDevice($fd);
             $atomizer = new Actuator\WaterAtomizationActuator($device, $atomizerPin);
-	    $atomizer->writeStatus(0);
-	    usleep(20000);
-            $atomizer->writeStatus(0);
-		dump($atomizer);die;
+	    $atomizer->writeStatus($value);
+//	    sleep(20000);
+//            $atomizer->writeStatus(0);
+//		dump($atomizer);die;
             //$this->dispatchEvents($atomizer, $form_values['state']);
         }
 
