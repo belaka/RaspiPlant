@@ -299,7 +299,7 @@ class BME280Sensor extends AbstractSensor {
         return $t1 + $t2;
     }
 
-    public function getPressure() {
+    protected function getPressure() {
 
         if (!is_null($this->pressure))  {
             return $this->pressure;
@@ -366,7 +366,15 @@ class BME280Sensor extends AbstractSensor {
             $this->getHumidity();
         }
         
-        $this->dewpoint = round(((pow(($this->humidity/100), 0.125))*(112+0.9*$this->temperature)+(0.1*$this->temperature)-112),1);
+        /**
+         * 
+        Using your example 17.06 degrees C and 31% RH
+        =((31/100)^(1/8))*(112+(0.9*17.06))+0.1*17.06-112
+        Result -0.28384 celsius
+        **/
+        $temperature =  17.06;
+        $humidity =  31;
+        $this->dewPoint = round(((pow(($humidity/100), 0.125))*(112+(0.9*$temperature))+(0.1*$temperature)-112),5);
         
         return $this->dewPoint;
     }
