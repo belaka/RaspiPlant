@@ -36,9 +36,13 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
         $airQualityPin = 2;
         $moisturePin1 = 0;
         $moisturePin2 = 1;
-        $atomizerPin = 2;
-        //$dhtPin1 = 3;
+        $atomizerPin = 5;
+        
         $dhtPin = 6;
+        
+        $bar_fd = WiringPi::wiringPiI2CSetup(Sensor\BME280Sensor::BME280_ADDRESS);
+        $bmeI2c = new I2CDevice($bar_fd);
+        $this->barometer = new Sensor\BME280Sensor($bmeI2c, $debug);
 
         $fd = WiringPi::wiringPiI2CSetup(self::RPI_I2C_ADDRESS);
         $grovepi = new I2CDevice($fd);
@@ -68,13 +72,13 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
 
         /* Moisture 1 sensor read */
         $moisture1Value = $this->moisture1->readSensorData();
-        usleep(18000);
+        usleep(100000);
         /* Moisture 2 sensor read */
         $moisture2Value = $this->moisture2->readSensorData();
-        usleep(18000);
+        usleep(100000);
         /* Air quality sensor read */
         $airQualityValue = $this->airQuality->readSensorData();
-        usleep(18000);
+        usleep(100000);
 
 
         $temphumValues = json_decode($this->temphum->readSensorData());
@@ -84,6 +88,21 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
         } else {
             $temperatureValue = $temphumValues->temperature;
             $humidityValue = $temphumValues->humidity;
+        }
+        
+        usleep(100000);
+        
+        $barometer = json_decode($this->barometer->readSensorData());
+        if (!$barometer) {
+            $i2c_temperature = 0;
+            $i2c_humidity = 0;
+            $i2c_pressure = 0;
+            $i2c_dewPoint = 0;
+        } else {
+            $i2c_temperature = $barometer->temperature;
+            $i2c_humidity = $barometer->humidity;
+            $i2c_pressure = $barometer->pressure;
+            $i2c_dewPoint = $barometer->dew_point;
         }
 
         $output->writeln("###############################################");
@@ -102,13 +121,20 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
 
         if (($this->tick % 120) == 0) {
             $this->persistValues(
-                    array(
-                'moisture_1' => $moisture1Value,
-                'moisture_2' => $moisture2Value,
-                'air_quality' => $airQualityValue,
-                'temperature' => $temperatureValue,
-                'humidity' => $humidityValue
-                    ), $firedAt, $output);
+                array(
+                    'moisture_1' => $moisture1Value,
+                    'moisture_2' => $moisture2Value,
+                    'air_quality' => $airQualityValue,
+                    'temperature' => $temperatureValue,
+                    'humidity' => $humidityValue,
+                    'i2c_temperature' => $i2c_temperature,
+                    'i2c_humidity' => $i2c_humidity,
+                    'i2c_pressure' => $i2c_pressure,
+                    'i2c_dewPoint' => $i2c_dewPoint,
+                ), 
+                $firedAt, 
+                $output
+            );
         }
 
         $this->tick += 10;

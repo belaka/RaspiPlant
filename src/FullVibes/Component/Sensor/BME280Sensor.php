@@ -413,21 +413,37 @@ class BME280Sensor extends AbstractSensor {
 
     public function readSensorData() {
 
-        $this->init();
-        
-        usleep(100000);
-        
-        return json_encode(
-                array(
-                    'temperature' => $this->getTemperature(),
-                    'pressure' => $this->getPressure() / 100,
-                    'humidity' => $this->getHumidity(),
-                    'altitude' => $this->getAltitude(),
-                    'sea_level_pressure' => $this->getSealevelPressure(),
-                    'dew_point' => $this->getDewPoint(),
-                    't_fine' => $this->t_fine
-                )
-        );
+        try {
+            $this->init();
+
+            usleep(100000);
+
+            return json_encode(
+                    array(
+                        'error' => null,
+                        'temperature' => $this->getTemperature(),
+                        'pressure' => $this->getPressure() / 100,
+                        'humidity' => $this->getHumidity(),
+                        'altitude' => $this->getAltitude(),
+                        'sea_level_pressure' => $this->getSealevelPressure(),
+                        'dew_point' => $this->getDewPoint(),
+                        't_fine' => $this->t_fine
+                    )
+            );    
+        } catch (\Exception $exc) {
+            return json_encode(
+                    array(
+                        'error' => $exc->getMessage(),
+                        'temperature' => 0,
+                        'pressure' => 0,
+                        'humidity' => 0,
+                        'altitude' => 0,
+                        'sea_level_pressure' => 0,
+                        'dew_point' => 0,
+                        't_fine' => 0
+                    )
+            ); 
+        }
     }
 
 }
