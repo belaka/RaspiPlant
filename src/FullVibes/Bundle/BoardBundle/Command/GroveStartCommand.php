@@ -99,10 +99,10 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
             $i2c_pressure = 0;
             $i2c_dewPoint = 0;
         } else {
-            $i2c_temperature = $barometer->temperature;
-            $i2c_humidity = $barometer->humidity;
-            $i2c_pressure = $barometer->pressure;
-            $i2c_dewPoint = $barometer->dew_point;
+            $i2c_temperature = round($barometer->temperature, 2);
+            $i2c_humidity = round($barometer->humidity, 2);
+            $i2c_pressure = round($barometer->pressure, 2);
+            $i2c_dewPoint = round($barometer->dew_point, 2);
         }
 
         $output->writeln("###############################################");
