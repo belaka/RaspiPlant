@@ -233,6 +233,34 @@ class BME280Sensor extends AbstractSensor {
       }
 
      * ************************************************************************* */
+    
+    protected function readRawHumidity() {
+        /**
+         * Assumes that the temperature has already been read 
+         * i.e. that enough delay has been provided
+         */
+        $msb = $this->device->readU8(self::BME280_REG_HUMIDITYDATA);
+        $lsb = $this->device->readU8(self::BME280_REG_HUMIDITYDATA + 1);
+        $raw = ($msb << 8) | $lsb;
+        
+        return $raw;
+    }
+    
+    protected function getHumidity() {
+        
+        $adc = $this->readRawHumidity();
+        // print 'Raw humidity = {0:d}'.format (adc)
+        $h = $this->t_fine - 76800.0;
+        $h = ($adc - ($this->dig_H4 * 64.0 + $this->dig_H5 / 16384.8 * $h)) * ($this->dig_H2 / 65536.0 * (1.0 + $this->dig_H6 / 67108864.0 * $h * (1.0 + $this->dig_H3 / 67108864.0 * $h)));
+        $h = $h * (1.0 - $this->dig_H1 * $h / 524288.0);
+        if ($h > 100) {
+            $h = 100;
+        } elseif ($h < 0) {
+            $h = 0;
+        }
+            
+        return $h;
+    } 
 
     protected function getTemperature() {
         
@@ -260,7 +288,7 @@ class BME280Sensor extends AbstractSensor {
         return $t1 + $t2;
     }
 
-    protected function getHumidity() {
+    protected function readHumidity() {
         
         if (!is_null($this->humidity))  {
             return $this->humidity;
