@@ -305,7 +305,7 @@ class BME280Sensor extends AbstractSensor {
         return $this->pressure;
     }
 
-    protected function readAltitude($sealevelPa = 101325.0) {
+    protected function getAltitude($sealevelPa = 101325.0) {
         
         if (!is_null($this->altitude))  {
             return $this->altitude;
