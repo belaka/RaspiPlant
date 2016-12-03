@@ -51,7 +51,7 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
         $this->moisture2 = new Sensor\MoistureSensor($grovepi, $moisturePin2, $debug);
         $this->airQuality = new Sensor\AirQualitySensor($grovepi, $airQualityPin, $debug);
         $this->temphum = new Sensor\DHTSensor($grovepi, $dhtPin, $debug);
-        //$this->atomizer = new Actuator\WaterAtomizationActuator($grovepi, $atomizerPin, $debug);
+        $this->atomizer = new Actuator\WaterAtomizationActuator($grovepi, $atomizerPin, $debug);
 
         $output->writeln([
             '===================',
@@ -61,14 +61,14 @@ class GroveStartCommand extends EndlessContainerAwareCommand {
         ]);
 
 
-        //$this->atomizer->writeStatus(0);
+        $this->atomizer->writeStatus(0);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
 
         $firedAt = new \DateTime();
 
-        //$this->atomizer->writeStatus(1);
+        $this->atomizer->writeStatus(1);
 
         /* Moisture 1 sensor read */
         $moisture1Value = $this->moisture1->readSensorData();
