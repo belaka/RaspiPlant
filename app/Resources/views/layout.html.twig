@@ -133,13 +133,15 @@ License: You must have a valid license purchased only from themeforest(the above
                         <!-- BEGIN PAGE BAR -->
                         <div class="page-bar">
                             <ul class="page-breadcrumb">
+                                {% block page_breadcrumb %} 
                                 <li>
-                                    <a href="index.html">Home</a>
+                                    <a href="{{path('board.dashboard.main')}}">Home</a>
                                     <i class="fa fa-circle"></i>
                                 </li>
                                 <li>
                                     <span>Dashboard</span>
                                 </li>
+                                {% endblock %}
                             </ul>
                             <div class="page-toolbar">
                                 <div id="dashboard-report-range" class="pull-right tooltips btn btn-sm" data-container="body" data-placement="bottom" data-original-title="Change dashboard date range">
