@@ -47,8 +47,11 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="/bundles/board/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
         <link href="/bundles/board/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
         <link href="/bundles/board/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+        
+        {% block stylesheet %}{% endblock %}
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" /> </head>
+        <link rel="shortcut icon" href="favicon.ico" /> 
+    </head>
     <!-- END HEAD -->
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">

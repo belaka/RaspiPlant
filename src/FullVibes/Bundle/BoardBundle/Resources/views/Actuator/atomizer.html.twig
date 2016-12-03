@@ -1,10 +1,10 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}RaspiPlant | Devices{% endblock %}
+{% block title %}RaspiPlant | Actuator | Atomizer{% endblock %}
 
 {% block page_title %}
-    RaspiPlant Devices
-    <small>your board devices </small>
+    RaspiPlant Atomizer
+    <small>vapor of water by ultrason</small>
 {% endblock %}
 
 {% block page_breadcrumb %}                                
@@ -13,7 +13,11 @@
         <i class="fa fa-circle"></i>
     </li>
     <li>
-        <a href="{{path('board.device.main')}}">Device</a>
+        <a href="{{path('board.actuator.main')}}">Actuator</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="{{path('board.actuator.atomizer')}}">Atomizer</a>
         <i class="fa fa-circle"></i>
     </li>
 {% endblock %}
@@ -29,7 +33,7 @@
     <!-- END PAGE HEADER-->
     <!-- BEGIN DASHBOARD STATS 1-->
     <div class="row">
-        Devices ..........
+        {{ form(form) }}
     </div>
 {% endblock %}
 

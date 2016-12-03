@@ -53,7 +53,7 @@ class ActuatorController extends Controller
         }
 
         return $this->render(
-            'BoardBundle:Board:atomizer.html.twig', 
+            'BoardBundle:Actuator:atomizer.html.twig', 
             array(
                 'form' => $form->createView(),
             )
