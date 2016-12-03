@@ -36,7 +36,7 @@
     </li>
     <li class="nav-item start {% if app.request.attributes.get('_route') == 'board.dashboard.main' %}active open{% else %}{% endif %}">
         <a href="{{path('board.dashboard.main')}}" class="nav-link nav-toggle">
-            <i class="icon-home"></i>
+            <i class="fa fa-dashboard"></i>
             <span class="title">Dashboard</span>
             <span class="selected"></span>
             <span class="arrow open"></span>
@@ -44,7 +44,7 @@
     </li>
     <li class="nav-item {% if app.request.attributes.get('_route') == 'board.board.main' %}active open{% else %}{% endif %}">
         <a href="{{path('board.board.main')}}" class="nav-link nav-toggle">
-            <i class="icon-home"></i>
+            <i class="fa fa-hdd-o"></i>
             <span class="title">Board</span>
             <span class="selected"></span>
             <span class="arrow open"></span>
@@ -52,7 +52,7 @@
     </li>
     <li class="nav-item {% if app.request.attributes.get('_route') == 'board.device.main' %}active open{% else %}{% endif %}">
         <a href="{{path('board.device.main')}}" class="nav-link nav-toggle">
-            <i class="icon-home"></i>
+            <i class="fa fa-plug"></i>
             <span class="title">Devices</span>
             <span class="selected"></span>
             <span class="arrow open"></span>
@@ -60,7 +60,7 @@
     </li>
     <li class="nav-item {% if app.request.attributes.get('_route') == 'board.actuator.main' %}active open{% else %}{% endif %}">
         <a href="{{path('board.actuator.main')}}" class="nav-link nav-toggle">
-            <i class="icon-home"></i>
+            <i class="fa fa-exchange"></i>
             <span class="title">Actuators</span>
             <span class="selected"></span>
             <span class="arrow open"></span>
@@ -68,7 +68,7 @@
     </li>
     <li class="nav-item {% if app.request.attributes.get('_route') == 'board.sensor.main' %}active open{% else %}{% endif %}">
         <a href="{{path('board.sensor.main')}}" class="nav-link nav-toggle">
-            <i class="icon-home"></i>
+            <i class="fa fa-heartbeat"></i>
             <span class="title">Sensors</span>
             <span class="selected"></span>
             <span class="arrow open"></span>
