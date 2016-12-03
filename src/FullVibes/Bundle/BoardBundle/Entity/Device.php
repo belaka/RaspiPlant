@@ -2,18 +2,18 @@
 
 namespace FullVibes\Bundle\BoardBundle\Entity;
 
-use FullVibes\Bundle\BoardBundle\Model\AnalyticsModel;
+use FullVibes\Bundle\BoardBundle\Model\DeviceModel;
 
 /*
- * Analytics Entity
+ * Device Entity
  */
 
 /**
- * Description of Analytics
+ * Description of Device
  *
  * @author belaka
  */
-class Analytics extends AnalyticsModel {
+class Device extends DeviceModel {
 
     /**
      *
@@ -24,7 +24,7 @@ class Analytics extends AnalyticsModel {
     /**
      * 
      * @param int $id
-     * @return \FullVibes\Bundle\BoardBundle\Entity\Analytics
+     * @return \FullVibes\Bundle\BoardBundle\Entity\Device
      */
     public function setId($id) {
         $this->id = $id;

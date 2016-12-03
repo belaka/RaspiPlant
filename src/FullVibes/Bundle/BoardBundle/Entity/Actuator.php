@@ -2,10 +2,10 @@
 
 namespace FullVibes\Bundle\BoardBundle\Entity;
 
-use FullVibes\Bundle\BoardBundle\Model\AnalyticsModel;
+use FullVibes\Bundle\BoardBundle\Model\ActuatorModel;
 
 /*
- * Analytics Entity
+ * Actuator Entity
  */
 
 /**
@@ -13,7 +13,7 @@ use FullVibes\Bundle\BoardBundle\Model\AnalyticsModel;
  *
  * @author belaka
  */
-class Analytics extends AnalyticsModel {
+class Actuator extends ActuatorModel {
 
     /**
      *
@@ -24,7 +24,7 @@ class Analytics extends AnalyticsModel {
     /**
      * 
      * @param int $id
-     * @return \FullVibes\Bundle\BoardBundle\Entity\Analytics
+     * @return \FullVibes\Bundle\BoardBundle\Entity\Actuator
      */
     public function setId($id) {
         $this->id = $id;

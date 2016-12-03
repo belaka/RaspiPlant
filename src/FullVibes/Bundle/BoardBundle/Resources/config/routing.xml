@@ -4,20 +4,28 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="board.main" path="/">
-        <default key="_controller">BoardBundle:Board:index</default>
-    </route>
-    
-    <route id="dashboard.main" path="/dashboard">
+    <route id="board.dashboard.main" path="/">
         <default key="_controller">BoardBundle:Dashboard:index</default>
     </route>
     
-    <route id="dashboard.atomizer" path="/atomizer">
-        <default key="_controller">BoardBundle:Dashboard:atomizer</default>
+    <route id="board.board.main" path="/board">
+        <default key="_controller">BoardBundle:Board:index</default>
     </route>
     
-    <route id="gpio.main" path="/gpio">
-        <default key="_controller">BoardBundle:Gpio:index</default>
+    <route id="board.device.main" path="/device">
+        <default key="_controller">BoardBundle:Device:index</default>
+    </route>
+    
+    <route id="board.actuator.main" path="/actuator">
+        <default key="_controller">BoardBundle:Actuator:index</default>
+    </route>
+    
+    <route id="board.actuator.atomizer" path="/actuator/atomizer">
+        <default key="_controller">BoardBundle:Actuator:atomizer</default>
+    </route>
+    
+    <route id="board.sensor.main" path="/sensor">
+        <default key="_controller">BoardBundle:Sensor:index</default>
     </route>
     
 </routes>
