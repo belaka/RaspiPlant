@@ -11,6 +11,7 @@ use FullVibes\Component\Actuator;
 use FullVibes\Component\Actuator\AbstractActuator;
 use FullVibes\Component\Device\I2CDevice;
 use FullVibes\Bundle\BoardBundle\Event\EventSubscriber;
+use FullVibes\Component\WiringPi\WiringPi;
 
 class DashboardController extends Controller
 {
@@ -60,20 +61,25 @@ class DashboardController extends Controller
         $form = $this->createForm(AtomizerFormType::class, null, array('method' => 'POST'));
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             
             $form_values = $request->request->all();
             
             $value = (int) $form_values['atomizer_form']['state'];
            	
             $atomizerPin = 5;
-            $fd = wiringpii2csetup(AbstractActuator::RPI_I2C_ADDRESS);
-            $device = new I2CDevice($fd);
-            $atomizer = new Actuator\WaterAtomizationActuator($device, $atomizerPin);
+            $fd = WiringPi::wiringPiI2CSetup(AbstractActuator::RPI_I2C_ADDRESS);
+            $grovepi = new I2CDevice($fd);
+            $atomizer = new Actuator\WaterAtomizationActuator($grovepi, $atomizerPin);
+            usleep(60000);
 	    $atomizer->writeStatus($value);
-//	    sleep(20000);
-//            $atomizer->writeStatus(0);
-//		dump($atomizer);die;
+
+            
+            $this->addFlash(
+                'notice',
+                'Value was set to ' . (int) $value
+            );
+            
             //$this->dispatchEvents($atomizer, $form_values['state']);
         }
 
