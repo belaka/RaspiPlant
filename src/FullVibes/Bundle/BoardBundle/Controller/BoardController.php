@@ -12,8 +12,19 @@ class BoardController extends Controller
 {
     public function indexAction(Request $request)
     {
-        //$pins = Array(0, 1, 2, 3, 4, 5, 6, 7, 17, 18, 19, 20);
+        $boards = $this->getBoardManager()->findAll();
         
+        return $this->render(
+                'BoardBundle:Board:index.html.twig',
+                array(
+                    'boards' => $boards
+                )
+        );        
+        
+    }
+    
+    public function gpioAction(Request $request)
+    {
         if (isset($_GET['c'])) {
                 if ($_GET['c'] == 'pm') {
                         WiringPi::pinMode($_GET['p'], $_GET['v']);
@@ -34,7 +45,7 @@ class BoardController extends Controller
 
         $gpioTable = explode(PHP_EOL, $process->getOutput());
         
-        $response = "<pre>" . print_r($gpioTable, 1) . "</pre>\n";
+        $response = "";// "<pre>" . print_r($gpioTable, 1) . "</pre>\n";
         
         for ($i = 3; $i < (count($gpioTable) - 4); $i++) {
             
@@ -82,5 +93,10 @@ class BoardController extends Controller
                 )
         );        
         
+    }
+    
+    protected function getBoardManager()
+    {
+        return $this->container->get("board.manager.board_manager");
     }
 }

@@ -8,7 +8,13 @@ class DeviceController extends Controller
 {
     public function indexAction()
     {
+        $devices = $this->getDeviceManager()->findAll();
         
-        return $this->render('BoardBundle:Device:index.html.twig');
+        return $this->render('BoardBundle:Device:index.html.twig', array('devices' => $devices));
+    }
+    
+    protected function getDeviceManager()
+    {
+        return $this->container->get("board.manager.device_manager");
     }
 }

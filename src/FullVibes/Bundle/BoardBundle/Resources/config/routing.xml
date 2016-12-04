@@ -12,6 +12,10 @@
         <default key="_controller">BoardBundle:Board:index</default>
     </route>
     
+    <route id="board.board.gpio" path="/board/gpio">
+        <default key="_controller">BoardBundle:Board:gpio</default>
+    </route>
+    
     <route id="board.device.main" path="/device">
         <default key="_controller">BoardBundle:Device:index</default>
     </route>

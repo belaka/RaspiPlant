@@ -29,7 +29,22 @@
     <!-- END PAGE HEADER-->
     <!-- BEGIN DASHBOARD STATS 1-->
     <div class="row">
-        Devices ..........
+        <div class="table-responsive">
+            <table class="table table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th> <th>Name</th> <th>Slug</th> <th>Class</th> <th>address</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for device in devices %}
+                    <tr>
+                        <td>{{ device.id }}</td><td>{{ device.name }}</td><td>{{ device.slug }}</td><td>{{ device.class }}</td><td>{{ device.address }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}
 

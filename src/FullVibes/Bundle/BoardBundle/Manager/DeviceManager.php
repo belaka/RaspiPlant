@@ -81,6 +81,14 @@ class DeviceManager
     }
     
     /**
+     * 
+     */
+    public function findAll()
+    {
+        return $this->getRepository()->findAll();
+    }
+    
+    /**
      * @return \Doctrine\ORM\EntityManager
      */
     public function getConnection()

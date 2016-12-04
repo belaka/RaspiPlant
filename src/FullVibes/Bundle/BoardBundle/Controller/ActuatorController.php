@@ -4,21 +4,19 @@ namespace FullVibes\Bundle\BoardBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use FullVibes\Bundle\BoardBundle\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use FullVibes\Component\Form\Type\AtomizerFormType;
 use FullVibes\Component\Actuator;
 use FullVibes\Component\Actuator\AbstractActuator;
 use FullVibes\Component\Device\I2CDevice;
-use FullVibes\Bundle\BoardBundle\Event\EventSubscriber;
 use FullVibes\Component\WiringPi\WiringPi;
 
 class ActuatorController extends Controller
 {
     public function indexAction()
     {
+        $actuators = $this->getActuatorManager()->findAll();
         
-        return $this->render('BoardBundle:Actuator:index.html.twig');
+        return $this->render('BoardBundle:Actuator:index.html.twig', array('actuators' => $actuators));
     }
     
     /**
@@ -49,7 +47,6 @@ class ActuatorController extends Controller
                 'Value was set to ' . (int) $value
             );
             
-            //$this->dispatchEvents($atomizer, $form_values['state']);
         }
 
         return $this->render(
@@ -61,17 +58,9 @@ class ActuatorController extends Controller
 
     }
     
-        
-    /**
-     * @param Actuator $device
-     * @param int $value
-     */
-    protected function dispatchEvents($device, $value)
+    protected function getActuatorManager()
     {
-        $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new EventSubscriber());
-        $event = new Event\AtomizerActuatorEvent($device, $value);
-        $dispatcher->dispatch(Event\AtomizerActuatorEvent::NAME, $event);
+        return $this->container->get("board.manager.actuator_manager");
     }
     
 }

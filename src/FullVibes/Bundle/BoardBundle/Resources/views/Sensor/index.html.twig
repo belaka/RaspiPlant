@@ -29,7 +29,22 @@
     <!-- END PAGE HEADER-->
     <!-- BEGIN DASHBOARD STATS 1-->
     <div class="row">
-        Sensors ..........
+        <div class="table-responsive">
+            <table class="table table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th> <th>Name</th> <th>Slug</th> <th>Class</th> <th>pin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sensor in sensors %}
+                    <tr>
+                        <td>{{ sensor.id }}</td><td>{{ sensor.name }}</td><td>{{ sensor.slug }}</td><td>{{ sensor.class }}</td><td>{{ sensor.pin }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}
 
