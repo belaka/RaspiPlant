@@ -152,6 +152,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                 $this->setDeviceActuators($this->devices[$deviceId]['actuators'], $output);
             }
         }
+        
+        die(dump($this->data));
 
         if (($this->tick % 120) === 0) {
             foreach ($this->data as $deviceData) {
