@@ -81,6 +81,14 @@ class ActuatorManager
     }
     
     /**
+     * 
+     */
+    public function find($id)
+    {
+        $this->getRepository()->find($id);
+    }
+    
+    /**
      * @return \Doctrine\ORM\EntityManager
      */
     public function getConnection()
