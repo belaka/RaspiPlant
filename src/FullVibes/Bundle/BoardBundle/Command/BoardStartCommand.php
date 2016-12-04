@@ -144,6 +144,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
             if (array_key_exists('sensors', $this->devices[$deviceId]))  {
                 $data[$deviceId] = $this->readDeviceSensors($this->devices[$deviceId]['sensors'], $output);
+                dump($data);
             }
 
             $output->writeln("# Starting set of actuators values at " . $firedAt->format(self::ISO8601));
