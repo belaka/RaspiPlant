@@ -189,5 +189,18 @@ class MPU9250Sensor extends AbstractSensor {
             exit();
         }
     }
+    
+    public static function getFields() {
+        return array(
+            'time',
+            'tempOut',
+            'gyroX',
+            'gyroY',
+            'gyroZ',
+            'accX',
+            'accY',
+            'accZ'
+        );
+    }
 
 }

@@ -66,11 +66,28 @@ class UltrasonicSensor extends AbstractSensor {
             $number = wiringPiI2CReadBuffer ($this->fd, self::ULTRASONIC_READ_CMD, 0, 0, 32);
             $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
             
-            return ($result[2] * 256 + $result[3]);
+            return json_encode(
+                    array(
+                        'error' => null,
+                        'distance' => ($result[2] * 256 + $result[3])
+                    )
+            ); 
             
         } catch (\Exception $exc) {
             
-            echo $exc->getMessage();
+            return json_encode(
+                    array(
+                        'error' => $exc->getMessage(),
+                        'distance' => 0
+                    )
+            );
         }
+    }
+    
+    public static function getFields() {
+        		
+        return array(
+            'distance'
+        );
     }
 }

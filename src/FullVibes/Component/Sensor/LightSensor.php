@@ -55,7 +55,7 @@ class LightSensor extends AbstractSensor {
         }
     }
     
-    public function getFields() {
+    public static function getFields() {
         		
         return array(
             'light'

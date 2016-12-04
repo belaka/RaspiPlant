@@ -58,11 +58,28 @@ class SoundSensor extends AbstractSensor {
         		
         try {
             
-            return $this->device->analogRead($this->pin);
+            return json_encode(
+                    array(
+                        'error' => null,
+                        'sound' => $this->device->analogRead($this->pin)
+                    )
+            ); 
             
         } catch (\Exception $exc) {
             
-            echo $exc->getMessage();
+            return json_encode(
+                    array(
+                        'error' => $exc->getMessage(),
+                        'sound' => 0
+                    )
+            );
         }
+    }
+    
+    public static function getFields() {
+        		
+        return array(
+            'sound'
+        );
     }
 }
