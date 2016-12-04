@@ -2,6 +2,8 @@
 
 namespace FullVibes\Bundle\BoardBundle\Model;
 
+use Doctrine\Common\Collections\Collection;
+
 class BoardModel
 {
     /**
