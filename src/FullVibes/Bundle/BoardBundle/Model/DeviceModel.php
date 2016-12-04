@@ -3,6 +3,7 @@
 namespace FullVibes\Bundle\BoardBundle\Model;
 
 use FullVibes\Bundle\BoardBundle\Entity\Board;
+use Doctrine\Common\Collections\Collection;
 
 class DeviceModel
 {
