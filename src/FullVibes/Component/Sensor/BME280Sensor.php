@@ -324,6 +324,7 @@ class BME280Sensor extends AbstractSensor {
         $compensatedTemp = $this->_compensateTemp($rawTemp);
         $rawPressure = $this->readRaw(self::BME280_REG_PRESSUREDATA);
         $p1 = $compensatedTemp - 128000;
+        
         //Since raspberry php 
         $p2 = bcadd(bcadd(bcmul(bcmul($p1, $p1), $this->dig_p6), bcmul(bcmul($p1, $this->dig_p5), bcpow(2, 17))), bcmul($this->dig_p4, bcpow(2, 35)));
         $p1 = bcadd(bcmul(bcdiv(bcmul($p1, $p1), $this->dig_p3), bcpow(2, 8)), bcmul(bcmul($p1, $this->dig_p2), bcpow(2, 12)));
@@ -356,22 +357,14 @@ class BME280Sensor extends AbstractSensor {
             $this->getPressure();
         }
         
-        $a = $this->pressure/$sealevelPa;
-        $b = 1/5.25588;
-        $c = pow($a,$b);
-        $c = 1.0 - $c;
-        $this->altitude = $c/0.0000225577;
-        
-        return $this->altitude;
-        
         /* 
          * Calculates the altitude in meters.
          * 
          */
         //Calculation taken straight from section 3.6 of the datasheet.
-        //$this->altitude = 44330.0 * (1.0 - pow($this->pressure / $sealevelPa, (1.0 / 5.25588)));
+        $this->altitude = 44330.0 * (1.0 - pow($this->pressure / $sealevelPa, (1.0 / 5.25588)));
 
-        //return $this->altitude;
+        return $this->altitude;
     }
     
     public function getDewPoint() {
@@ -436,6 +429,7 @@ class BME280Sensor extends AbstractSensor {
     public function readSensorData() {
 
         try {
+            
             $this->init();
 
             usleep(100000);
@@ -446,7 +440,7 @@ class BME280Sensor extends AbstractSensor {
                         'bme280_temperature' => round($this->getTemperature(), 2),
                         'bme280_pressure' => round($this->getPressure() / 100, 2),
                         'bme280_humidity' => round($this->getHumidity(), 2),
-                        'bme280_altitude' => round($this->getAltitude(), 2),
+                        //'bme280_altitude' => round($this->getAltitude(), 2),
                         'bme280_dew_point' => round($this->getDewPoint(), 2)
                     )
             );    
@@ -457,7 +451,6 @@ class BME280Sensor extends AbstractSensor {
                         'bme280_temperature' => 0,
                         'bme280_pressure' => 0,
                         'bme280_humidity' => 0,
-                        'bme280_altitude' => 0,
                         'bme280_dew_point' => 0
                     )
             ); 
@@ -469,7 +462,6 @@ class BME280Sensor extends AbstractSensor {
             'bme280_temperature',
             'bme280_pressure',
             'bme280_humidity',
-            'bme280_altitude',
             'bme280_dew_point'
         );
     }
