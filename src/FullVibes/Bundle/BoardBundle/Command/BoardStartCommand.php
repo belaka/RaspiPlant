@@ -185,9 +185,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             }
             
 
-            $actuator->writeStatus($actuatorData->getValue());
+            $actuator->writeStatus($actuatorData->getState());
             
-            $output->writeln("Actuator set to value: " .  $actuatorData->getValue());
+            $output->writeln("Actuator set to value: " .  $actuatorData->getState());
             usleep(100000);
         }
     }
