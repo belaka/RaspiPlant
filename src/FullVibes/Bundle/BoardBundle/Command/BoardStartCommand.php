@@ -62,6 +62,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         foreach ($boards as $board) {
             $this->boardInitialize($board, $output);
         }
+        
+        $output->writeln("");
     }
 
     protected function boardInitialize(Board $board, $output) {
@@ -143,13 +145,13 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         foreach ($this->devices as $deviceId => $device) {
 
             $output->writeln("# Starting Read of sensors values at " . $firedAt->format(self::ISO8601));
-
+            $output->writeln("");
             if (array_key_exists('sensors', $this->devices[$deviceId]))  {
                 $this->readDeviceSensors($this->devices[$deviceId]['sensors'], $output);
             }
 
             $output->writeln("# Starting set of actuators values at " . $firedAt->format(self::ISO8601));
-
+            $output->writeln("");
             if (array_key_exists('actuators', $this->devices[$deviceId]))  {
                 $this->setDeviceActuators($this->devices[$deviceId]['actuators'], $output);
             }
@@ -157,6 +159,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         
         if (($this->tick % 120) === 0) {
             $output->writeln("Data added to database " . $firedAt->format(self::ISO8601));
+            $output->writeln("");
             foreach ($this->data as $sensorId => $sensorData) {
                 $this->persistValues($sensorData, $sensorId, $firedAt);
             }
@@ -170,11 +173,10 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         foreach ($sensors as $sensorId => $sensor) {
             
             $this->data[$sensorId] = json_decode($sensor->readSensorData(), true);
-            
-            $output->writeln("Sensor " . $sensor->getName()  . " values: ");
             foreach ($this->data[$sensorId] as $key => $value) {
-                $output->writeln($key . "=>" . $value);
+                $output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value);
             }
+            $output->writeln("");
             
             usleep(100000);
         }
