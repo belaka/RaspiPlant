@@ -2,9 +2,33 @@
 
 namespace FullVibes\Component\Actuator;
 
+use FullVibes\Component\Device\I2CDevice;
+
 class ChainableRGBLedActuator extends AbstractActuator {
     
-    const RPI_I2C_ADDRESS = 0x04; // I2C Address of Raspberry
+    /**
+     *
+     * @var I2CDevice
+     */
+    protected $device;
+    
+    /**
+     *
+     * @var int
+     */
+    protected $pin;
+    
+    /**
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     *
+     * @var boolean
+     */
+    protected $debug;
     
     ////////////////////////////////////////////////////////////////////////////
     // Grove Chainable RGB LED commands
@@ -26,8 +50,12 @@ class ChainableRGBLedActuator extends AbstractActuator {
      * @param int $pin
      * @param boolean $debug
      */
-    public function __construct($pin, $debug = false) {
-        parent::__construct($pin, $debug);
+    public function __construct(I2CDevice $device, $pin, $name, $debug = false) {
+        $this->debug = $debug;
+        $this->pin = $pin;
+        $this->name = $name;
+        $this->device = $device;
+        $this->device->pinMode($this->pin, "OUTPUT");
     }
 
     /**
@@ -186,4 +214,13 @@ class ChainableRGBLedActuator extends AbstractActuator {
             return 1
 
     ****************************************************************************/
+    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
+    }
 }

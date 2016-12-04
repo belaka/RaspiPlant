@@ -2,6 +2,8 @@
 
 namespace FullVibes\Component\Actuator;
 
+use FullVibes\Component\Device\I2CDevice;
+
 class MotorDriverActuator extends AbstractActuator {
 
     const MOTOR_SPEED_SET = 0x82;
@@ -16,15 +18,38 @@ class MotorDriverActuator extends AbstractActuator {
     const I2C_MOTOR_DRIVER_ADD = 0x0f;  //Set the address of the I2CMotorDriver
 
     /**
+     *
+     * @var I2CDevice
+     */
+    protected $device;
+    
+    /**
+     *
+     * @var int
+     */
+    protected $pin;
+    
+    /**
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     *
+     * @var boolean
+     */
+    protected $debug;
+    
+    /**
      * 
-     * @param fd $device
      * @param int $pin
      * @param boolean $debug
      */
-
-    public function __construct($device, $debug = false) {
-
+    public function __construct(I2CDevice $device, $pin, $name, $debug = false) {
         $this->debug = $debug;
+        $this->pin = $pin;
+        $this->name = $name;
         $this->device = $device;
     }
 
@@ -85,6 +110,15 @@ class MotorDriverActuator extends AbstractActuator {
      */
     public function __destruct() {
         wiringPiI2CWriteBuffer ($this->fd, self::MOTOR_SPEED_SET, 0, 0, 0, 0, 0);
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
     }
 
 }

@@ -14,19 +14,39 @@ class PotentiometerActuator extends AbstractActuator {
     const FULL_ANGLE = 300;
 
     /**
+     *
+     * @var I2CDevice
+     */
+    protected $device;
+    
+    /**
+     *
+     * @var int
+     */
+    protected $pin;
+    
+    /**
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     *
+     * @var boolean
+     */
+    protected $debug;
+    
+    /**
      * 
      * @param int $pin
      * @param boolean $debug
      */
-    public function __construct($pin, $debug = false) {
-
+    public function __construct(I2CDevice $device, $pin, $name, $debug = false) {
         $this->debug = $debug;
-
         $this->pin = $pin;
-
-        $this->fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
-        $this->device = new I2CDevice($this->fd);
-
+        $this->name = $name;
+        $this->device = $device;
         $this->device->pinMode($this->pin, "INPUT");
     }
 
@@ -61,6 +81,15 @@ class PotentiometerActuator extends AbstractActuator {
      */
     public function writeStatus($status = NULL) {
         throw new \Exception('NOT IMPLEMENTED');
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
     }
 
 }

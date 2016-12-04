@@ -105,7 +105,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $output->writeln("Starting Actuator :" . $actuator->getName() . " with pin " . $actuator->getPin());
 
         $class = $actuator->getClass();
-        $a = new $class($deviceLink, $actuator->getPin());
+        $a = new $class($deviceLink, $actuator->getPin(), $actuator->getName());
 
         if (!($a instanceof ActuatorInterface)) {
             throw new \Exception("Initialization error of actuator: " . $class);
@@ -169,7 +169,10 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             
             $this->data[$sensorId] = json_decode($sensor->readSensorData(), true);
             
-            $output->writeln("Sensor " . $sensor->getName()  . " values: " . print_r($this->data[$sensorId], 1));
+            $output->writeln("Sensor " . $sensor->getName()  . " values: ");
+            foreach ($this->data[$sensorId] as $key => $value) {
+                $output->writeln($key . "=>" . $value);
+            }
             
             usleep(100000);
         }
@@ -191,7 +194,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
             $actuator->writeStatus($actuatorData->getState());
             
-            $output->writeln("Actuator set to value: " .  $actuatorData->getState());
+            $output->writeln("Actuator " . $actuator->getName()  . " set to value: " .  $actuatorData->getState());
             usleep(100000);
         }
     }

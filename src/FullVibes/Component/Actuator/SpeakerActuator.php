@@ -7,19 +7,39 @@ use FullVibes\Component\Device\I2CDevice;
 class BuzzerActuator extends AbstractActuator {
     
     /**
+     *
+     * @var I2CDevice
+     */
+    protected $device;
+    
+    /**
+     *
+     * @var int
+     */
+    protected $pin;
+    
+    /**
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     *
+     * @var boolean
+     */
+    protected $debug;
+    
+    /**
      * 
      * @param int $pin
      * @param boolean $debug
      */
-    public function __construct($pin, $debug = false) {
-
+    public function __construct(I2CDevice $device, $pin, $name, $debug = false) {
         $this->debug = $debug;
-
         $this->pin = $pin;
-        
-        $this->fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
-        $this->device = new I2CDevice($this->fd);
-        
+        $this->name = $name;
+        $this->device = $device;
         $this->device->pinMode($this->pin, "OUTPUT");
     }
 
@@ -48,5 +68,14 @@ class BuzzerActuator extends AbstractActuator {
      */
     public function __destruct() {
         $this->device->digitalWrite(self::DIGITAL_WRITE_COMMAND, $this->pin, 0, 0);
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
     }
 }

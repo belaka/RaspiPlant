@@ -12,5 +12,9 @@ interface ActuatorInterface {
     public function writeStatus($status);
 
     public function readStatus();
+    
+    public function getName();
+    
+    public function setName($name);
 
 }
