@@ -9,7 +9,7 @@ namespace FullVibes\Component\Actuator;
  */
 interface ActuatorInterface {
     
-    public function writeStatus();
+    public function writeStatus($status);
 
     public function readStatus();
 
