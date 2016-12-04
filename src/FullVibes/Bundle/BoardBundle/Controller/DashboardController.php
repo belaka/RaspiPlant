@@ -16,9 +16,12 @@ class DashboardController extends Controller
         foreach ($sensors as $sensor) {
             $class = $sensor->getClass();
             $id = $sensor->getId();
-            $fields = array_map(function($v) use ($id) { return $id . '_' . $v;}, $class::getFields());
+            $name = $sensor->getName();
+            $fields = array_map(function($v) use ($id, $name) { return array('name' => $name, 'key' => $id . '_' . $v);}, $class::getFields());
             $keys = array_merge($fields, $keys);
         }
+        
+        //die(dump($keys));
         
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('Europe/Paris'));
@@ -26,18 +29,18 @@ class DashboardController extends Controller
         
         $analytics = $data = array();
         
-        foreach ($keys as $key) {
-            $keyDatas = $this->getAnalyticsManager()->findByKeyAndDate($key, $date);
+        foreach ($keys as $sensorData) {
+            $keyDatas = $this->getAnalyticsManager()->findByKeyAndDate($sensorData['key'], $date);
             foreach ($keyDatas as $keyData) {
                 $keyValue = round($keyData->getEventValue(), 2);
                 if ($keyValue > 0 && $keyValue < 1500) {
                     $eventDate = $keyData->getEventDate()->setTimezone(new \DateTimeZone('Europe/Paris'));
-                    $analytics[$key][] = [addslashes($eventDate->format('H:i')), round($keyValue, 2)];
+                    $analytics[$sensorData['name'] . $sensorData['key']][] = [addslashes($eventDate->format('H:i')), round($keyValue, 2)];
                 }
             }
-            $data[$key] = array(
-                'value' => end($analytics[$key])[1],
-                'date' => end($analytics[$key])[0]
+            $data[$sensorData['name'] . $sensorData['key']] = array(
+                'value' => end($analytics[$sensorData['name'] . $sensorData['key']])[1],
+                'date' => end($analytics[$sensorData['name'] . $sensorData['key']])[0]
             );
         }
         
