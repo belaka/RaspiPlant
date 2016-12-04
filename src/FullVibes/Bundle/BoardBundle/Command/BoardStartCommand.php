@@ -136,14 +136,14 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
         $firedAt = new \DateTime();
 
-        $data = array();
+        $this->data = array();
 
         foreach ($this->devices as $deviceId => $device) {
 
             $output->writeln("# Starting Read of sensors values at " . $firedAt->format(self::ISO8601));
 
             if (array_key_exists('sensors', $this->devices[$deviceId]))  {
-                $data = array_merge($data, $this->readDeviceSensors($this->devices[$deviceId]['sensors'], $output));
+                $this->readDeviceSensors($this->devices[$deviceId]['sensors'], $output);
             }
 
             $output->writeln("# Starting set of actuators values at " . $firedAt->format(self::ISO8601));
@@ -154,7 +154,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         }
 
         if (($this->tick % 120) === 0) {
-            foreach ($data as $deviceData) {
+            foreach ($this->data as $deviceData) {
                 $this->persistValues($deviceData, $firedAt, $output);
             }
         }
@@ -164,15 +164,11 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
     protected function readDeviceSensors(array $sensors, OutputInterface $output) {
 
-        $values = array();
-
         foreach ($sensors as $sensorId => $sensor) {
-            $values[$sensorId] = json_decode($sensor->readSensorData(), true);
-            $output->writeln(print_r($values, 1));
+            $this->data[$sensorId] = json_decode($sensor->readSensorData(), true);
+            $output->writeln("Added data from sensor ID " . $sensorId  . " values: " . print_r($this->data[$sensorId], 1));
             usleep(100000);
         }
-
-        return $values;
     }
 
     protected function setDeviceActuators(array $actuators, OutputInterface $output) {
