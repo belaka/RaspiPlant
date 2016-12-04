@@ -8,8 +8,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DashboardController extends Controller
 {
     public function indexAction(Request $request)
-    {
-        $keys = array('temperature', 'humidity', 'moisture_1', 'moisture_2', 'air_quality', 'i2c_temperature', 'i2c_humidity', 'i2c_pressure', 'i2c_dewPoint');
+    {    
+        $keys = array();
+        
+        $sensors = $this->getSensorManager()->findAll();
+        
+        foreach ($sensors as $sensor) {
+            $class = $sensor->getClass();
+            $id = $sensor->getId();
+            $fields = array_map(function($v) use ($id) { return $id . '_' . $v;}, $class::getFields());
+            $keys = array_merge($fields, $keys);
+        }
         
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('Europe/Paris'));
@@ -22,7 +31,8 @@ class DashboardController extends Controller
             foreach ($keyDatas as $keyData) {
                 $keyValue = round($keyData->getEventValue(), 2);
                 if ($keyValue > 0 && $keyValue < 1500) {
-                    $analytics[$key][] = [addslashes($keyData->getEventDate()->format('H:i')), round($keyValue, 2)];
+                    $eventDate = $keyData->getEventDate()->setTimezone(new \DateTimeZone('Europe/Paris'));
+                    $analytics[$key][] = [addslashes($eventDate->format('H:i')), round($keyValue, 2)];
                 }
             }
             $data[$key] = array(
@@ -30,8 +40,6 @@ class DashboardController extends Controller
                 'date' => end($analytics[$key])[0]
             );
         }
-        
-        //die(dump($analytics));
         
         return $this->render(
                 'BoardBundle:Dashboard:index.html.twig',
@@ -47,6 +55,11 @@ class DashboardController extends Controller
     protected function getAnalyticsManager()
     {
         return $this->container->get("board.manager.analytics_manager");
+    }
+    
+    protected function getSensorManager()
+    {
+        return $this->container->get("board.manager.sensor_manager");
     }
     
 }
