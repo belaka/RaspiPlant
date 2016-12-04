@@ -153,7 +153,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             }
         }
 
-        if (($this->tick % 120) == 0) {
+        if (($this->tick % 120) === 0) {
             foreach ($data as $deviceData) {
                 $this->persistValues($deviceData, $firedAt, $output);
             }
@@ -201,6 +201,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $analyticsManager = $this->getAnalyticsManager();
         $output->writeln("Data added to database " . $firedAt->format(self::ISO8601));
 
+        dump($data);die('DATA ARRAY END');
         foreach ($data as $key => $value) {
             $analytics = new Analytics($key, $value, $firedAt);
             $analyticsManager->save($analytics);
