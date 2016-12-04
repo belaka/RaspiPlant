@@ -76,7 +76,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
     protected function deviceInitialize(Device $device, $output) {
 
-        $output->writeln("Starting Device :" . $device->getName());
+        $output->writeln("Starting Device :" . $device->getName() . " with address " . $device->getAddress());
 
         $fd = WiringPi::wiringPiI2CSetup($device->getAddress());
         $class = $device->getClass();
@@ -95,11 +95,13 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         foreach ($actuators as $actuator) {
             $this->devices[$device->getId()]['actuators'][$actuator->getId()] = $this->actuatorInitialize($actuator, $deviceLink, $output);
         }
+        
+        return $deviceLink;
     }
 
     protected function actuatorInitialize(Actuator $actuator, $deviceLink, $output) {
 
-        $output->writeln("Starting Actuator :" . $actuator->getName());
+        $output->writeln("Starting Actuator :" . $actuator->getName() . " with pin " . $actuator->getPin());
 
         $class = $actuator->getClass();
         $a = new $class($deviceLink, $actuator->getPin());
@@ -115,7 +117,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
     protected function sensorInitialize(Sensor $sensor, $deviceLink, $output) {
 
-        $output->writeln("Starting Sensor :" . $sensor->getName());
+        $output->writeln("Starting Sensor :" . $sensor->getName() . " with pin " . $sensor->getPin());
 
         $class = $sensor->getClass();
         $s = new $class($deviceLink, $sensor->getPin());
