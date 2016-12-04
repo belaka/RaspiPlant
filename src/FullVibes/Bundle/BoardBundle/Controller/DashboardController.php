@@ -40,7 +40,7 @@ class DashboardController extends Controller
                     $analytics[$sensorData['name'] .':'. $sensorData['key']][] = [addslashes($eventDate->format('H:i')), round($keyValue, 2)];
                 }
             }
-            $data[$sensorData['name'] . $sensorData['key']] = array(
+            $data[$sensorData['name'] .':'. $sensorData['key']] = array(
                 'value' => end($analytics[$sensorData['name'] .':'. $sensorData['key']])[1],
                 'date' => end($analytics[$sensorData['name'] .':'. $sensorData['key']])[0]
             );
