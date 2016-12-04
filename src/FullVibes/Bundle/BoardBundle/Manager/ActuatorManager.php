@@ -85,7 +85,7 @@ class ActuatorManager
      */
     public function find($id)
     {
-        $this->getRepository()->find($id);
+        return $this->getRepository()->find($id);
     }
     
     /**
