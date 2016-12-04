@@ -168,7 +168,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
         foreach ($sensors as $sensorId => $sensor) {
             $values[$sensorId] = json_decode($sensor->readSensorData());
-            $output->writeln(print_r($values[$sensorId], 1));
+            $output->writeln(print_r($values, 1));
             usleep(100000);
         }
 
