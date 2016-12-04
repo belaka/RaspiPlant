@@ -179,6 +179,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
             //We get the value from database
             $actuatorData = $actuatorManager->find($actuatorId);
+            dump($actuatorData);
             if (!($actuatorData instanceof Actuator)) {
                 throw new \Exception("No actuatorData found verify actuator repository for id:" .  $actuatorId);
             }
