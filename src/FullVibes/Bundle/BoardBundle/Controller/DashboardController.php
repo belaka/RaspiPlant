@@ -21,6 +21,8 @@ class DashboardController extends Controller
             $keys = array_merge($fields, $keys);
         }
         
+        $keynames = array_map(function ($v) {return $v['name'].':'.$v['key'];}, $keys);
+        
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('Europe/Paris'));
         $date->modify('-3 hours');
@@ -35,19 +37,19 @@ class DashboardController extends Controller
                 $keyValue = round($keyData->getEventValue(), 2);
                 if ($keyValue > 0 && $keyValue < 1500) {
                     $eventDate = $keyData->getEventDate()->setTimezone(new \DateTimeZone('Europe/Paris'));
-                    $analytics[$sensorData['name'] . $sensorData['key']][] = [addslashes($eventDate->format('H:i')), round($keyValue, 2)];
+                    $analytics[$sensorData['name'] .':'. $sensorData['key']][] = [addslashes($eventDate->format('H:i')), round($keyValue, 2)];
                 }
             }
             $data[$sensorData['name'] . $sensorData['key']] = array(
-                'value' => end($analytics[$sensorData['name'] . $sensorData['key']])[1],
-                'date' => end($analytics[$sensorData['name'] . $sensorData['key']])[0]
+                'value' => end($analytics[$sensorData['name'] .':'. $sensorData['key']])[1],
+                'date' => end($analytics[$sensorData['name'] .':'. $sensorData['key']])[0]
             );
         }
         
         return $this->render(
                 'BoardBundle:Dashboard:index.html.twig',
                 array(
-                    'keys' => $keys,
+                    'keys' => $keynames,
                     'data' => $data, 
                     'date' => $date,
                     'analytics' => json_encode($analytics, JSON_UNESCAPED_SLASHES)
