@@ -49,6 +49,13 @@
             <span class="selected"></span>
             <span class="arrow open"></span>
         </a>
+        <ul class="sub-menu" style="display: block;">
+            <li class="nav-item  ">
+                <a href="{{path('board.board.gpio')}}" class="nav-link ">
+                    <span class="title">GPIO Table</span>
+                </a>
+            </li>
+        </ul>
     </li>
     <li class="nav-item {% if app.request.attributes.get('_route') == 'board.device.main' %}active open{% else %}{% endif %}">
         <a href="{{path('board.device.main')}}" class="nav-link nav-toggle">
