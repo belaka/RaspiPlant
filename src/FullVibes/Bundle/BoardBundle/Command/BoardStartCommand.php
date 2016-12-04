@@ -20,7 +20,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     const ISO8601 = 'Y-m-d\TH:i:sP';
 
     protected $debug;
-    protected $devices;
+    protected $devices = array();
 
     protected function configure() {
         $this->setName('raspiplant:board:start')
@@ -69,7 +69,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $devices = $board->getDevices();
 
         foreach ($devices as $device) {
-            $this->devices[$device->getId()] = $this->deviceInitialize($device, $output);
+            $this->devices[$device->getId()]['device'] = $this->deviceInitialize($device, $output);
             usleep(100000);
         }
     }
