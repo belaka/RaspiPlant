@@ -28,6 +28,10 @@
         <default key="_controller">BoardBundle:Actuator:atomizer</default>
     </route>
     
+    <route id="board.actuator.update" path="/actuator/update/{id}" methods="POST">
+        <default key="_controller">BoardBundle:Actuator:update</default>
+    </route>
+    
     <route id="board.sensor.main" path="/sensor">
         <default key="_controller">BoardBundle:Sensor:index</default>
     </route>
