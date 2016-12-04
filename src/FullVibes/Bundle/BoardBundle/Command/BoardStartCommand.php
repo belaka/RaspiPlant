@@ -244,6 +244,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      */
     protected function finishIteration(InputInterface $input, OutputInterface $output) {
         // Do some cleanup/memory management here, don't forget to call the parent implementation!
+        $this->getActuatorManager()->clear();
         $this->getAnalyticsManager()->clear();
         parent::finishIteration($input, $output);
     }
