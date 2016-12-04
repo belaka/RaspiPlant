@@ -356,14 +356,22 @@ class BME280Sensor extends AbstractSensor {
             $this->getPressure();
         }
         
+        $a = $this->pressure/$sealevelPa;
+        $b = 1/5.25588;
+        $c = pow($a,$b);
+        $c = 1.0 - $c;
+        $this->altitude = $c/0.0000225577;
+        
+        return $this->altitude;
+        
         /* 
          * Calculates the altitude in meters.
          * 
          */
         //Calculation taken straight from section 3.6 of the datasheet.
-        $this->altitude = 44330.0 * (1.0 - pow($this->pressure / $sealevelPa, (1.0 / 5.25588)));
+        //$this->altitude = 44330.0 * (1.0 - pow($this->pressure / $sealevelPa, (1.0 / 5.25588)));
 
-        return $this->altitude;
+        //return $this->altitude;
     }
     
     public function getDewPoint() {
