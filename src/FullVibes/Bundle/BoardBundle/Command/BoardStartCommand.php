@@ -142,11 +142,11 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
             $output->writeln("# Starting Read of sensors values at " . $firedAt->format(self::ISO8601));
 
-            $data[$id] = $this->readDeviceSensors($this->devices[$id]['sensors']);
+            $data[$id] = $this->readDeviceSensors($this->devices[$id]['sensors'], $output);
 
             $output->writeln("# Starting set of actuators values at " . $firedAt->format(self::ISO8601));
 
-            $this->setDeviceActuators($this->devices[$id]['actuators']);
+            $this->setDeviceActuators($this->devices[$id]['actuators'], $output);
         }
 
         if (($this->tick % 120) == 0) {
@@ -155,33 +155,38 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             }
         }
 
-        $output->writeln(print_r($data, 1));
-
         $this->tick += 10;
     }
 
-    protected function readDeviceSensors(array $sensors) {
+    protected function readDeviceSensors(array $sensors, OutputInterface $output) {
 
         $values = array();
 
         foreach ($sensors as $sensorId => $sensor) {
             $values[$sensorId] = json_decode($sensor->readSensorData());
+            $output->writeln(print_r($values[$sensorId], 1));
             usleep(100000);
         }
 
         return $values;
     }
 
-    protected function setDeviceActuators(array $actuators) {
+    protected function setDeviceActuators(array $actuators, OutputInterface $output) {
 
         $actuatorManager = $this->getActuatorManager();
 
         foreach ($actuators as $actuatorId => $actuator) {
 
             //We get the value from database
-            $actuatorData = $actuatorManager->findOne($actuatorId);
+            $actuatorData = $actuatorManager->find($actuatorId);
+            if (!($actuatorData instanceof Actuator)) {
+                throw new \Exception("No actuatorData found verify actuator repository for id:" .  $actuatorId);
+            }
+            
 
             $actuator->writeSatus($actuatorData->getValue());
+            
+            $output->writeln("Actuator set to value: " .  $actuatorData->getValue());
             usleep(100000);
         }
     }
