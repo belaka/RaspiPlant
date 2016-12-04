@@ -35,12 +35,12 @@ class DashboardController extends Controller
                 $keyValue = round($keyData->getEventValue(), 2);
                 if ($keyValue > 0 && $keyValue < 1500) {
                     $eventDate = $keyData->getEventDate()->setTimezone(new \DateTimeZone('Europe/Paris'));
-                    $analytics[$sensorData['name'] . $sensorData['key']][] = [addslashes($eventDate->format('H:i')), round($keyValue, 2)];
+                    $analytics[$sensorData['key']][] = [addslashes($eventDate->format('H:i')), round($keyValue, 2)];
                 }
             }
-            $data[$sensorData['name'] . $sensorData['key']] = array(
-                'value' => end($analytics[$sensorData['name'] . $sensorData['key']])[1],
-                'date' => end($analytics[$sensorData['name'] . $sensorData['key']])[0]
+            $data[$sensorData['key']] = array(
+                'value' => end($sensorData['key'])[1],
+                'date' => end($sensorData['key'])[0]
             );
         }
         
