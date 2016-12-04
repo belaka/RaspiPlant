@@ -18,36 +18,17 @@ class BoardModel
     
     /**
      *
-     * @var int
-     */
-    protected $address;
-    
-    /**
-     *
      * @var Collection
      */
-    protected $sensors;
-    
-    /**
-     *
-     * @var Collection
-     */
-    protected $actuators;
-    
-    /**
-     *
-     * @var Collection
-     */
-    protected $errors;
+    protected $devices;
     
     /**
      * 
      * @param string $name
      * @param int $address
      */
-    public function __construct($name, $address) {
+    public function __construct($name) {
         $this->name = $name;
-        $this->address = $address;
     }
     
     public function getName() {
@@ -57,25 +38,11 @@ class BoardModel
     public function getSlug() {
         return $this->slug;
     }
-
-    public function getAddress() {
-        return $this->address;
-    }
-
-    public function getSensors() {
-        return $this->sensors;
-    }
-
-    public function getActuators() {
-        return $this->actuators;
-    }
-
-    public function getErrors() {
-        return $this->errors;
-    }
     
-    
-    
+    public function getDevices() {
+        return $this->devices;
+    }
+
     public function setName($name) {
         $this->name = $name;
         return $this;
@@ -85,26 +52,10 @@ class BoardModel
         $this->slug = $slug;
         return $this;
     }
-
-    public function setAddress($address) {
-        $this->address = $address;
+    
+    public function setDevices(Collection $devices) {
+        $this->devices = $devices;
         return $this;
     }
-
-    public function setSensors(Collection $sensors) {
-        $this->sensors = $sensors;
-        return $this;
-    }
-
-    public function setActuators(Collection $actuators) {
-        $this->actuators = $actuators;
-        return $this;
-    }
-
-    public function setErrors(Collection $errors) {
-        $this->errors = $errors;
-        return $this;
-    }
-
     
 }

@@ -75,11 +75,30 @@ class DHTSensor extends AbstractSensor {
             $hum_val=unpack('f*', $h);
             $hum = round($hum_val[1], 2);
             
-            return json_encode(array('temperature' => $t, 'humidity' => $hum));
+            return json_encode(
+                array(
+                    'error' => null, 
+                    'dht_temperature' => $t, 
+                    'dht_humidity' => $hum
+                )
+            );
             
         } catch (\Exception $exc) {
             
-            return json_encode(array('temperature' => $exc->getMessage(), 'humidity' => $exc->getMessage()));
+            return json_encode(
+                array(
+                    'error' => $exc->getMessage(), 
+                    'dht_temperature' => 0, 
+                    'dht_humidity' => 0
+                )
+            );
         }
+    }
+    
+    public function getfields() {
+        return  array(
+            'dht_temperature',
+            'dht_humidity'
+        );
     }
 }

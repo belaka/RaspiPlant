@@ -58,10 +58,7 @@ class SoundSensor extends AbstractSensor {
         		
         try {
             
-            $value = $this->device->analogRead($this->pin);
-            sleep(0.2);
-            
-            return $value;
+            return $this->device->analogRead($this->pin);
             
         } catch (\Exception $exc) {
             

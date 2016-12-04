@@ -2,6 +2,6 @@
 
 namespace FullVibes\Component\Sensor;
 
-abstract class AbstractSensor {
+abstract class AbstractSensor implements SensorInterface {
     
 }

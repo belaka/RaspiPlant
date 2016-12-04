@@ -2,7 +2,9 @@
 
 namespace FullVibes\Bundle\BoardBundle\Model;
 
-class BoardModel
+use FullVibes\Bundle\BoardBundle\Entity\Device;
+
+class SensorModel
 {
     /**
      *
@@ -18,36 +20,31 @@ class BoardModel
     
     /**
      *
+     * @var string
+     */
+    protected $class;
+    
+    /**
+     *
      * @var int
      */
-    protected $address;
+    protected $pin;
     
     /**
      *
-     * @var Collection
+     * @var \FullVibes\Bundle\BoardBundle\Entity\Device
      */
-    protected $sensors;
-    
-    /**
-     *
-     * @var Collection
-     */
-    protected $actuators;
-    
-    /**
-     *
-     * @var Collection
-     */
-    protected $errors;
+    protected $device;
     
     /**
      * 
      * @param string $name
-     * @param int $address
+     * @param int $pin
      */
-    public function __construct($name, $address) {
+    public function __construct($name, $class, $pin) {
         $this->name = $name;
-        $this->address = $address;
+        $this->class = $class;
+        $this->pin = $pin;
     }
     
     public function getName() {
@@ -57,25 +54,24 @@ class BoardModel
     public function getSlug() {
         return $this->slug;
     }
-
-    public function getAddress() {
-        return $this->address;
+    
+    public function getClass() {
+        return $this->class;
     }
 
-    public function getSensors() {
-        return $this->sensors;
-    }
-
-    public function getActuators() {
-        return $this->actuators;
-    }
-
-    public function getErrors() {
-        return $this->errors;
+    public function getPin() {
+        return $this->pin;
     }
     
-    
-    
+    public function getDevice() {
+        return $this->device;
+    }
+
+    public function setClass($class) {
+        $this->class = $class;
+        return $this;
+    }
+
     public function setName($name) {
         $this->name = $name;
         return $this;
@@ -86,25 +82,13 @@ class BoardModel
         return $this;
     }
 
-    public function setAddress($address) {
-        $this->address = $address;
+    public function setPin($pin) {
+        $this->pin = $pin;
         return $this;
     }
 
-    public function setSensors(Collection $sensors) {
-        $this->sensors = $sensors;
+    public function setDevice(Device $device) {
+        $this->device = $device;
         return $this;
     }
-
-    public function setActuators(Collection $actuators) {
-        $this->actuators = $actuators;
-        return $this;
-    }
-
-    public function setErrors(Collection $errors) {
-        $this->errors = $errors;
-        return $this;
-    }
-
-    
 }

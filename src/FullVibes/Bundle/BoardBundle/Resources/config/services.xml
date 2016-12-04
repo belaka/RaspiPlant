@@ -6,11 +6,31 @@
 
     <parameters>
         <parameter key="board.manager.analytics_manager.class">FullVibes\Bundle\BoardBundle\Manager\AnalyticsManager</parameter>
+        <parameter key="board.manager.board_manager.class">FullVibes\Bundle\BoardBundle\Manager\BoardManager</parameter>
+        <parameter key="board.manager.device_manager.class">FullVibes\Bundle\BoardBundle\Manager\DeviceManager</parameter>
+        <parameter key="board.manager.actuator_manager.class">FullVibes\Bundle\BoardBundle\Manager\ActuatorManager</parameter>
+        <parameter key="board.manager.sensor_manager.class">FullVibes\Bundle\BoardBundle\Manager\SensorManager</parameter>
     </parameters>
 
 
     <services>
         <service id="board.manager.analytics_manager" class="%board.manager.analytics_manager.class%">
+            <argument type="service" id="doctrine" />
+        </service>
+        
+        <service id="board.manager.board_manager" class="%board.manager.board_manager.class%">
+            <argument type="service" id="doctrine" />
+        </service>
+        
+        <service id="board.manager.device_manager" class="%board.manager.device_manager.class%">
+            <argument type="service" id="doctrine" />
+        </service>
+        
+        <service id="board.manager.sensor_manager" class="%board.manager.sensor_manager.class%">
+            <argument type="service" id="doctrine" />
+        </service>
+        
+        <service id="board.manager.actuator_manager" class="%board.manager.actuator_manager.class%">
             <argument type="service" id="doctrine" />
         </service>
     </services>

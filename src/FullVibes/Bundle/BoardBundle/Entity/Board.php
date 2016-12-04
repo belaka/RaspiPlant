@@ -2,18 +2,18 @@
 
 namespace FullVibes\Bundle\BoardBundle\Entity;
 
-use FullVibes\Bundle\BoardBundle\Model\ActuatorModel;
+use FullVibes\Bundle\BoardBundle\Model\BoardModel;
 
 /*
- * Actuator Entity
+ * Board Entity
  */
 
 /**
- * Description of Analytics
+ * Description of Board modelclass
  *
  * @author belaka
  */
-class Actuator extends ActuatorModel {
+class Board extends BoardModel {
 
     /**
      *
@@ -24,7 +24,7 @@ class Actuator extends ActuatorModel {
     /**
      * 
      * @param int $id
-     * @return \FullVibes\Bundle\BoardBundle\Entity\Actuator
+     * @return \FullVibes\Bundle\BoardBundle\Entity\Board
      */
     public function setId($id) {
         $this->id = $id;

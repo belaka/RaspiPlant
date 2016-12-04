@@ -5,10 +5,9 @@ namespace FullVibes\Component\Sensor;
 /**
  * 
  */
-class AirQualitySensor extends AbstractSensor {
+class AirQualitySensor extends AbstractSensor 
+{
 
-    
-    
     /**
      *
      * @var boolean
@@ -46,11 +45,28 @@ class AirQualitySensor extends AbstractSensor {
         		
         try {
             
-            return $this->device->analogRead($this->pin);
+            return json_encode(
+                    array(
+                        'error' => null,
+                        'air_quality' => $this->device->analogRead($this->pin)
+                    )
+            ); 
             
         } catch (\Exception $exc) {
             
-            echo $exc->getMessage();
+            return json_encode(
+                    array(
+                        'error' => $exc->getMessage(),
+                        'air_quality' => 0
+                    )
+            );
         }
+    }
+    
+    public function getFields() {
+        		
+        return array(
+            'air_quality'
+        );
     }
 }

@@ -421,29 +421,41 @@ class BME280Sensor extends AbstractSensor {
             return json_encode(
                     array(
                         'error' => null,
-                        'temperature' => $this->getTemperature(),
-                        'pressure' => $this->getPressure() / 100,
-                        'humidity' => $this->getHumidity(),
-                        'altitude' => $this->getAltitude(),
-                        'sea_level_pressure' => $this->getSealevelPressure(),
-                        'dew_point' => $this->getDewPoint(),
-                        't_fine' => $this->t_fine
+                        'bme280_temperature' => round($this->getTemperature(), 2),
+                        'bme280_pressure' => round($this->getPressure() / 100, 2),
+                        'bme280_humidity' => round($this->getHumidity(), 2),
+                        'bme280_altitude' => round($this->getAltitude(), 2),
+                        'bme280_sea_level_pressure' => round($this->getSealevelPressure(), 2),
+                        'bme280_dew_point' => round($this->getDewPoint(), 2),
+                        'bme280_t_fine' => $this->t_fine
                     )
             );    
         } catch (\Exception $exc) {
             return json_encode(
                     array(
                         'error' => $exc->getMessage(),
-                        'temperature' => 0,
-                        'pressure' => 0,
-                        'humidity' => 0,
-                        'altitude' => 0,
-                        'sea_level_pressure' => 0,
-                        'dew_point' => 0,
-                        't_fine' => 0
+                        'bme280_temperature' => 0,
+                        'bme280_pressure' => 0,
+                        'bme280_humidity' => 0,
+                        'bme280_altitude' => 0,
+                        'bme280_sea_level_pressure' => 0,
+                        'bme280_dew_point' => 0,
+                        'bme280_t_fine' => 0
                     )
             ); 
         }
+    }
+    
+    public function getfields() {
+        return  array(
+            'bme280_temperature',
+            'bme280_pressure',
+            'bme280_humidity',
+            'bme280_altitude',
+            'bme280_sea_level_pressure',
+            'bme280_dew_point',
+            'bme280_t_fine',
+        );
     }
 
 }

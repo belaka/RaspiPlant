@@ -9,7 +9,7 @@ use FullVibes\Component\Device\I2CDevice;
  *
  * @author Vincent Honnorat <full-vibes@gmail.com>
  */
-abstract class AbstractActuator {
+abstract class AbstractActuator implements ActuatorInterface {
     
     const RPI_I2C_ADDRESS = 0x04; // I2C Address of GrovePi
     

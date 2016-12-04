@@ -2,13 +2,21 @@
 
 namespace FullVibes\Bundle\BoardBundle\Model;
 
-class BoardModel
+use FullVibes\Bundle\BoardBundle\Entity\Board;
+
+class DeviceModel
 {
     /**
      *
      * @var string
      */
     protected $name;
+    
+    /**
+     *
+     * @var string
+     */
+    protected $class;
     
     /**
      *
@@ -24,6 +32,12 @@ class BoardModel
     
     /**
      *
+     * @var \FullVibes\Bundle\BoardBundle\Entity\Board
+     */
+    protected $board;
+    
+    /**
+     *
      * @var Collection
      */
     protected $sensors;
@@ -35,18 +49,14 @@ class BoardModel
     protected $actuators;
     
     /**
-     *
-     * @var Collection
-     */
-    protected $errors;
-    
-    /**
      * 
      * @param string $name
      * @param int $address
+     * @param int $class
      */
-    public function __construct($name, $address) {
+    public function __construct($name, $address, $class = "FullVibes\\Component\\Device\\I2CDevice") {
         $this->name = $name;
+        $this->class = $class;
         $this->address = $address;
     }
     
@@ -57,9 +67,17 @@ class BoardModel
     public function getSlug() {
         return $this->slug;
     }
+    
+    public function getClass() {
+        return $this->class;
+    }
 
     public function getAddress() {
         return $this->address;
+    }
+    
+    public function getBoard() {
+        return $this->board;
     }
 
     public function getSensors() {
@@ -70,12 +88,6 @@ class BoardModel
         return $this->actuators;
     }
 
-    public function getErrors() {
-        return $this->errors;
-    }
-    
-    
-    
     public function setName($name) {
         $this->name = $name;
         return $this;
@@ -85,9 +97,19 @@ class BoardModel
         $this->slug = $slug;
         return $this;
     }
+    
+    public function setClass($class) {
+        $this->class = $class;
+        return $this;
+    }
 
     public function setAddress($address) {
         $this->address = $address;
+        return $this;
+    }
+    
+    public function setBoard(Board $board) {
+        $this->board = $board;
         return $this;
     }
 
@@ -101,10 +123,4 @@ class BoardModel
         return $this;
     }
 
-    public function setErrors(Collection $errors) {
-        $this->errors = $errors;
-        return $this;
-    }
-
-    
 }

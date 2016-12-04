@@ -1,0 +1,16 @@
+<?php
+
+namespace FullVibes\Component\Actuator;
+
+/**
+ * Interface Class for actuators.
+ *
+ * @author Vincent Honnorat <full-vibes@gmail.com>
+ */
+interface ActuatorInterface {
+    
+    public function writeStatus();
+
+    public function readStatus();
+
+}
