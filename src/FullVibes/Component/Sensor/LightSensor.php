@@ -2,6 +2,8 @@
 
 namespace FullVibes\Component\Sensor;
 
+use FullVibes\Component\Device\I2CDevice;
+
 /**
  * 
  */
@@ -25,11 +27,25 @@ class LightSensor extends AbstractSensor {
      */
     protected $pin;
     
-    function __construct($device, $pin, $debug = false) {
+    /**
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     * 
+     * @param I2CDevice $device
+     * @param int $pin
+     * @param string $name
+     * @param boolean $debug
+     */
+    function __construct(I2CDevice $device, $pin, $name, $debug = false) {
         
         $this->debug = $debug;
         $this->pin = $pin;
         $this->device = $device;
+        $this->name = $name;
         $this->device->pinMode($this->pin, "INPUT");
     }
 
@@ -62,5 +78,12 @@ class LightSensor extends AbstractSensor {
         );
     }
     
-    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
+    }
 }

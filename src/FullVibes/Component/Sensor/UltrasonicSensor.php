@@ -45,14 +45,25 @@ class UltrasonicSensor extends AbstractSensor {
      */
     protected $pin;
     
-    function __construct($pin, $type = self::DHT_SENSOR_WHITE, $debug = false) {
+    /**
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     * 
+     * @param I2CDevice $device
+     * @param int $pin
+     * @param string $name
+     * @param boolean $debug
+     */
+    function __construct(I2CDevice $device, $pin, $name, $debug = false) {
         
         $this->debug = $debug;
-        $this->type = $type;
         $this->pin = $pin;
-        
-        $this->fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
-        $this->device = new I2CDevice($this->fd);
+        $this->name = $name;
+        $this->device = $device;
         
     }
 

@@ -2,6 +2,8 @@
 
 namespace FullVibes\Component\Sensor;
 
+use FullVibes\Component\Device\I2CDevice;
+
 /**
  * 
  */
@@ -37,12 +39,26 @@ class DHTSensor extends AbstractSensor {
      */
     protected $pin;
     
-    function __construct($device, $pin, $debug = false) {
+    /**
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     * 
+     * @param I2CDevice $device
+     * @param int $pin
+     * @param string $name
+     * @param boolean $debug
+     */
+    function __construct(I2CDevice $device, $pin, $name, $type = self::DHT_SENSOR_WHITE, $debug = false) {
         
         $this->debug = $debug;
         $this->pin = $pin;
+        $this->name = $name;
         $this->device = $device;
-        $this->type = self::DHT_SENSOR_WHITE;
+        $this->type = $type;
         
         $this->device->pinMode($this->pin, "INPUT");
     }
@@ -52,7 +68,7 @@ class DHTSensor extends AbstractSensor {
         try {
             
             $this->device->digitalWrite(self::DHT_TEMP_CMD, $this->pin, $this->type, 0);
-            usleep(10000);
+            usleep(100000);
             
             $number = $this->device->readBuffer(1, $this->pin, 32);
             
@@ -100,5 +116,14 @@ class DHTSensor extends AbstractSensor {
             'dht_temperature',
             'dht_humidity'
         );
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
     }
 }

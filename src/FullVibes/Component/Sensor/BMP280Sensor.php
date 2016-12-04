@@ -52,12 +52,26 @@ class BMP280Sensor extends AbstractSensor {
      */
     protected $debug;
 
-    public function __construct($debug = false) {
+    /**
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     * 
+     * @param I2CDevice $device
+     * @param int $pin
+     * @param string $name
+     * @param boolean $debug
+     */
+    public function __construct(I2CDevice $device, $pin, $name, $debug = false) {
 
         $this->debug = $debug;
 
-        $this->fd = wiringpii2csetup(self::BMP280_I2CADDR);
-        $this->device = new I2CDevice($this->fd);
+        $this->device = $device;
+        $this->pin = $pin;
+        $this->name = $name;
 
         if ($this->device->readU8(self::BMP280_CHIPID) != 0x58) {
             throw new \Exception("Unsupported chip!!");
@@ -211,6 +225,15 @@ class BMP280Sensor extends AbstractSensor {
             'bmp280_pressure',
             'bmp280_altitude'
         );
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
     }
 
 }

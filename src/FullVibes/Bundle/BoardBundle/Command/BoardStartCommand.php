@@ -121,7 +121,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $output->writeln("Starting Sensor :" . $sensor->getName() . " with pin " . $sensor->getPin());
 
         $class = $sensor->getClass();
-        $s = new $class($deviceLink, $sensor->getPin());
+        $s = new $class($deviceLink, $sensor->getPin(), $sensor->getName());
 
         if (!($s instanceof SensorInterface)) {
             throw new \Exception("Initialization error of sensor: " . $class);
@@ -153,11 +153,10 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             }
         }
         
-        //die(dump($this->data));
-
         if (($this->tick % 120) === 0) {
+            $output->writeln("Data added to database " . $firedAt->format(self::ISO8601));
             foreach ($this->data as $sensorId => $sensorData) {
-                $this->persistValues($sensorData, $sensorId, $firedAt, $output);
+                $this->persistValues($sensorData, $sensorId, $firedAt);
             }
         }
 
@@ -170,7 +169,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             
             $this->data[$sensorId] = json_decode($sensor->readSensorData(), true);
             
-            $output->writeln("Added data from sensor ID " . $sensorId  . " values: " . print_r($this->data[$sensorId], 1));
+            $output->writeln("Sensor " . $sensor->getName()  . " values: " . print_r($this->data[$sensorId], 1));
             
             usleep(100000);
         }
@@ -197,11 +196,10 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         }
     }
 
-    protected function persistValues($sensorData, $sensorId, $firedAt, $output) {
+    protected function persistValues($sensorData, $sensorId, $firedAt) {
 
         $analyticsManager = $this->getAnalyticsManager();
-        $output->writeln("Data added to database " . $firedAt->format(self::ISO8601));
-
+        
         foreach ($sensorData as $key => $value) {
             if ($key !== 'error') { 
                 $analytics = new Analytics($sensorId .  '_' . $key, $value, $firedAt);

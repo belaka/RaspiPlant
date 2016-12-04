@@ -43,13 +43,25 @@ class SoundSensor extends AbstractSensor {
      */
     protected $pin;
     
-    function __construct($pin, $debug = false) {
+    /**
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     * 
+     * @param I2CDevice $device
+     * @param int $pin
+     * @param string $name
+     * @param boolean $debug
+     */
+    function __construct(I2CDevice $device, $pin, $name, $debug = false) {
         
         $this->debug = $debug;
         $this->pin = $pin;
-        
-        $this->fd = wiringpii2csetup(self::RPI_I2C_ADDRESS);
-        $this->device = new I2CDevice($this->fd);
+        $this->name = $name;
+        $this->device = $device;
         
         $this->device->pinMode($this->pin, "OUTPUT");
     }
@@ -81,5 +93,14 @@ class SoundSensor extends AbstractSensor {
         return array(
             'sound'
         );
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
     }
 }

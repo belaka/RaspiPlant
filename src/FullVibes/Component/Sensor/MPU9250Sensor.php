@@ -92,12 +92,26 @@ class MPU9250Sensor extends AbstractSensor {
      */
     protected $debug;
 
-    function __construct($debug = false) {
+    /**
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
+     * 
+     * @param I2CDevice $device
+     * @param int $pin
+     * @param string $name
+     * @param boolean $debug
+     */
+    function __construct(I2CDevice $device, $pin, $name, $debug = false) {
 
         $this->debug = $debug;
         
-        $fd = wiringpii2csetup(self::MPU9250_I2C_ADDR);
-        $this->device = new I2CDevice($fd);
+        $this->device = $device;
+        $this->pin = $pin;
+        $this->name = $name;
 
         $this->device->write8(0x6b, 0x00);
         $this->device->write8(0x1a, 0x01);
@@ -201,6 +215,15 @@ class MPU9250Sensor extends AbstractSensor {
             'accY',
             'accZ'
         );
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
     }
 
 }
