@@ -78,7 +78,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
         $output->writeln("Starting Device :" . $device->getName() . " with address " . $device->getAddress());
 
-        $fd = WiringPi::wiringPiI2CSetup($device->getAddress());
+        //address is a varchar and need hexdec before being sent
+        $fd = WiringPi::wiringPiI2CSetup(hexdec($device->getAddress()));
         $class = $device->getClass();
         $deviceLink = new $class($fd);
         
