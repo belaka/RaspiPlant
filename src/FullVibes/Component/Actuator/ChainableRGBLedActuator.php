@@ -223,4 +223,14 @@ class ChainableRGBLedActuator extends AbstractActuator {
         $this->name = $name;
         return $this;
     }
+    
+    public static function getControls() {
+        return array(
+            'state' => array(
+                'on' => 1,
+                'off' => 0
+            )
+        );
+    }
+    
 }

@@ -16,5 +16,7 @@ interface ActuatorInterface {
     public function getName();
     
     public function setName($name);
+    
+    public static function getControls();
 
 }

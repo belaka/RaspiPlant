@@ -70,6 +70,7 @@ class MotorDriverActuator extends AbstractActuator {
         throw new \Exception('NOT IMPLEMENTED');
     }
 
+    
     public function motorDirectionSet($direction) {
         
         $this->device->writeBuffer(self::DIRECTION_SET, $direction, 0, 0, 0, 10);
@@ -119,6 +120,15 @@ class MotorDriverActuator extends AbstractActuator {
     public function setName($name) {
         $this->name = $name;
         return $this;
+    }
+    
+    public static function getControls() {
+        return array(
+            'state' => array(
+                'on' => 1,
+                'off' => 0
+            )
+        );
     }
 
 }
