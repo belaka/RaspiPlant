@@ -142,11 +142,15 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
             $output->writeln("# Starting Read of sensors values at " . $firedAt->format(self::ISO8601));
 
-            $data[$id] = $this->readDeviceSensors($this->devices[$id]['sensors'], $output);
+            if (array_key_exists('sensors', $this->devices[$id]))  {
+                $data[$id] = $this->readDeviceSensors($this->devices[$id]['sensors'], $output);
+            }
 
             $output->writeln("# Starting set of actuators values at " . $firedAt->format(self::ISO8601));
 
-            $this->setDeviceActuators($this->devices[$id]['actuators'], $output);
+            if (array_key_exists('actuators', $this->devices[$id]))  {
+                $this->setDeviceActuators($this->devices[$id]['actuators'], $output);
+            }
         }
 
         if (($this->tick % 120) == 0) {
