@@ -49,17 +49,19 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         if (!$boards) {
             throw new \Exception("No boards found...");
         }
-
-        foreach ($boards as $board) {
-            $this->boardInitialize($board, $output);
-        }
-
+        
         $output->writeln([
             '=======================================================================',
             '========================   RASPIPLANT START    ========================',
             '=======================================================================',
             php_uname(),
         ]);
+
+        $output->writeln();
+        
+        foreach ($boards as $board) {
+            $this->boardInitialize($board, $output);
+        }
     }
 
     protected function boardInitialize(Board $board, $output) {
