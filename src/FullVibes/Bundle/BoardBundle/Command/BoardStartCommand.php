@@ -57,7 +57,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             php_uname(),
         ]);
 
-        $output->writeln();
+        $output->writeln("");
         
         foreach ($boards as $board) {
             $this->boardInitialize($board, $output);
