@@ -22,12 +22,6 @@ class AirQualitySensor extends AbstractSensor
     
     /**
      *
-     * @var type 
-     */
-    protected $fd;
-    
-    /**
-     *
      * @var int
      */
     protected $pin;

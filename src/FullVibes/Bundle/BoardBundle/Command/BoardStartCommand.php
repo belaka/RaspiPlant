@@ -153,7 +153,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             }
         }
         
-        die(dump($this->data));
+        //die(dump($this->data));
 
         if (($this->tick % 120) === 0) {
             foreach ($this->data as $deviceData) {
@@ -167,8 +167,11 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected function readDeviceSensors(array $sensors, OutputInterface $output) {
 
         foreach ($sensors as $sensorId => $sensor) {
+            
             $this->data[$sensorId] = json_decode($sensor->readSensorData(), true);
+            
             $output->writeln("Added data from sensor ID " . $sensorId  . " values: " . print_r($this->data[$sensorId], 1));
+            
             usleep(100000);
         }
     }
@@ -199,10 +202,11 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $analyticsManager = $this->getAnalyticsManager();
         $output->writeln("Data added to database " . $firedAt->format(self::ISO8601));
 
-        dump($data);die('DATA ARRAY END');
         foreach ($data as $key => $value) {
-            $analytics = new Analytics($key, $value, $firedAt);
-            $analyticsManager->save($analytics);
+            if ($key !== 'error') { 
+                $analytics = new Analytics($key, $value, $firedAt);
+                $analyticsManager->save($analytics);
+            }
         }
     }
 
