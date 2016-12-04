@@ -21,8 +21,6 @@ class DashboardController extends Controller
             $keys = array_merge($fields, $keys);
         }
         
-        //die(dump($keys));
-        
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('Europe/Paris'));
         $date->modify('-3 hours');
@@ -30,17 +28,19 @@ class DashboardController extends Controller
         $analytics = $data = array();
         
         foreach ($keys as $sensorData) {
+            //dump($sensorData['key']);
             $keyDatas = $this->getAnalyticsManager()->findByKeyAndDate($sensorData['key'], $date);
+            //die(dump($keyDatas));
             foreach ($keyDatas as $keyData) {
                 $keyValue = round($keyData->getEventValue(), 2);
                 if ($keyValue > 0 && $keyValue < 1500) {
                     $eventDate = $keyData->getEventDate()->setTimezone(new \DateTimeZone('Europe/Paris'));
-                    $analytics[$sensorData['key']][] = [addslashes($eventDate->format('H:i')), round($keyValue, 2)];
+                    $analytics[$sensorData['name'] . $sensorData['key']][] = [addslashes($eventDate->format('H:i')), round($keyValue, 2)];
                 }
             }
-            $data[$sensorData['key']] = array(
-                'value' => end($sensorData['key'])[1],
-                'date' => end($sensorData['key'])[0]
+            $data[$sensorData['name'] . $sensorData['key']] = array(
+                'value' => end($analytics[$sensorData['name'] . $sensorData['key']])[1],
+                'date' => end($analytics[$sensorData['name'] . $sensorData['key']])[0]
             );
         }
         
