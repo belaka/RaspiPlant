@@ -11,5 +11,5 @@ interface SensorInterface {
     
     public function readSensorData();
     
-    public function getFields();
+    public static function getFields();
 }

@@ -57,7 +57,7 @@ class AirQualitySensor extends AbstractSensor
         }
     }
     
-    public function getFields() {
+    public static function getFields() {
         		
         return array(
             'air_quality'

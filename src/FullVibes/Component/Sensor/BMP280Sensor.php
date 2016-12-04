@@ -198,11 +198,18 @@ class BMP280Sensor extends AbstractSensor {
 
         return json_encode(
                 array(
-                    'temperature' => $this->readTemperature(),
-                    'pressure' => $this->readPressure()/100,
-                    'altitude' => $this->readAltitude(),
-                    'sea_level_pressure' => $this->readSealevelPressure()
+                    'bmp280_temperature' => $this->readTemperature(),
+                    'bmp280_pressure' => $this->readPressure()/100,
+                    'bmp280_altitude' => $this->readAltitude()
                 )
+        );
+    }
+    
+    public static function getfields() {
+        return array(
+            'bmp280_temperature',
+            'bmp280_pressure',
+            'bmp280_altitude'
         );
     }
 

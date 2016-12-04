@@ -95,7 +95,7 @@ class DHTSensor extends AbstractSensor {
         }
     }
     
-    public function getfields() {
+    public static function getfields() {
         return  array(
             'dht_temperature',
             'dht_humidity'
