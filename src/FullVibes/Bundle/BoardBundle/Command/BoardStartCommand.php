@@ -21,6 +21,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
     protected $debug;
     protected $devices = array();
+    protected $data = array();
+    protected $tick = 0;
 
     protected function configure() {
         $this->setName('raspiplant:board:start')
@@ -139,7 +141,6 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
 
         $firedAt = new \DateTime();
-
         $this->data = array();
 
         foreach ($this->devices as $deviceId => $device) {
@@ -149,6 +150,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             if (array_key_exists('sensors', $this->devices[$deviceId]))  {
                 $this->readDeviceSensors($this->devices[$deviceId]['sensors'], $output);
             }
+        }
+
+        foreach ($this->devices as $deviceId => $device) {
 
             $output->writeln("# Starting set of actuators values at " . $firedAt->format(self::ISO8601));
             $output->writeln("");
@@ -156,7 +160,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                 $this->setDeviceActuators($this->devices[$deviceId]['actuators'], $output);
             }
         }
-        
+
         if (($this->tick % 120) === 0) {
             $output->writeln("Data added to database " . $firedAt->format(self::ISO8601));
             $output->writeln("");
@@ -171,13 +175,18 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected function readDeviceSensors(array $sensors, OutputInterface $output) {
 
         foreach ($sensors as $sensorId => $sensor) {
-            
+
             $this->data[$sensorId] = json_decode($sensor->readSensorData(), true);
-            
+
             if ($this->data[$sensorId]) {
-                foreach ($this->data[$sensorId] as $key => $value) {
-                    $output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value);
+                if (array_key_exists('error', $this->data[$sensorId]) && !empty($this->data[$sensorId]['error'])) {
+                    $output->writeln("Sensor " . $sensor->getName()  . " Error:" . $this->data[$sensorId]['error']);
+                } else {
+                    foreach ($this->data[$sensorId] as $key => $value) {
+                        $output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value);
+                    }
                 }
+
                 $output->writeln("");
             }
                         
