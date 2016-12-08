@@ -143,7 +143,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $firedAt = new \DateTime();
         $this->data = array();
 
-        $output->writeln("# Starting Read of sensors values at " . $firedAt->format(self::ISO8601));
+        $output->writeln("#Read from sensors at " . $firedAt->format(self::ISO8601));
         $output->writeln("");
         foreach ($this->devices as $deviceId => $device) {
             if (array_key_exists('sensors', $this->devices[$deviceId]))  {
@@ -152,7 +152,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         }
         $output->writeln("");
 
-        $output->writeln("# Starting set of actuators values at " . $firedAt->format(self::ISO8601));
+        $output->writeln("#Writing to actuators at " . $firedAt->format(self::ISO8601));
         $output->writeln("");
         foreach ($this->devices as $deviceId => $device) {
             if (array_key_exists('actuators', $this->devices[$deviceId]))  {
@@ -185,7 +185,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                     unset($this->data[$sensorId]['error']);
                     foreach ($this->data[$sensorId] as $key => $value) {
                         $fields = $sensor::getFields();
-                        $output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value . " " . $fields[$key]['unit']);
+                        $output->writeln("<info>Sensor " . $sensor->getName()  . " " . $key . "</info>: <question>" . $value . " " . $fields[$key]['unit'] . "<question>");
                     }
                 }
             }
