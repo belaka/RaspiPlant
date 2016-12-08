@@ -68,7 +68,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $output->writeln("");
     }
 
-    protected function boardInitialize(Board $board, $output) {
+    protected function boardInitialize(Board $board, OutputInterface $output) {
 
         $output->writeln("Starting Board :" . $board->getName());
 
@@ -80,7 +80,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         }
     }
 
-    protected function deviceInitialize(Device $device, $output) {
+    protected function deviceInitialize(Device $device, OutputInterface $output) {
 
         $output->writeln("Starting Device :" . $device->getName() . " with address " . $device->getAddress());
 
@@ -106,7 +106,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         return $deviceLink;
     }
 
-    protected function actuatorInitialize(Actuator $actuator, $deviceLink, $output) {
+    protected function actuatorInitialize(Actuator $actuator, $deviceLink, OutputInterface $output) {
 
         $output->writeln("Starting Actuator :" . $actuator->getName() . " with pin " . $actuator->getPin());
 
@@ -122,7 +122,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         return $a;
     }
 
-    protected function sensorInitialize(Sensor $sensor, $deviceLink, $output) {
+    protected function sensorInitialize(Sensor $sensor, $deviceLink, OutputInterface $output) {
 
         $output->writeln("Starting Sensor :" . $sensor->getName() . " with pin " . $sensor->getPin());
 
@@ -182,6 +182,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                 if (array_key_exists('error', $this->data[$sensorId]) && !empty($this->data[$sensorId]['error'])) {
                     $output->writeln("Sensor " . $sensor->getName()  . " Error:" . $this->data[$sensorId]['error']);
                 } else {
+                    unset($this->data[$sensorId]['error']);
                     foreach ($this->data[$sensorId] as $key => $value) {
                         $output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value);
                     }
@@ -229,7 +230,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
     /**
      * 
-     * @return \FullVibes\Bundle\BoardBundle\Manager\AnalyticsManager
+     * @return \FullVibes\Bundle\BoardBundle\Manager\BoardManager
      */
     protected function getBoardManager() {
 
@@ -238,7 +239,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
     /**
      * 
-     * @return \FullVibes\Bundle\BoardBundle\Manager\AnalyticsManager
+     * @return \FullVibes\Bundle\BoardBundle\Manager\ActuatorManager
      */
     protected function getActuatorManager() {
 
