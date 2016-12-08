@@ -70,11 +70,14 @@ class LightSensor extends AbstractSensor {
             );
         }
     }
-    
+
+    /**
+     * @return array
+     */
     public static function getFields() {
         		
         return array(
-            'light'
+            'light' => array('min' => 0, 'max' => 1000, 'unit' => 'lux')
         );
     }
 

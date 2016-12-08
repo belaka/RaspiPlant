@@ -89,11 +89,14 @@ class UltrasonicSensor extends AbstractSensor {
             );
         }
     }
-    
+
+    /**
+     * @return array
+     */
     public static function getFields() {
         		
         return array(
-            'distance'
+            'distance' => array('min' => 0, 'max' => 1000, 'unit' => 'm')
         );
     }
 }

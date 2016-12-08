@@ -218,12 +218,15 @@ class BMP280Sensor extends AbstractSensor {
                 )
         );
     }
-    
+
+    /**
+     * @return array
+     */
     public static function getfields() {
         return array(
-            'bmp280_temperature',
-            'bmp280_pressure',
-            'bmp280_altitude'
+            'bmp280_temperature' => array('min' => 0, 'max' => 100, 'unit' => 'C°'),
+            'bmp280_pressure' => array('min' => 0, 'max' => 100, 'unit' => 'mBar'),
+            'bmp280_altitude' => array('min' => 0, 'max' => 100, 'unit' => 'm')
         );
     }
 

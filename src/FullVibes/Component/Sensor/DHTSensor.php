@@ -110,11 +110,14 @@ class DHTSensor extends AbstractSensor {
             );
         }
     }
-    
-    public static function getfields() {
+
+    /**
+     * @return array
+     */
+    public static function getFields() {
         return  array(
-            'dht_temperature',
-            'dht_humidity'
+            'dht_temperature' => array('min' => 0, 'max' => 100, 'unit' => 'C°'),
+            'dht_humidity' => array('min' => 0, 'max' => 100, 'unit' => '%')
         );
     }
 

@@ -72,11 +72,14 @@ class AirQualitySensor extends AbstractSensor
             );
         }
     }
-    
+
+    /**
+     * @return array
+     */
     public static function getFields() {
         		
         return array(
-            'air_quality'
+            'air_quality' => array('min' => 0, 'max' => 1000, 'unit' => '')
         );
     }
 

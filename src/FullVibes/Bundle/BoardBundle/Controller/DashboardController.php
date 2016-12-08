@@ -17,7 +17,7 @@ class DashboardController extends Controller
             $class = $sensor->getClass();
             $id = $sensor->getId();
             $name = $sensor->getSlug();
-            $fields = array_map(function($v) use ($id, $name) { return array('name' => $name, 'key' => $id . '_' . $v);}, $class::getFields());
+            $fields = array_map(function($k) use ($id, $name) { return array('name' => $name, 'key' => $id . '_' . $k);}, array_keys($class::getFields()));
             $keys = array_merge($fields, $keys);
         }
         

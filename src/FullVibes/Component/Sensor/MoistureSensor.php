@@ -70,11 +70,14 @@ class MoistureSensor extends AbstractSensor {
             );
         }
     }
-    
+
+    /**
+     * @return array
+     */
     public static function getFields() {
         		
         return array(
-            'moisture'
+            'moisture' => array('min' => 0, 'max' => 1000, 'unit' => 'moist')
         );
     }
 

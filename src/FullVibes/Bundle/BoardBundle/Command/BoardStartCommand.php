@@ -184,11 +184,10 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                 } else {
                     unset($this->data[$sensorId]['error']);
                     foreach ($this->data[$sensorId] as $key => $value) {
-                        $output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value);
+                        $fields = $sensor::getFields();
+                        $output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value . " " . $fields[$key]['unit']);
                     }
                 }
-
-                $output->writeln("");
             }
                         
             usleep(100000);
@@ -212,6 +211,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             $actuator->writeStatus($actuatorData->getState());
             
             $output->writeln("Actuator " . $actuator->getName()  . " set to value: " .  $actuatorData->getState());
+            $output->writeln("");
             usleep(100000);
         }
     }
@@ -221,7 +221,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $analyticsManager = $this->getAnalyticsManager();
         
         foreach ($sensorData as $key => $value) {
-            if ($key !== 'error') { 
+            if ($key !== 'error') {
+
                 $analytics = new Analytics($sensorId .  '_' . $key, $value, $firedAt);
                 $analyticsManager->save($analytics);
             }

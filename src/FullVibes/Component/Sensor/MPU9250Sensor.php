@@ -203,17 +203,20 @@ class MPU9250Sensor extends AbstractSensor {
             exit();
         }
     }
-    
+
+    /**
+     * @return array
+     */
     public static function getFields() {
         return array(
-            'time',
-            'tempOut',
-            'gyroX',
-            'gyroY',
-            'gyroZ',
-            'accX',
-            'accY',
-            'accZ'
+            'time' => array('min' => 0, 'max' => 100, 'unit' => ''),
+            'tempOut' => array('min' => 0, 'max' => 100, 'unit' => ''),
+            'gyroX' => array('min' => 0, 'max' => 100, 'unit' => ''),
+            'gyroY' => array('min' => 0, 'max' => 100, 'unit' => ''),
+            'gyroZ' => array('min' => 0, 'max' => 100, 'unit' => ''),
+            'accX' => array('min' => 0, 'max' => 100, 'unit' => ''),
+            'accY' => array('min' => 0, 'max' => 100, 'unit' => ''),
+            'accZ' => array('min' => 0, 'max' => 100, 'unit' => '')
         );
     }
 

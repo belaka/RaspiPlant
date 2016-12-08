@@ -71,11 +71,14 @@ class SoundSensor extends AbstractSensor {
             );
         }
     }
-    
+
+    /**
+     * @return array
+     */
     public static function getFields() {
         		
         return array(
-            'sound'
+            'sound' => array('min' => 0, 'max' => 100, 'unit' => '%')
         );
     }
 

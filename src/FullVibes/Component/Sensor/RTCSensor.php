@@ -74,7 +74,7 @@ class RTCSensor extends AbstractSensor {
      */
     public static function getFields() {
         return  array(
-            'date'
+            'date' => array('min' => 0, 'max' => 100, 'unit' => '')
         );
     }
 

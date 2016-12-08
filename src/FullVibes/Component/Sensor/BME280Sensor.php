@@ -456,13 +456,16 @@ class BME280Sensor extends AbstractSensor {
             ); 
         }
     }
-    
-    public static function getfields() {
+
+    /**
+     * @return array
+     */
+    public static function getFields() {
         return  array(
-            'bme280_temperature',
-            'bme280_pressure',
-            'bme280_humidity',
-            'bme280_dew_point'
+            'bme280_temperature' => array('min' => 0, 'max' => 100, 'unit' => 'C°'),
+            'bme280_pressure' => array('min' => 0, 'max' => 2000, 'unit' => 'mBar'),
+            'bme280_humidity' => array('min' => 0, 'max' => 100, 'unit' => '%'),
+            'bme280_dew_point' => array('min' => -50, 'max' => 50, 'unit' => '%')
         );
     }
 
