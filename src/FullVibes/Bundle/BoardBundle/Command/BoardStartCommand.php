@@ -143,23 +143,23 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $firedAt = new \DateTime();
         $this->data = array();
 
+        $output->writeln("# Starting Read of sensors values at " . $firedAt->format(self::ISO8601));
+        $output->writeln("");
         foreach ($this->devices as $deviceId => $device) {
-
-            $output->writeln("# Starting Read of sensors values at " . $firedAt->format(self::ISO8601));
-            $output->writeln("");
             if (array_key_exists('sensors', $this->devices[$deviceId]))  {
                 $this->readDeviceSensors($this->devices[$deviceId]['sensors'], $output);
             }
         }
+        $output->writeln("");
 
+        $output->writeln("# Starting set of actuators values at " . $firedAt->format(self::ISO8601));
+        $output->writeln("");
         foreach ($this->devices as $deviceId => $device) {
-
-            $output->writeln("# Starting set of actuators values at " . $firedAt->format(self::ISO8601));
-            $output->writeln("");
             if (array_key_exists('actuators', $this->devices[$deviceId]))  {
                 $this->setDeviceActuators($this->devices[$deviceId]['actuators'], $output);
             }
         }
+        $output->writeln("");
 
         if (($this->tick % 120) === 0) {
             $output->writeln("Data added to database " . $firedAt->format(self::ISO8601));
@@ -222,7 +222,6 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         
         foreach ($sensorData as $key => $value) {
             if ($key !== 'error') {
-
                 $analytics = new Analytics($sensorId .  '_' . $key, $value, $firedAt);
                 $analyticsManager->save($analytics);
             }
