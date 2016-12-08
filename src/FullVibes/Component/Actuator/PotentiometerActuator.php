@@ -82,16 +82,7 @@ class PotentiometerActuator extends AbstractActuator {
     public function writeStatus($status = NULL) {
         throw new \Exception('NOT IMPLEMENTED');
     }
-    
-    public function getName() {
-        return $this->name;
-    }
 
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
-    
     public static function getControls() {
         return array(
             'state' => array(

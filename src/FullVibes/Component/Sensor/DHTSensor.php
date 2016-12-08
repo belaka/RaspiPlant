@@ -117,13 +117,5 @@ class DHTSensor extends AbstractSensor {
             'dht_humidity'
         );
     }
-    
-    public function getName() {
-        return $this->name;
-    }
 
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
 }

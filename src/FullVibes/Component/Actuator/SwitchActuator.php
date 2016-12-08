@@ -29,11 +29,13 @@ class SwitchActuator extends AbstractActuator {
      * @var boolean
      */
     protected $debug;
-    
+
     /**
-     * 
-     * @param int $pin
-     * @param boolean $debug
+     * SwitchActuator constructor.
+     * @param I2CDevice $device
+     * @param $pin
+     * @param $name
+     * @param bool $debug
      */
     public function __construct(I2CDevice $device, $pin, $name, $debug = false) {
         $this->debug = $debug;
@@ -53,26 +55,19 @@ class SwitchActuator extends AbstractActuator {
         sleep(0.1);
         return $status;
     }
-    
-    
+
+
     /**
-     * 
-     * @param int $status
-     * @return int
+     * @param null $status
+     * @throws \Exception
      */
     public function writeStatus($status = NULL) {
         throw new \Exception('NOT IMPLEMENTED');
     }
-    
-    public function getName() {
-        return $this->name;
-    }
 
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
-    
+    /**
+     * @return array
+     */
     public static function getControls() {
         return array(
             'state' => array(

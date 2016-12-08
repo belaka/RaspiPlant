@@ -29,11 +29,13 @@ class ButtonActuator extends AbstractActuator {
      * @var boolean
      */
     protected $debug;
-    
+
     /**
-     * 
-     * @param int $pin
-     * @param boolean $debug
+     * ButtonActuator constructor.
+     * @param I2CDevice $device
+     * @param $pin
+     * @param $name
+     * @param bool $debug
      */
     public function __construct(I2CDevice $device, $pin, $name, $debug = false) {
 
@@ -52,26 +54,15 @@ class ButtonActuator extends AbstractActuator {
         # read relay status
         return $this->device->digitalRead(self::DIGITAL_READ_COMMAND, $this->pin);
     }
-    
-    
+
     /**
-     * 
-     * @param int $status
-     * @return int
+     * @param null $status
+     * @throws \Exception
      */
     public function writeStatus($status = NULL) {
         throw new \Exception('NOT IMPLEMENTED');
     }
-    
-    public function getName() {
-        return $this->name;
-    }
 
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
-    
     public static function getControls() {
         return array(
             'state' => array(

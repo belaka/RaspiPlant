@@ -5,7 +5,7 @@ namespace FullVibes\Component\Actuator;
 /**
  * Interface Class for actuators.
  *
- * @author Vincent Honnorat <full-vibes@gmail.com>
+ * @author Vincent Honnorat <creationforge@gmail.com>
  */
 interface ActuatorInterface {
     

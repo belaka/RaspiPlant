@@ -44,8 +44,11 @@ class I2CDevice extends AbstractDevice
     protected $address;
 
     /**
+     * I2CDevice constructor.
      * Create an instance of the I2C device at the specified address on the
-     *   specified I2C bus number.
+     * specified I2C bus number.
+     *
+     * @param $address
      */
     public function __construct($address) {
         $this->address = $address;
@@ -63,6 +66,8 @@ class I2CDevice extends AbstractDevice
 
     /**
      * Write an 8-bit value on the bus (without register).
+     *
+     * @param $v
      */
     public function writeRaw8($v) {
         $value = $v & 0xFF;

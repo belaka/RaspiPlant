@@ -465,14 +465,5 @@ class BME280Sensor extends AbstractSensor {
             'bme280_dew_point'
         );
     }
-    
-    public function getName() {
-        return $this->name;
-    }
-
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
 
 }

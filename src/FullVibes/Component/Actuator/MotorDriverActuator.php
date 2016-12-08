@@ -3,6 +3,7 @@
 namespace FullVibes\Component\Actuator;
 
 use FullVibes\Component\Device\I2CDevice;
+use FullVibes\Component\WiringPi\WiringPi;
 
 class MotorDriverActuator extends AbstractActuator {
 
@@ -54,8 +55,7 @@ class MotorDriverActuator extends AbstractActuator {
     }
 
     /**
-     * 
-     * @return int
+     * @throws \Exception
      */
     public function readStatus() {
         throw new \Exception('NOT IMPLEMENTED');
@@ -67,29 +67,47 @@ class MotorDriverActuator extends AbstractActuator {
      * @return int
      */
     public function writeStatus($status) {
-        throw new \Exception('NOT IMPLEMENTED');
+        if ($status === 0)  {
+            $this->controlMotor('A', 0);
+            usleep(100000);
+            $this->controlMotor('B', 0);
+        } elseif($status === 1) {
+            $this->controlMotor('A', 1);
+            usleep(100000);
+            $this->controlMotor('B', 1);
+        }
     }
 
     
     public function motorDirectionSet($direction) {
-        
+
+        //bus . write_i2c_block_data(self::I2C_MOTOR_DRIVER_ADD, self::DIRECTION_SET, [$direction, 0]);
         $this->device->writeBuffer(self::DIRECTION_SET, $direction, 0, 0, 0, 10);
         
-        //bus . write_i2c_block_data(self::I2C_MOTOR_DRIVER_ADD, self::DIRECTION_SET, [$direction, 0]);
+
     }
 
-    public function motorSpeedSetAB($motorSpeedA, $motorSpeedB) {
-        //$speedA = $this->mapVals($motorSpeedA, 0, 100, 0, 255);
-        //$speedB = $this->mapVals($motorSpeedB, 0, 100, 0, 255);
-        wiringPiI2CWriteBuffer ($this->fd, self::MOTOR_SET_A, 0b1010, 0, 0, 0, 10); //$motorSpeedA, $motorSpeedB, 0, 0, 10);
-        usleep(20000);
-        wiringPiI2CWriteBuffer ($this->fd, self::MOTOR_SET_A, 255, 0, 0, 0, 10);
-        usleep(20000);
-        wiringPiI2CWriteBuffer ($this->fd, self::MOTOR_SET_B, 0b1010, 0, 0, 0, 10);
-        usleep(20000); 
-        wiringPiI2CWriteBuffer ($this->fd, self::MOTOR_SET_B, 255, 0, 0, 0, 10);
-        //bus . write_i2c_block_data(self::I2C_MOTOR_DRIVER_ADD, self::MOTOR_SPEED_SET, []);
-        usleep(60000);
+    public function controlMotor($motor , $speed, $direction = 0b1010) {
+
+        if (!in_array($motor, array('A', 'B'))) {
+            throw new \Exception('NOT A RECOGNIZED MOTOR');
+        }
+
+        $motor_set = self::MOTOR_SET_A;
+
+        if ($motor === 'B') {
+            $motor_set = self::MOTOR_SET_B;
+        }
+
+        $this->device->writeBuffer($motor_set, $direction, $speed, self::NOTHING, self::NOTHING, 10);
+    }
+
+    public function controlMotorA($speed, $direction = 0b1010) {
+        $this->controlMotor('A', $speed, $direction);
+    }
+
+    public function controlMotorB($speed, $direction = 0b1010) {
+        $this->controlMotor('B', $speed, $direction);
     }
 
     //Maps speed from 0-100 to 0-255
@@ -110,23 +128,23 @@ class MotorDriverActuator extends AbstractActuator {
      * 
      */
     public function __destruct() {
-        wiringPiI2CWriteBuffer ($this->fd, self::MOTOR_SPEED_SET, 0, 0, 0, 0, 0);
-    }
-    
-    public function getName() {
-        return $this->name;
+        $this->controlMotor('A', 0);
+        $this->controlMotor('B', 0);
     }
 
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
-    
     public static function getControls() {
         return array(
             'state' => array(
                 'on' => 1,
                 'off' => 0
+            ),
+            'speed' => array(
+                'min' => 0,
+                'max' => 255
+            ),
+            'direction' => array(
+                'forth' => 0b1010,
+                'back' => 0b0101,
             )
         );
     }

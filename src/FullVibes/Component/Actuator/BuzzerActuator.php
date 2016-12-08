@@ -70,16 +70,7 @@ class BuzzerActuator extends AbstractActuator {
     public function __destruct() {
         $this->device->digitalWrite(self::DIGITAL_WRITE_COMMAND, $this->pin, 0, 0);
     }
-    
-    public function getName() {
-        return $this->name;
-    }
 
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
-    
     public static function getControls() {
         return array(
             'state' => array(

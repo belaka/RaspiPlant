@@ -65,16 +65,7 @@ class LedActuator extends AbstractActuator {
         
         return $this->readStatus();
     }
-    
-    public function getName() {
-        return $this->name;
-    }
 
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
-    
     public static function getControls() {
         return array(
             'state' => array(

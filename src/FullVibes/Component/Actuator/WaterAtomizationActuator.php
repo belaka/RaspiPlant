@@ -29,11 +29,13 @@ class WaterAtomizationActuator extends AbstractActuator {
      * @var boolean
      */
     protected $debug;
-    
+
     /**
-     * 
-     * @param int $pin
-     * @param boolean $debug
+     * WaterAtomizationActuator constructor.
+     * @param I2CDevice $device
+     * @param $pin
+     * @param $name
+     * @param bool $debug
      */
     public function __construct(I2CDevice $device, $pin, $name, $debug = false) {
 
@@ -45,8 +47,7 @@ class WaterAtomizationActuator extends AbstractActuator {
     }
 
     /**
-     * 
-     * @return int
+     * @throws \Exception
      */
     public function readStatus() {
         throw new \Exception('NOT IMPLEMENTED');
@@ -64,23 +65,17 @@ class WaterAtomizationActuator extends AbstractActuator {
         
         return 1;
     }
-    
+
     /**
-     * 
+     *
      */
     public function __destruct() {
         $this->device->digitalWrite(self::DIGITAL_WRITE_COMMAND, $this->pin, 0, 0);
     }
-    
-    public function getName() {
-        return $this->name;
-    }
 
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
-    
+    /**
+     * @return array
+     */
     public static function getControls() {
         return array(
             'state' => array(

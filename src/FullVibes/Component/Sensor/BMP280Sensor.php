@@ -226,14 +226,5 @@ class BMP280Sensor extends AbstractSensor {
             'bmp280_altitude'
         );
     }
-    
-    public function getName() {
-        return $this->name;
-    }
-
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
 
 }

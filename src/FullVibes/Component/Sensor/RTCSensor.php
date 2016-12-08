@@ -4,79 +4,77 @@ namespace FullVibes\Component\Sensor;
 
 use FullVibes\Component\Device\I2CDevice;
 
-/**
- * 
- */
-class AirQualitySensor extends AbstractSensor 
-{
+class RTCSensor extends AbstractSensor {
+
+    /**
+     *
+     * @var I2CDevice
+     */
+    protected $device;
+
+    /**
+     *
+     * @var integer
+     */
+    protected $pin;
 
     /**
      *
      * @var boolean
      */
     protected $debug;
-    
-    /**
-     *
-     * @var Device
-     */
-    protected $device;
-    
-    /**
-     *
-     * @var int
-     */
-    protected $pin;
-    
+
     /**
      *
      * @var string
      */
     protected $name;
-    
+
     /**
-     * 
+     * RTCSensor constructor.
      * @param I2CDevice $device
-     * @param int $pin
-     * @param string $name
-     * @param boolean $debug
+     * @param $pin
+     * @param $name
+     * @param bool $debug
+     * @throws \Exception
      */
-    function __construct(I2CDevice $device, $pin, $name, $debug = false) {
-        
-        $this->debug = $debug;
-        $this->pin = $pin;
+    public function __construct(I2CDevice $device, $pin, $name, $debug = false) {
+
         $this->device = $device;
+        $this->pin = $pin;
         $this->name = $name;
-        $this->device->pinMode($this->pin, "INPUT");
-        
+        $this->debug = $debug;
+
     }
 
     public function readSensorData() {
-        		
+
         try {
-            
+
+            usleep(100000);
+
             return json_encode(
                     array(
                         'error' => null,
-                        'air_quality' => $this->device->analogRead($this->pin)
+                        'date' => '',
                     )
-            ); 
-            
+            );    
         } catch (\Exception $exc) {
-            
             return json_encode(
                     array(
                         'error' => $exc->getMessage(),
-                        'air_quality' => 0
+                        'date' => 0
                     )
-            );
+            ); 
         }
     }
-    
+
+    /**
+     * @return array
+     */
     public static function getFields() {
-        		
-        return array(
-            'air_quality'
+        return  array(
+            'date'
         );
     }
 

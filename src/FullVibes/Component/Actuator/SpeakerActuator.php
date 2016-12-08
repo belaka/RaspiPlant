@@ -4,7 +4,7 @@ namespace FullVibes\Component\Actuator;
 
 use FullVibes\Component\Device\I2CDevice;
 
-class BuzzerActuator extends AbstractActuator {
+class SpeakerActuator extends AbstractActuator {
     
     /**
      *
@@ -29,11 +29,13 @@ class BuzzerActuator extends AbstractActuator {
      * @var boolean
      */
     protected $debug;
-    
+
     /**
-     * 
-     * @param int $pin
-     * @param boolean $debug
+     * SpeakerActuator constructor.
+     * @param I2CDevice $device
+     * @param $pin
+     * @param $name
+     * @param bool $debug
      */
     public function __construct(I2CDevice $device, $pin, $name, $debug = false) {
         $this->debug = $debug;
@@ -44,8 +46,7 @@ class BuzzerActuator extends AbstractActuator {
     }
 
     /**
-     * 
-     * @return int
+     * @throws \Exception
      */
     public function readStatus() {
         throw new \Exception('NOT IMPLEMENTED');
@@ -57,7 +58,7 @@ class BuzzerActuator extends AbstractActuator {
      * @return int
      */
     public function writeStatus($status) {
-        # switch relay on
+        # switch speaker on
         $this->device->digitalWrite(self::DIGITAL_WRITE_COMMAND, $this->pin, $status, 0);
         
         return 1;
@@ -69,16 +70,7 @@ class BuzzerActuator extends AbstractActuator {
     public function __destruct() {
         $this->device->digitalWrite(self::DIGITAL_WRITE_COMMAND, $this->pin, 0, 0);
     }
-    
-    public function getName() {
-        return $this->name;
-    }
 
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
-    
     public static function getControls() {
         return array(
             'state' => array(
