@@ -35,7 +35,7 @@ class SensorModel
      * @var \FullVibes\Bundle\BoardBundle\Entity\Device
      */
     protected $device;
-    
+
     /**
      * 
      * @param string $name

@@ -185,7 +185,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                     unset($this->data[$sensorId]['error']);
                     foreach ($this->data[$sensorId] as $key => $value) {
                         $fields = $sensor::getFields();
-                        $output->writeln("<info>Sensor " . $sensor->getName()  . " " . $key . "</info>: <question>" . $value . " " . $fields[$key]['unit'] . "<question>");
+                        $output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value . " " . $fields[$key]['unit']);
                     }
                 }
             }

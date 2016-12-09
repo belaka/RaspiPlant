@@ -41,11 +41,13 @@ class MotorDriverActuator extends AbstractActuator {
      * @var boolean
      */
     protected $debug;
-    
+
     /**
-     * 
-     * @param int $pin
-     * @param boolean $debug
+     * MotorDriverActuator constructor.
+     * @param I2CDevice $device
+     * @param $pin
+     * @param $name
+     * @param bool $debug
      */
     public function __construct(I2CDevice $device, $pin, $name, $debug = false) {
         $this->debug = $debug;
@@ -67,14 +69,14 @@ class MotorDriverActuator extends AbstractActuator {
      * @return int
      */
     public function writeStatus($status) {
-        if ($status === 0)  {
+        if ($status == 0)  {
             $this->controlMotor('A', 0);
             usleep(100000);
             $this->controlMotor('B', 0);
-        } elseif($status === 1) {
-            $this->controlMotor('A', 1);
+        } elseif($status == 1) {
+            $this->controlMotor('A', 255);
             usleep(100000);
-            $this->controlMotor('B', 1);
+            $this->controlMotor('B', 255);
         }
     }
 
