@@ -1,7 +1,7 @@
-'''
+    '''
     /*
      * Grove-RTC.py
-     * Demo for Raspberry Pi
+     * Demo for Raspberry Pi 
      *
      * Copyright (c) 2014 seeed technology inc.
      * Website    : www.seeed.cc
@@ -35,9 +35,9 @@
     import smbus
 
 
-    bus = smbus.SMBus(1)    # 0 = /dev/i2c-0 (port I2C0), 1 = /dev/i2c-1 (port I2C1)
+    bus = smbus.SMBus(1)    # 0 = /dev/i2c-0 (port I2C0), 1 = /dev/i2c-1 (port I2C1)   
 
-    class DS1307():
+    class DS1307():     
         def __init__(self):
             self.MON = 1
             self.TUE = 2
@@ -48,7 +48,7 @@
             self.SUN = 7
             self.DS1307_I2C_ADDRESS = 0x68
 
-            print 'begin'
+            print 'begin' 
 
         def decToBcd(self, val):
             return ( (val/10*16) + (val%10) )
@@ -59,17 +59,17 @@
         def begin(self, news):
             print news
 
-        def startClock(self):
+        def startClock(self):   
             bus.write_byte(self.DS1307_I2C_ADDRESS, 0x00)
             self.second = bus.read_byte(self.DS1307_I2C_ADDRESS) & 0x7f
             bus.write_byte_data(self.DS1307_I2C_ADDRESS, 0x00, self.second)
 
             print 'startClock..'
 
-        def stopClock(self):
+        def stopClock(self):                        
             bus.write_byte(self.DS1307_I2C_ADDRESS, 0x00)
             self.second = bus.read_byte(self.DS1307_I2C_ADDRESS) | 0x80
-            bus.write_byte_data(self.DS1307_I2C_ADDRESS, 0x00, self.second)
+            bus.write_byte_data(self.DS1307_I2C_ADDRESS, 0x00, self.second)         
 
             print 'stopClock..'
 
@@ -105,28 +105,28 @@
 
             print 'fillByHMS..'
 
-        def fillByYMD(self, _year,  _month,  _day):
+        def fillByYMD(self, _year,  _month,  _day):     
             self.year = _year - 2000
             self.month = _month;
             self.dayOfMonth = _day
 
             print 'fillByYMD..'
 
-        def fillDayOfWeek(self,  _dow):
+        def fillDayOfWeek(self,  _dow):     
             self.dayOfWeek = _dow
 
             print 'fillDayOfWeek..'
 
-    if __name__ == "__main__":
+    if __name__ == "__main__": 
         clock = DS1307()
         clock.fillByYMD(2015,3,5)
         clock.fillByHMS(12,42,30)
-        clock.fillDayOfWeek(clock.THU)
+        clock.fillDayOfWeek(clock.THU)  
         clock.setTime()
-        while True:
+        while True:     
             clock.getTime()
             print clock.hour, ":", clock.minute, ":", \
                     clock.second, " ", clock.dayOfMonth, "/", \
                     clock.month, "/", clock.year,"  ", "weekday", \
-                    ":", clock.dayOfWeek
+                    ":", clock.dayOfWeek            
             time.sleep(1)
