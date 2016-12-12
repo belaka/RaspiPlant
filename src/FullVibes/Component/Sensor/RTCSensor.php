@@ -51,6 +51,21 @@ class RTCSensor extends AbstractSensor {
 
         try {
 
+            /**
+             * # Read from Grove RTC
+            def rtc_getTime():
+            write_i2c_block(address, rtc_getTime_cmd + [unused, unused, unused])
+            time.sleep(.1)
+            read_i2c_byte(address)
+            number = read_i2c_block(address)
+            return number **/
+
+            /*******
+             *
+             * # RTC get time
+             *   rtc_getTime_cmd = [30]
+             */
+
             usleep(100000);
 
             return json_encode(

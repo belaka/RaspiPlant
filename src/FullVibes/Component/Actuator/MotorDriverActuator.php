@@ -3,7 +3,6 @@
 namespace FullVibes\Component\Actuator;
 
 use FullVibes\Component\Device\I2CDevice;
-use FullVibes\Component\WiringPi\WiringPi;
 
 class MotorDriverActuator extends AbstractActuator {
 
