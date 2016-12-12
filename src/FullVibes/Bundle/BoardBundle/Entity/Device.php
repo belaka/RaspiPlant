@@ -3,6 +3,7 @@
 namespace FullVibes\Bundle\BoardBundle\Entity;
 
 use FullVibes\Bundle\BoardBundle\Model\DeviceModel;
+use Cocur\Slugify\Slugify;
 
 /*
  * Device Entity
@@ -45,7 +46,8 @@ class Device extends DeviceModel {
     public function prePersist()
     {
         if (!empty($this->name)) {
-            $this->slug = $this->makeSlug($this->name);
+            $slugify = new Slugify(array('separator' => '_'));
+            $this->setSlug($slugify->slugify($this->name));
         }
     }
 
@@ -55,7 +57,8 @@ class Device extends DeviceModel {
     public function preUpdate()
     {
         if (!empty($this->name)) {
-            $this->slug = $this->makeSlug($this->name);
+            $slugify = new Slugify(array('separator' => '_'));
+            $this->setSlug($slugify->slugify($this->name));
         }
     }
 }

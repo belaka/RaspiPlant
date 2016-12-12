@@ -3,6 +3,7 @@
 namespace FullVibes\Bundle\BoardBundle\Entity;
 
 use FullVibes\Bundle\BoardBundle\Model\BoardModel;
+use Cocur\Slugify\Slugify;
 
 /*
  * Board Entity
@@ -42,14 +43,16 @@ class Board extends BoardModel {
     public function prePersist()
     {
         if (!empty($this->name)) {
-            $this->slug = $this->makeSlug($this->name);
+            $slugify = new Slugify(array('separator' => '_'));
+            $this->setSlug($slugify->slugify($this->name));
         }
     }
 
     public function preUpdate()
     {
         if (!empty($this->name)) {
-            $this->slug = $this->makeSlug($this->name);
+            $slugify = new Slugify(array('separator' => '_'));
+            $this->setSlug($slugify->slugify($this->name));
         }
     }
 
