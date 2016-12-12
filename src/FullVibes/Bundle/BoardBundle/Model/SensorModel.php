@@ -28,7 +28,7 @@ class SensorModel
      *
      * @var int
      */
-    protected $pin;
+    protected $pin = null;
     
     /**
      *
@@ -37,11 +37,12 @@ class SensorModel
     protected $device;
 
     /**
-     * 
-     * @param string $name
-     * @param int $pin
+     * SensorModel constructor.
+     * @param $name
+     * @param $class
+     * @param $pin
      */
-    public function __construct($name, $class, $pin) {
+    public function __construct($name, $class, $pin = null) {
         $this->name = $name;
         $this->class = $class;
         $this->pin = $pin;

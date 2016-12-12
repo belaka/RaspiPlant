@@ -17,7 +17,7 @@
         <field name="name"       column="name"      type="string"      length="255"  nullable="false" unique="true"/>
         <field name="slug"       column="slug"      type="string"      length="255"  nullable="false" unique="true"/>
         <field name="class"      column="class"     type="string"      length="255"  nullable="true"/>
-        <field name="address"    column="address"   type="string"      length="4"    nullable="true"/>
+        <field name="address"    column="address"   type="string"      length="4"    nullable="false"/>
         
         <many-to-one field="board" target-entity="FullVibes\Bundle\BoardBundle\Entity\Board" inversed-by="devices">
             <join-column name="board_id" referenced-column-name="id" />
@@ -25,6 +25,11 @@
         
         <one-to-many field="sensors"   target-entity="FullVibes\Bundle\BoardBundle\Entity\Sensor"     mapped-by="device" />
         <one-to-many field="actuators" target-entity="FullVibes\Bundle\BoardBundle\Entity\Actuator"   mapped-by="device" />
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="prePersist"/>
+            <lifecycle-callback type="preUpdate" method="preUpdate"/>
+        </lifecycle-callbacks>
         
     </entity>
 

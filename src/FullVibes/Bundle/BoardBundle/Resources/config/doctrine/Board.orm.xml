@@ -18,6 +18,11 @@
         <field name="slug"       column="slug"      type="string"      length="255"  nullable="false" unique="true"/>
         
         <one-to-many field="devices" target-entity="Device" mapped-by="board" />
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="prePersist"/>
+            <lifecycle-callback type="preUpdate" method="preUpdate"/>
+        </lifecycle-callbacks>
         
     </entity>
 

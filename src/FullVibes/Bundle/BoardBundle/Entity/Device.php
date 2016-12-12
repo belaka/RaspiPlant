@@ -39,4 +39,23 @@ class Device extends DeviceModel {
         return $this->id;
     }
 
+    /**
+     *
+     */
+    public function prePersist()
+    {
+        if (!empty($this->name)) {
+            $this->slug = $this->makeSlug($this->name);
+        }
+    }
+
+    /**
+     *
+     */
+    public function preUpdate()
+    {
+        if (!empty($this->name)) {
+            $this->slug = $this->makeSlug($this->name);
+        }
+    }
 }

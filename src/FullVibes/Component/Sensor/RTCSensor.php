@@ -6,6 +6,8 @@ use FullVibes\Component\Device\I2CDevice;
 
 class RTCSensor extends AbstractSensor {
 
+    const RTC_I2C_ADDRESS = 0x68;
+
     /**
      *
      * @var I2CDevice
@@ -29,6 +31,14 @@ class RTCSensor extends AbstractSensor {
      * @var string
      */
     protected $name;
+
+    protected $sec = 0;
+    protected $min = 0;
+    protected $hours = 0;
+    protected $day = 0;
+    protected $date = 0;
+    protected $month = 0;
+    protected $year = 0;
 
     /**
      * RTCSensor constructor.

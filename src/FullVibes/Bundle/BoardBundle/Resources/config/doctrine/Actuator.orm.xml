@@ -23,6 +23,11 @@
         <many-to-one field="device" target-entity="FullVibes\Bundle\BoardBundle\Entity\Device" inversed-by="actuators">
             <join-column name="device_id" referenced-column-name="id" />
         </many-to-one>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="prePersist"/>
+            <lifecycle-callback type="preUpdate" method="preUpdate"/>
+        </lifecycle-callbacks>
                
     </entity>
 
