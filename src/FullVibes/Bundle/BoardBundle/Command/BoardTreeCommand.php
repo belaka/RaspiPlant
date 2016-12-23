@@ -6,12 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class BoardListCommand extends ContainerAwareCommand {
+class BoardTreeCommand extends ContainerAwareCommand {
 
     protected function configure() {
         $this
                 // the name of the command (the part after "bin/console")
-                ->setName('raspiplant:board:list')
+                ->setName('raspiplant:board:tree')
                 // the short description shown while running "php bin/console list"
                 ->setDescription('List actually connected boards.')
                 // the full command description shown when running the command with

@@ -16,7 +16,8 @@
         
         <field name="name"       column="name"      type="string"      length="255"  nullable="false" unique="true"/>
         <field name="slug"       column="slug"      type="string"      length="255"  nullable="false" unique="true"/>
-        
+        <field name="active"     column="active"    type="boolean"                   nullable="false"/>
+
         <one-to-many field="devices" target-entity="Device" mapped-by="board" />
 
         <lifecycle-callbacks>

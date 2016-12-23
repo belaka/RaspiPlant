@@ -79,9 +79,9 @@ class BoardManager
     {
         $this->em->clear($this->classNamespace);
     }
-    
+
     /**
-     * 
+     * @return mixed
      */
     public function findAll()
     {
@@ -96,7 +96,7 @@ class BoardManager
         return $this->em->getConnection();
     }
     /**
-     * @return \Effinet\Bundle\DataWarehouseBundle\Repository\ORM\Contact\IdentityRepository
+     * @return \FullVibes\Bundle\BoardBundle\Repository\ORM\BoardRepository
      */
     public function getRepository()
     {

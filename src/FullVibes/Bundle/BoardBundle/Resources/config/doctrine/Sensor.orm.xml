@@ -23,6 +23,8 @@
             <join-column name="device_id" referenced-column-name="id" />
         </many-to-one>
 
+        <field name="active"     column="active"    type="boolean"                   nullable="false"/>
+
         <lifecycle-callbacks>
             <lifecycle-callback type="prePersist" method="prePersist"/>
             <lifecycle-callback type="preUpdate" method="preUpdate"/>
