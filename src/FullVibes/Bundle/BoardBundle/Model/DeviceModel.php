@@ -2,10 +2,11 @@
 
 namespace FullVibes\Bundle\BoardBundle\Model;
 
+use FullVibes\Component\Model\AbstractModel;
 use FullVibes\Bundle\BoardBundle\Entity\Board;
 use Doctrine\Common\Collections\Collection;
 
-class DeviceModel implements ActivableInterface
+class DeviceModel extends AbstractModel implements ActivableInterface
 {
     /**
      *
@@ -17,7 +18,7 @@ class DeviceModel implements ActivableInterface
      *
      * @var string
      */
-    protected $class;
+    protected $class = "FullVibes\\Component\\Device\\I2CDevice";
     
     /**
      *
@@ -56,15 +57,12 @@ class DeviceModel implements ActivableInterface
 
     /**
      * DeviceModel constructor.
-     * @param $name
-     * @param $address
-     * @param string $class
+     * @param array $data
      */
-    public function __construct($name, $address, $class = "FullVibes\\Component\\Device\\I2CDevice") {
-        $this->name = $name;
-        $this->class = $class;
-        $this->address = $address;
+    public function __construct($data = array())
+    {
         $this->active = false;
+        parent::__construct($data);
     }
 
     /**

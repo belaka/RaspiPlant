@@ -1,0 +1,50 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title %}
+    RaspiPlant Analytic
+    <small>{{ analytic.eventKey }} -  {% if analytic.eventDate %}{{ analytic.eventDate|date('Y-m-d H:i:s') }}{% endif %}</small>
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li>
+        <a href="{{path('board.dashboard.main')}}">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="{{path('actuator_index')}}">Analytics</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        {{ analytic.eventKey }} -  {% if analytic.eventDate %}{{ analytic.eventDate|date('Y-m-d H:i:s') }}{% endif %}
+        <i class="fa fa-circle"></i>
+    </li>
+{% endblock %}
+
+{% block page_content %}
+<div class="content-main">
+    <div class="table-responsive">
+        <table class="table table table-condensed table-hover">
+            <tbody>
+                <tr>
+                    <th>Eventkey</th>
+                    <td>{{ analytic.eventKey }}</td>
+                </tr>
+                <tr>
+                    <th>Eventvalue</th>
+                    <td>{{ analytic.eventValue }}</td>
+                </tr>
+                <tr>
+                    <th>Eventdate</th>
+                    <td>{% if analytic.eventDate %}{{ analytic.eventDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ analytic.id }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <a class="btn btn-primary" href="{{ path('actuator_index') }}">Back to the list</a>
+</div>
+
+{% endblock %}

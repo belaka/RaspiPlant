@@ -2,9 +2,10 @@
 
 namespace FullVibes\Bundle\BoardBundle\Model;
 
+use FullVibes\Component\Model\AbstractModel;
 use Doctrine\Common\Collections\Collection;
 
-class BoardModel implements ActivableInterface
+class BoardModel extends AbstractModel implements ActivableInterface
 {
     /**
      *
@@ -31,11 +32,12 @@ class BoardModel implements ActivableInterface
 
     /**
      * BoardModel constructor.
-     * @param $name
+     * @param array $data
      */
-    public function __construct($name) {
-        $this->name = $name;
+    public function __construct($data = array())
+    {
         $this->active = false;
+        parent::__construct($data);
     }
 
     /**

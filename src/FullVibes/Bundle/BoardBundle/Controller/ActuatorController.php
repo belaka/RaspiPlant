@@ -2,24 +2,117 @@
 
 namespace FullVibes\Bundle\BoardBundle\Controller;
 
+use FullVibes\Bundle\BoardBundle\Entity\Actuator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use FullVibes\Component\Form\Type\AtomizerFormType;
-use FullVibes\Bundle\BoardBundle\Entity\Actuator;
-use FullVibes\Component\Actuator\AbstractActuator;
-use FullVibes\Component\Device\I2CDevice;
-use FullVibes\Component\WiringPi\WiringPi;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * Actuator controller.
+ *
+ */
 class ActuatorController extends Controller
 {
+    /**
+     * Lists all actuator entities.
+     *
+     */
     public function indexAction()
     {
-        $actuators = $this->getActuatorManager()->findAll();
-        
-        return $this->render('BoardBundle:Actuator:index.html.twig', array('actuators' => $actuators));
+        $em = $this->getDoctrine()->getManager();
+
+        $actuators = $em->getRepository('BoardBundle:Actuator')->findAll();
+
+        return $this->render('actuator/index.html.twig', array(
+            'actuators' => $actuators,
+        ));
     }
-    
+
+    /**
+     * Creates a new actuator entity.
+     *
+     */
+    public function newAction(Request $request)
+    {
+        $actuator = new Actuator();
+        $form = $this->createForm('FullVibes\Bundle\BoardBundle\Form\ActuatorType', $actuator);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($actuator);
+            $em->flush($actuator);
+
+            return $this->redirectToRoute('actuator_show', array('id' => $actuator->getId()));
+        }
+
+        return $this->render('actuator/new.html.twig', array(
+            'actuator' => $actuator,
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * Finds and displays a actuator entity.
+     *
+     */
+    public function showAction(Actuator $actuator)
+    {
+        $deleteForm = $this->createDeleteForm($actuator);
+
+        return $this->render('actuator/show.html.twig', array(
+            'actuator' => $actuator,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Displays a form to edit an existing actuator entity.
+     *
+     */
+    public function editAction(Request $request, Actuator $actuator)
+    {
+        $deleteForm = $this->createDeleteForm($actuator);
+        $editForm = $this->createForm('FullVibes\Bundle\BoardBundle\Form\ActuatorType', $actuator);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('actuator_edit', array('id' => $actuator->getId()));
+        }
+
+        return $this->render('actuator/edit.html.twig', array(
+            'actuator' => $actuator,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Deletes a actuator entity.
+     *
+     */
+    public function deleteAction(Request $request, Actuator $actuator)
+    {
+        $form = $this->createDeleteForm($actuator);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($actuator);
+            $em->flush($actuator);
+        }
+
+        return $this->redirectToRoute('actuator_index');
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public function updateAction(Request $request, $id)
     {
         $actuatorManager = $this->getActuatorManager();
@@ -28,62 +121,38 @@ class ActuatorController extends Controller
         if (!($actuator instanceof Actuator)) {
             throw new \Exception("Actuator not found.");
         }
-        
+
         $state = 0;
         $checkbox = $request->request->get('checkbox');
-        
+
         if ($checkbox === "on") {
             $state = 1;
         }
-        
+
         $actuator->setState($state);
-        $actuatorManager->save($actuator);        
-        
+        $actuatorManager->save($actuator);
+
         return new JsonResponse(array('success' => true), 200);
     }
-    
+
     /**
-     * @param Request $request
-     * @return Response
+     * Creates a form to delete a actuator entity.
+     *
+     * @param Actuator $actuator The actuator entity
+     *
+     * @return \Symfony\Component\Form\Form The form
      */
-    public function atomizerAction(Request $request)
+    private function createDeleteForm(Actuator $actuator)
     {
-        $form = $this->createForm(AtomizerFormType::class, null, array('method' => 'POST'));
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            
-            $form_values = $request->request->all();
-            
-            $value = (int) $form_values['atomizer_form']['state'];
-           	
-            $atomizerPin = 5;
-            $fd = WiringPi::wiringPiI2CSetup(AbstractActuator::RPI_I2C_ADDRESS);
-            $grovepi = new I2CDevice($fd);
-            $atomizer = new Actuator\WaterAtomizationActuator($grovepi, $atomizerPin);
-            usleep(60000);
-	    $atomizer->writeStatus($value);
-
-            
-            $this->addFlash(
-                'notice',
-                'Value was set to ' . (int) $value
-            );
-            
-        }
-
-        return $this->render(
-            'BoardBundle:Actuator:atomizer.html.twig', 
-            array(
-                'form' => $form->createView(),
-            )
-        );
-
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('actuator_delete', array('id' => $actuator->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+        ;
     }
-    
-    protected function getActuatorManager()
+
+    private function getActuatorManager()
     {
         return $this->container->get("board.manager.actuator_manager");
     }
-    
 }

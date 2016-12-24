@@ -2,101 +2,123 @@
 
 namespace FullVibes\Bundle\BoardBundle\Controller;
 
+use FullVibes\Bundle\BoardBundle\Entity\Board;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use FullVibes\Component\WiringPi\WiringPi;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Board controller.
+ *
+ */
 class BoardController extends Controller
 {
-    public function indexAction(Request $request)
+    /**
+     * Lists all board entities.
+     *
+     */
+    public function indexAction()
     {
-        $boards = $this->getBoardManager()->findAll();
-        
-        return $this->render(
-                'BoardBundle:Board:index.html.twig',
-                array(
-                    'boards' => $boards
-                )
-        );        
-        
+        $em = $this->getDoctrine()->getManager();
+
+        $boards = $em->getRepository('BoardBundle:Board')->findAll();
+
+        return $this->render('board/index.html.twig', array(
+            'boards' => $boards,
+        ));
     }
-    
-    public function gpioAction(Request $request)
+
+    /**
+     * Creates a new board entity.
+     *
+     */
+    public function newAction(Request $request)
     {
-        if (isset($_GET['c'])) {
-                if ($_GET['c'] == 'pm') {
-                        WiringPi::pinMode($_GET['p'], $_GET['v']);
-                }
-                if ($_GET['c'] == 'dw') {
-                        WiringPi::digitalWrite($_GET['p'], $_GET['v']);
-                }
-        }
-        
-        $even = false;
-        $process = new Process('gpio readall');
-        $process->run();
+        $board = new Board();
+        $form = $this->createForm('FullVibes\Bundle\BoardBundle\Form\BoardType', $board);
+        $form->handleRequest($request);
 
-        // executes after the command finishes
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($board);
+            $em->flush($board);
+
+            return $this->redirectToRoute('board_show', array('id' => $board->getId()));
         }
 
-        $gpioTable = explode(PHP_EOL, $process->getOutput());
-        
-        $response = "";// "<pre>" . print_r($gpioTable, 1) . "</pre>\n";
-        
-        for ($i = 3; $i < (count($gpioTable) - 4); $i++) {
-            
-            $response .= '<tr class="' . (($even) ? 'even' : 'odd') . '">';
-            
-            $row = array_map(function($v){ return trim($v);}, explode('|', $gpioTable[$i]));
-
-            $response .= '<tr class="' . (($even) ? 'even' : 'odd') . '">';
-            //BCM
-            $response .= '<td>' . trim($row[1]) . '</td>';
-            //Wpi
-            $response .= '<td>' . trim($row[2]) . '</td>';
-            //Name 
-            $response .= '<td>' . trim($row[3]) . '</td>';
-            //Mode
-            $response .= '<td>' . trim($row[4]) . '</td>';
-            //Value
-            $response .= '<td>' . intval(trim($row[5])) . '</td>';
-            //Physical 
-            $response .= '<td>' . trim($row[6]) . '</td>';
-            //Physical 
-            $response .= '<td>' . trim($row[8]) . '</td>';
-            //Value
-            $response .= '<td>' . intval(trim($row[9])) . '</td>';
-            //Mode
-            $response .= '<td>' . trim($row[10]) . '</td>';
-            //Name 
-            $response .= '<td>' . trim($row[11]) . '</td>';
-            //Wpi
-            $response .= '<td>' . trim($row[12]) . '</td>';
-            //BCM
-            $response .= '<td>' . trim($row[13]) . '</td>';
-            
-            //$response .= '<td class="' . (($mode == 'IN') ? 'orange' : 'blue') . '"><a href="?c=pm&p=' . $pin . '&v=' . (($mode == 'IN') ? '1' : '0') . '">' . $mode . '</a></td>';
-            //$response .= '<td class="' . (($value == 'High') ? 'green' : 'red') . '"><a href="?c=dw&p=' . $pin . '&v=' . (($value == 'High') ? '0' : '1') . '">' . $value . '</a></td>';
-            $response .= '</tr>';
-
-            $even = !$even;
-        }
-        
-        return $this->render(
-                'BoardBundle:Board:gpio.html.twig',
-                array(
-                    'gpioTable' => $response
-                )
-        );        
-        
+        return $this->render('board/new.html.twig', array(
+            'board' => $board,
+            'form' => $form->createView(),
+        ));
     }
-    
-    protected function getBoardManager()
+
+    /**
+     * Finds and displays a board entity.
+     *
+     */
+    public function showAction(Board $board)
     {
-        return $this->container->get("board.manager.board_manager");
+        $deleteForm = $this->createDeleteForm($board);
+
+        return $this->render('board/show.html.twig', array(
+            'board' => $board,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Displays a form to edit an existing board entity.
+     *
+     */
+    public function editAction(Request $request, Board $board)
+    {
+        $deleteForm = $this->createDeleteForm($board);
+        $editForm = $this->createForm('FullVibes\Bundle\BoardBundle\Form\BoardType', $board);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('board_edit', array('id' => $board->getId()));
+        }
+
+        return $this->render('board/edit.html.twig', array(
+            'board' => $board,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Deletes a board entity.
+     *
+     */
+    public function deleteAction(Request $request, Board $board)
+    {
+        $form = $this->createDeleteForm($board);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($board);
+            $em->flush($board);
+        }
+
+        return $this->redirectToRoute('board_index');
+    }
+
+    /**
+     * Creates a form to delete a board entity.
+     *
+     * @param Board $board The board entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm(Board $board)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('board_delete', array('id' => $board->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+        ;
     }
 }

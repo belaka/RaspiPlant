@@ -1,0 +1,52 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title %}
+    RaspiPlant Boards
+    <small>boards </small>
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li>
+        <a href="{{path('board.dashboard.main')}}">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="{{path('board_index')}}">Board</a>
+        <i class="fa fa-circle"></i>
+    </li>
+{% endblock %}
+
+{% block page_content %}
+<div class="content-main">
+    <div class="table-responsive">
+        <table class="table table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Slug</th>
+                    <th>Active</th>
+                    <th>Id</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for board in boards %}
+                <tr>
+                    <td><a href="{{ path('board_show', { 'id': board.id }) }}">{{ board.name }}</a></td>
+                    <td>{{ board.slug }}</td>
+                    <td>{% if board.active %}Yes{% else %}No{% endif %}</td>
+                    <td>{{ board.id }}</td>
+                    <td>
+                        <a href="{{ path('board_show', { 'id': board.id }) }}" class="btn btn-info"><i class="fa fa-eye"></i></a>
+                        <a href="{{ path('board_edit', { 'id': board.id }) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                        <a href="{{ path('board_delete', { 'id': board.id }) }}" class="btn btn-danger"><i class="fa fa-close"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a class="btn btn-primary" href="{{ path('board_new') }}">Create a new board</a>
+</div>
+
+{% endblock %}

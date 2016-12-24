@@ -91,7 +91,7 @@ class BoardManagerCommand extends ContainerAwareCommand
 
         $board = $this->questionHelper->ask($this->input, $this->output, $question);
 
-        dump($board->getId());
+        dump($boards[0]);
     }
 
 }

@@ -1,0 +1,71 @@
+{%- block form_row -%}
+<div class="form-group row{% if errors|length > 0 %} has-danger{% endif %}">
+    {{- form_label(form) -}}
+    <div class="col-sm-10">
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+</div>
+{%- endblock form_row -%}
+
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    {%- set attr = attr|merge({'class': 'form-control' ~ ((attr.class is defined) ? (' ' ~ attr.class) : '')}) -%}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple -%}
+
+{%- block textarea_widget -%}
+    {%- set attr = attr|merge({'class': 'form-control' ~ ((attr.class is defined) ? (' ' ~ attr.class) : '')}) -%}
+    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+{%- endblock textarea_widget -%}
+
+{%- block form_label -%}
+    <label class="col-sm-2 col-form-label text-xs-right" for="{{ id }}">{{ label }}</label>
+{%- endblock form_label -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        {%- for error in errors -%}
+            <p class="text-danger">{{ error.message }}</p>
+        {%- endfor -%}
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{%- block choice_widget_expanded -%}
+{%- set class = multiple ? 'c-checkbox' : 'c-radio' -%}
+    <div class="c-inputs-stacked">
+    {%- for child in form %}
+        <label class="c-input {{ class }}" for="{{ child.vars.id }}">
+            {{- form_widget(child) -}}
+            <span class="c-indicator"></span> {{ child.vars.label }}
+        </label>
+    {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
+{%- block choice_widget_collapsed -%}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple -%}
+        {% set required = false %}
+    {%- endif -%}
+    <select {{ block('widget_attributes') }} class="form-control"{% if multiple %} multiple="multiple"{% endif %}>
+        {%- if placeholder is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+        {%- endif -%}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {{- block('choice_widget_options') -}}
+    </select>
+{%- endblock choice_widget_collapsed -%}
+
+{%- block checkbox_widget -%}
+<label class="c-input c-checkbox" for="{{ form.vars.id }}">
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+    <span class="c-indicator"></span> {{ form.vars.label }}
+</label>
+{%- endblock checkbox_widget -%}

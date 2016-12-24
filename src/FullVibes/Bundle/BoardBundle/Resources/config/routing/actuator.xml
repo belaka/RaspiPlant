@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="actuator_index" path="/" methods="GET">
+        <default key="_controller">BoardBundle:Actuator:index</default>
+    </route>
+
+    <route id="actuator_show" path="/{id}/show" methods="GET">
+        <default key="_controller">BoardBundle:Actuator:show</default>
+    </route>
+
+    <route id="actuator_new" path="/new" methods="GET|POST">
+        <default key="_controller">BoardBundle:Actuator:new</default>
+    </route>
+
+    <route id="actuator_edit" path="/{id}/edit" methods="GET|POST">
+        <default key="_controller">BoardBundle:Actuator:edit</default>
+    </route>
+
+    <route id="actuator_delete" path="/{id}/delete" methods="DELETE">
+        <default key="_controller">BoardBundle:Actuator:delete</default>
+    </route>
+
+    <route id="actuator_update" path="/{id}/update" methods="POST">
+        <default key="_controller">BoardBundle:Actuator:update</default>
+    </route>
+</routes>

@@ -2,9 +2,10 @@
 
 namespace FullVibes\Bundle\BoardBundle\Model;
 
+use FullVibes\Component\Model\AbstractModel;
 use FullVibes\Bundle\BoardBundle\Entity\Device;
 
-class ActuatorModel implements ActivableInterface
+class ActuatorModel extends AbstractModel implements ActivableInterface
 {
     /**
      *
@@ -49,15 +50,12 @@ class ActuatorModel implements ActivableInterface
 
     /**
      * ActuatorModel constructor.
-     * @param $name
-     * @param $class
-     * @param $pin
+     * @param array $data
      */
-    public function __construct($name, $class, $pin) {
-        $this->name = $name;
-        $this->class = $class;
-        $this->pin = $pin;
+    public function __construct($data = array())
+    {
         $this->active = false;
+        parent::__construct($data);
     }
 
     /**

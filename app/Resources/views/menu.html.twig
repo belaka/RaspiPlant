@@ -42,7 +42,7 @@
             <span class="arrow open"></span>
         </a>
     </li>
-    <li class="nav-item open {% if app.request.attributes.get('_route') == 'board.board.main' %}active open{% else %}{% endif %}">
+    <li class="nav-item open {% if 'board_' in app.request.attributes.get('_route') %}active open{% else %}{% endif %}">
         <a href="javascript:;" class="nav-link nav-toggle">
             <i class="fa fa-hdd-o"></i>
             <span class="title">Board</span>
@@ -51,37 +51,45 @@
         </a>
         <ul class="sub-menu" style="display: block;">
             <li class="nav-item  ">
-                <a href="{{path('board.board.main')}}" class="nav-link ">
+                <a href="{{path('board_index')}}" class="nav-link ">
                     <span class="title">Board</span>
                 </a>
             </li>
             <li class="nav-item  ">
-                <a href="{{path('board.board.gpio')}}" class="nav-link ">
+                <a href="{{path('board_gpio')}}" class="nav-link ">
                     <span class="title">GPIO Table</span>
                 </a>
             </li>
         </ul>
     </li>
-    <li class="nav-item {% if app.request.attributes.get('_route') == 'board.device.main' %}active open{% else %}{% endif %}">
-        <a href="{{path('board.device.main')}}" class="nav-link nav-toggle">
+    <li class="nav-item {% if 'device_' in app.request.attributes.get('_route') %}active open{% else %}{% endif %}">
+        <a href="{{path('device_index')}}" class="nav-link nav-toggle">
             <i class="fa fa-plug"></i>
             <span class="title">Devices</span>
             <span class="selected"></span>
             <span class="arrow open"></span>
         </a>
     </li>
-    <li class="nav-item {% if app.request.attributes.get('_route') == 'board.actuator.main' %}active open{% else %}{% endif %}">
-        <a href="{{path('board.actuator.main')}}" class="nav-link nav-toggle">
+    <li class="nav-item {% if 'actuator_' in app.request.attributes.get('_route') %}active open{% else %}{% endif %}">
+        <a href="{{path('actuator_index')}}" class="nav-link nav-toggle">
             <i class="fa fa-exchange"></i>
             <span class="title">Actuators</span>
             <span class="selected"></span>
             <span class="arrow open"></span>
         </a>
     </li>
-    <li class="nav-item {% if app.request.attributes.get('_route') == 'board.sensor.main' %}active open{% else %}{% endif %}">
-        <a href="{{path('board.sensor.main')}}" class="nav-link nav-toggle">
+    <li class="nav-item {% if 'sensor_' in app.request.attributes.get('_route') %}active open{% else %}{% endif %}">
+        <a href="{{path('sensor_index')}}" class="nav-link nav-toggle">
             <i class="fa fa-heartbeat"></i>
             <span class="title">Sensors</span>
+            <span class="selected"></span>
+            <span class="arrow open"></span>
+        </a>
+    </li>
+    <li class="nav-item {% if 'analytics_' in app.request.attributes.get('_route')  %}active open{% else %}{% endif %}">
+        <a href="{{path('analytics_index')}}" class="nav-link nav-toggle">
+            <i class="fa fa-line-chart"></i>
+            <span class="title">Analytics</span>
             <span class="selected"></span>
             <span class="arrow open"></span>
         </a>

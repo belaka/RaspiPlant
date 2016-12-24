@@ -1,0 +1,64 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title %}
+    RaspiPlant Device
+    <small>{{ device.name }} </small>
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li>
+        <a href="{{path('board.dashboard.main')}}">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="{{path('device_index')}}">Devices</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        {{ device.name }}
+        <i class="fa fa-circle"></i>
+    </li>
+{% endblock %}
+
+{% block page_content %}
+<div class="content-main">
+    <div class="table-responsive">
+        <table class="table table table-condensed table-hover">
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ device.name }}</td>
+                </tr>
+                <tr>
+                    <th>Slug</th>
+                    <td>{{ device.slug }}</td>
+                </tr>
+                <tr>
+                    <th>Class</th>
+                    <td>{{ device.class }}</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>{{ device.address }}</td>
+                </tr>
+                <tr>
+                    <th>Active</th>
+                    <td>{% if device.active %}Yes{% else %}No{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ device.id }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <a class="btn btn-primary" href="{{ path('device_index') }}">Back to the list</a>
+    <a class="btn btn-warning" href="{{ path('device_edit', { 'id': device.id }) }}">Edit</a>
+    <div style="float:right;">
+        {{ form_start(delete_form) }}
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        {{ form_end(delete_form) }}
+    </div>
+</div>
+
+{% endblock %}

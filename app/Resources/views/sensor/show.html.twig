@@ -1,0 +1,64 @@
+{% extends 'layout.html.twig' %}
+
+{% block page_title %}
+    RaspiPlant Sensor
+    <small>{{ sensor.name }} </small>
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li>
+        <a href="{{path('board.dashboard.main')}}">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="{{path('sensor_index')}}">Sensors</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        {{ sensor.name }}
+        <i class="fa fa-circle"></i>
+    </li>
+{% endblock %}
+
+{% block page_content %}
+<div class="content-main">
+    <div class="table-responsive">
+        <table class="table table table-condensed table-hover">
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ sensor.name }}</td>
+                </tr>
+                <tr>
+                    <th>Slug</th>
+                    <td>{{ sensor.slug }}</td>
+                </tr>
+                <tr>
+                    <th>Class</th>
+                    <td>{{ sensor.class }}</td>
+                </tr>
+                <tr>
+                    <th>Pin</th>
+                    <td>{{ sensor.pin }}</td>
+                </tr>
+                <tr>
+                    <th>Active</th>
+                    <td>{% if sensor.active %}Yes{% else %}No{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ sensor.id }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <a class="btn btn-primary" href="{{ path('sensor_index') }}">Back to the list</a>
+    <a class="btn btn-warning" href="{{ path('sensor_edit', { 'id': sensor.id }) }}">Edit</a>
+    <div style="float:right;">
+        {{ form_start(delete_form) }}
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        {{ form_end(delete_form) }}
+    </div>
+</div>
+
+{% endblock %}

@@ -2,9 +2,10 @@
 
 namespace FullVibes\Bundle\BoardBundle\Model;
 
+use FullVibes\Component\Model\AbstractModel;
 use FullVibes\Bundle\BoardBundle\Entity\Device;
 
-class SensorModel implements ActivableInterface
+class SensorModel extends AbstractModel implements ActivableInterface
 {
 
     /**
@@ -44,15 +45,12 @@ class SensorModel implements ActivableInterface
 
     /**
      * SensorModel constructor.
-     * @param $name
-     * @param $class
-     * @param $pin
+     * @param array $data
      */
-    public function __construct($name, $class, $pin = null) {
-        $this->name = $name;
-        $this->class = $class;
-        $this->pin = $pin;
+    public function __construct($data = array())
+    {
         $this->active = false;
+        parent::__construct($data);
     }
 
     /**

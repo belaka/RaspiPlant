@@ -4,12 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="board.dashboard.main" path="/">
-        <default key="_controller">BoardBundle:Dashboard:index</default>
+    <route id="analytics_index" path="/" methods="GET">
+        <default key="_controller">BoardBundle:Analytics:index</default>
     </route>
 
-    <route id="board_gpio" path="/board/gpio">
-        <default key="_controller">BoardBundle:Gpio:gpio</default>
+    <route id="analytics_show" path="/{id}/show" methods="GET">
+        <default key="_controller">BoardBundle:Analytics:show</default>
     </route>
+
+
+
 
 </routes>

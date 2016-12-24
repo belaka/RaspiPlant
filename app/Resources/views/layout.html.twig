@@ -164,7 +164,13 @@ License: You must have a valid license purchased only from themeforest(the above
                         </h1>
                         <!-- END PAGE TITLE-->
                         <!-- END PAGE HEADER-->
-                        
+
+                        {% for flash_message in app.session.flashBag.get('notice') %}
+                            <div class="flash-notice">
+                                {{ flash_message }}
+                            </div>
+                        {% endfor %}
+
                         {% block page_content %}{% endblock %}
                     </div>
                     <!-- END CONTENT BODY -->

@@ -33,6 +33,16 @@
         <service id="board.manager.actuator_manager" class="%board.manager.actuator_manager.class%">
             <argument type="service" id="doctrine" />
         </service>
+
+        <!-- ########################### ENTITY LISTENERS ########################### -->
+        <service id="board.entity_listener.persist" class="FullVibes\Bundle\BoardBundle\Listener\EntityListener">
+            <tag name="doctrine.event_listener" event="prePersist" />
+        </service>
+
+        <service id="board.entity_listener.update" class="FullVibes\Bundle\BoardBundle\Listener\EntityListener">
+            <tag name="doctrine.event_listener" event="preUpdate" />
+        </service>
+
     </services>
 
 </container>

@@ -2,7 +2,9 @@
 
 namespace FullVibes\Bundle\BoardBundle\Model;
 
-class AnalyticsModel
+use FullVibes\Component\Model\AbstractModel;
+
+class AnalyticsModel extends AbstractModel
 {
     
     /**
@@ -22,21 +24,16 @@ class AnalyticsModel
      * @var string
      */
     protected $eventDate;
-    
+
     /**
-     * 
-     * @param string $eventKey
-     * @param int $eventValue
-     * @param \DateTime $eventDate
+     * AnalyticsModel constructor.
+     * @param array $data
      */
-    public function __construct($eventKey, $eventValue, \DateTime $eventDate) {
-        
-        $this->eventKey = $eventKey;
-        $this->eventValue = $eventValue;
-        $this->eventDate = $eventDate;
+    public function __construct($data = array())
+    {
+        parent::__construct($data);
     }
 
-    
     /**
      * 
      * @return string
