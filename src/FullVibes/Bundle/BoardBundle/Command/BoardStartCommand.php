@@ -222,7 +222,14 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         
         foreach ($sensorData as $key => $value) {
             if ($key !== 'error') {
-                $analytics = new Analytics($sensorId .  '_' . $key, $value, $firedAt);
+
+                $analytics = new Analytics(
+                    array(
+                        'name' => $sensorId .  '_' . $key,
+                        'eventKey' => $value,
+                        'eventDate' => $firedAt
+                    )
+                );
                 $analyticsManager->save($analytics);
             }
         }
