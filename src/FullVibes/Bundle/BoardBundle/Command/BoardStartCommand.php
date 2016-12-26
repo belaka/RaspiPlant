@@ -225,8 +225,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
                 $analytics = new Analytics(
                     array(
-                        'name' => $sensorId .  '_' . $key,
-                        'eventKey' => $value,
+                        'eventKey' => $sensorId .  '_' . $key,
+                        'eventValue' => $value,
                         'eventDate' => $firedAt
                     )
                 );
