@@ -47,7 +47,7 @@ class DashboardController extends Controller
         }
         
         return $this->render(
-                'BoardBundle:Dashboard:index.html.twig',
+                'dashboard/index.html.twig',
                 array(
                     'keys' => $keynames,
                     'data' => $data, 

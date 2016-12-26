@@ -1,0 +1,74 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}RaspiPlant | DashBoard{% endblock %}
+
+{% block page_title %}
+    RaspiPlant Dashboard
+    <small>statistics, charts, recent events and reports</small>
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li>
+        <a href="{{path('board.dashboard.main')}}">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span>Dashboard</span>
+    </li>
+{% endblock %}
+
+{% block page_content %}
+    <!-- BEGIN DASHBOARD STATS 1-->
+    <div class="row">
+        {% for key in keys %}
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <a class="dashboard-stat dashboard-stat-v2 green" href="#">
+                    <div class="visual">
+                        <i class="fa fa-comments"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            <span data-counter="counterup" data-value="{{ data[key].value }}"></span>
+                        </div>
+                        <div class="desc"> {{ key|e }} </div>
+                        <div class="desc"><b>{{ data[key].date|date('Y/m/d H:i:s') }}</b></div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="clearfix"></div>
+    <!-- END DASHBOARD STATS 1-->
+    {% for key in keys %}
+        <div class="row">
+            <div class="col-lg-12 col-xs-12 col-sm-12">
+                <!-- BEGIN PORTLET-->
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-share font-red-sunglo hide"></i>
+                            <span class="caption-subject font-dark bold uppercase">{{ key|e }}</span>
+                            <span class="caption-helper">Last 30 minutes data</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div id="plant_{{ key }}_loading">
+                            <img src="/bundles/board/img/loading.gif" alt="loading" /> </div>
+                        <div id="plant_{{ key }}_content" class="display-none">
+                            <div id="plant_{{ key }}" style="height: 228px;"> </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PORTLET-->
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        var analytics = {{ analytics|raw }};
+    </script>
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="/bundles/board/scripts/dashboard.js" type="text/javascript"></script>
+{% endblock %}
