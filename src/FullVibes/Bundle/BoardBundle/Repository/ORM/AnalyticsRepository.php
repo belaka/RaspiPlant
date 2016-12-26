@@ -13,7 +13,7 @@ class AnalyticsRepository extends EntityRepository
 {
     public function findAll()
     {
-        return $this->findBy(array(), array('eventDate' => 'DESC'));
+        return $this->findBy(array(), array('eventDate' => 'DESC'), 1000);
     }
     
     public function findByKeyAndDate($key, $date)
