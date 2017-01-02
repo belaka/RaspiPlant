@@ -62,7 +62,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $output->writeln("");
         
         foreach ($boards as $board) {
-            $this->boardInitialize($board, $output);
+            if ($board->isActive()) {
+                $this->boardInitialize($board, $output);
+            }
         }
         
         $output->writeln("");
@@ -75,8 +77,10 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $devices = $board->getDevices();
 
         foreach ($devices as $device) {
-            $this->devices[$device->getId()]['device'] = $this->deviceInitialize($device, $output);
-            usleep(100000);
+            if ($device->isActive()) {
+                $this->devices[$device->getId()]['device'] = $this->deviceInitialize($device, $output);
+                usleep(100000);
+            }
         }
     }
 
@@ -95,12 +99,16 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
         $sensors = $device->getSensors();
         foreach ($sensors as $sensor) {
-            $this->devices[$device->getId()]['sensors'][$sensor->getId()] = $this->sensorInitialize($sensor, $deviceLink, $output);
+            if ($sensor->isActive()) {
+                $this->devices[$device->getId()]['sensors'][$sensor->getId()] = $this->sensorInitialize($sensor, $deviceLink, $output);
+            }
         }
 
         $actuators = $device->getActuators();
         foreach ($actuators as $actuator) {
-            $this->devices[$device->getId()]['actuators'][$actuator->getId()] = $this->actuatorInitialize($actuator, $deviceLink, $output);
+            if ($actuator->isActive()) {
+                $this->devices[$device->getId()]['actuators'][$actuator->getId()] = $this->actuatorInitialize($actuator, $deviceLink, $output);
+            }
         }
         
         return $deviceLink;
