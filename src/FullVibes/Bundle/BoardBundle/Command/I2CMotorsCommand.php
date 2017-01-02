@@ -35,10 +35,12 @@ class I2CMotorsCommand extends ContainerAwareCommand
 
         $action = $input->getArgument('action');
 
+        $rootDir = $this->container->getParameter('kernel.root_dir');
+
         switch ($action) {
             default:
             case "start" :
-                $process = new Process('python bin/start-motors-A.py && python bin/start-motors-B.py');
+                $process = new Process('python ' . $rootDir . '/../bin/start-motors-A.py && python ' . $rootDir . '/../bin/start-motors-B.py');
                 $process->run();
 
                 // executes after the command finishes
@@ -51,7 +53,7 @@ class I2CMotorsCommand extends ContainerAwareCommand
             return;
             break;
             case "stop" :
-                $process = new Process('python bin/stop-motors-A.py && python bin/stop-motors-B.py');
+                $process = new Process('python ' . $rootDir . '/../bin/stop-motors-A.py && python ' . $rootDir . '/../bin/stop-motors-B.py');
                 $process->run();
 
                 // executes after the command finishes
