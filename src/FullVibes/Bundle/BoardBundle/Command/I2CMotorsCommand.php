@@ -35,7 +35,7 @@ class I2CMotorsCommand extends ContainerAwareCommand
 
         $action = $input->getArgument('action');
 
-        $rootDir = $this->container->getParameter('kernel.root_dir');
+        $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
 
         switch ($action) {
             default:
