@@ -16,6 +16,7 @@ class MotorDriverActuator extends AbstractActuator {
     const DISABLE_STEPPER = 0x1b;
     const STEPPER_NU = 0x1c;
     const I2C_MOTOR_DRIVER_ADD = 0x0f;  //Set the address of the I2CMotorDriver
+    //const I2C_MOTOR_DRIVER_ADD = 0x0a;
 
     /**
      *
@@ -83,7 +84,7 @@ class MotorDriverActuator extends AbstractActuator {
     public function motorDirectionSet($direction) {
 
         //bus . write_i2c_block_data(self::I2C_MOTOR_DRIVER_ADD, self::DIRECTION_SET, [$direction, 0]);
-        $this->device->writeBuffer(self::DIRECTION_SET, $direction, 0, 0, 0, 10);
+        $this->device->writeBuffer(self::DIRECTION_SET, $direction, 0, 0, 0, 1);
         
 
     }
@@ -100,7 +101,7 @@ class MotorDriverActuator extends AbstractActuator {
             $motor_set = self::MOTOR_SET_B;
         }
 
-        $this->device->writeBuffer($motor_set, $direction, $speed, self::NOTHING, self::NOTHING, 10);
+        $this->device->writeBuffer($motor_set, $direction, $speed, self::NOTHING, self::NOTHING, 2);
     }
 
     public function controlMotorA($speed, $direction = 0b1010) {
