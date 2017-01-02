@@ -17,3 +17,4 @@
 /nbproject
 auth.json
 /.idea
+/bin/grove_i2c_motor_driver.pyc
