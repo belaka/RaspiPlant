@@ -14,6 +14,7 @@ use FullVibes\Bundle\BoardBundle\Entity\Device;
 use FullVibes\Bundle\BoardBundle\Entity\Actuator;
 use FullVibes\Bundle\BoardBundle\Entity\Sensor;
 use FullVibes\Component\WiringPi\WiringPi;
+use Symfony\Component\Console\Input\ArrayInput;
 
 class BoardStartCommand extends EndlessContainerAwareCommand {
 
@@ -34,6 +35,16 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
     // This is a normal Command::initialize() method and it's called exactly once before the first execute call
     protected function initialize(InputInterface $input, OutputInterface $output) {
+
+        //Start alt commands eg:start motors|start motion)
+        $command = $this->getApplication()->find('raspiplant:motors:manage');
+        $arguments = array(
+            'command' => 'raspiplant:motors:manage',
+            'action'    => 'start'
+        );
+
+        $motorsInput = new ArrayInput($arguments);
+        $command->run($motorsInput, $output);
 
         $this->debug = false;
         $this->tick = 0;
