@@ -15,6 +15,8 @@ use FullVibes\Bundle\BoardBundle\Entity\Actuator;
 use FullVibes\Bundle\BoardBundle\Entity\Sensor;
 use FullVibes\Component\WiringPi\WiringPi;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class BoardStartCommand extends EndlessContainerAwareCommand {
 
@@ -185,6 +187,20 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             $output->writeln("");
             foreach ($this->data as $sensorId => $sensorData) {
                 $this->persistValues($sensorData, $sensorId, $firedAt);
+            }
+        }
+
+        if ((($this->tick % 7200) === 0)) {
+            //Tak a picture in folder web/motion
+            // raspistill -hf -vf -n -w 1024 -h 768 -q 100 -o $(date +"%Y-%m-%d_%H%M").jpg
+
+            $stillCommand = "raspistill -hf -vf -n -w 1024 -h 768 -q 100 -o $(date +\"%Y-%m-%d_%H%M\").jpg";
+            $process = new Process($stillCommand);
+            $process->run();
+
+            // executes after the command finishes
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
             }
         }
 
