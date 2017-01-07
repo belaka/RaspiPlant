@@ -202,6 +202,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             if (!$process->isSuccessful()) {
                 throw new ProcessFailedException($process);
             }
+            $output->writeln("Image added to directory motion at:" . $firedAt->format(self::ISO8601));
         }
 
         $this->tick += 10;
