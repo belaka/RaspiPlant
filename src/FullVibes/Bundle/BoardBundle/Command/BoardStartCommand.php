@@ -194,7 +194,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             //Tak a picture in folder web/motion
             // raspistill -hf -vf -n -w 1024 -h 768 -q 100 -o $(date +"%Y-%m-%d_%H%M").jpg
             $imgDirectory = $this->getContainer()->getParameter('stills_directory');
-            $imgPath = $imgDirectory . date('Y-m-d_HM') . ".jpg";
+            $imgPath = $imgDirectory . date('Y-m-d_hi') . ".jpg";
             $stillCommand = "raspistill -hf -vf -n -w 1024 -h 768 -q 100 -o " . $imgPath;
             $process = new Process($stillCommand);
             $process->run();
