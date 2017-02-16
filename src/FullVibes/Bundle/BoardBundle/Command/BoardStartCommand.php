@@ -26,6 +26,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected $devices = array();
     protected $data = array();
     protected $tick = 0;
+    protected $output;
 
     protected function configure() {
         $this->setName('raspiplant:board:start')
@@ -37,6 +38,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
     // This is a normal Command::initialize() method and it's called exactly once before the first execute call
     protected function initialize(InputInterface $input, OutputInterface $output) {
+
+        $this->output = $output;
 
         //Start alt commands eg:start motors|start motion)
         $command = $this->getApplication()->find('raspiplant:motors:manage');
@@ -76,30 +79,30 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         
         foreach ($boards as $board) {
             if ($board->isActive()) {
-                $this->boardInitialize($board, $output);
+                $this->boardInitialize($board);
             }
         }
         
         $output->writeln("");
     }
 
-    protected function boardInitialize(Board $board, OutputInterface $output) {
+    protected function boardInitialize(Board $board) {
 
-        $output->writeln("Starting Board :" . $board->getName());
+        $this->output->writeln("Starting Board :" . $board->getName());
 
         $devices = $board->getDevices();
 
         foreach ($devices as $device) {
             if ($device->isActive()) {
-                $this->devices[$device->getId()]['device'] = $this->deviceInitialize($device, $output);
+                $this->devices[$device->getId()]['device'] = $this->deviceInitialize($device);
                 usleep(100000);
             }
         }
     }
 
-    protected function deviceInitialize(Device $device, OutputInterface $output) {
+    protected function deviceInitialize(Device $device) {
 
-        $output->writeln("Starting Device :" . $device->getName() . " with address " . $device->getAddress());
+        $this->output->writeln("Starting Device :" . $device->getName() . " with address " . $device->getAddress());
 
         //address is a varchar and need hexdec before being sent
         $fd = WiringPi::wiringPiI2CSetup(hexdec($device->getAddress()));
@@ -113,23 +116,23 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $sensors = $device->getSensors();
         foreach ($sensors as $sensor) {
             if ($sensor->isActive()) {
-                $this->devices[$device->getId()]['sensors'][$sensor->getId()] = $this->sensorInitialize($sensor, $deviceLink, $output);
+                $this->devices[$device->getId()]['sensors'][$sensor->getId()] = $this->sensorInitialize($sensor, $deviceLink);
             }
         }
 
         $actuators = $device->getActuators();
         foreach ($actuators as $actuator) {
             if ($actuator->isActive()) {
-                $this->devices[$device->getId()]['actuators'][$actuator->getId()] = $this->actuatorInitialize($actuator, $deviceLink, $output);
+                $this->devices[$device->getId()]['actuators'][$actuator->getId()] = $this->actuatorInitialize($actuator, $deviceLink);
             }
         }
         
         return $deviceLink;
     }
 
-    protected function actuatorInitialize(Actuator $actuator, $deviceLink, OutputInterface $output) {
+    protected function actuatorInitialize(Actuator $actuator, $deviceLink) {
 
-        $output->writeln("Starting Actuator :" . $actuator->getName() . " with pin " . $actuator->getPin());
+        $this->output->writeln("Starting Actuator :" . $actuator->getName() . " with pin " . $actuator->getPin());
 
         $class = $actuator->getClass();
         $a = new $class($deviceLink, $actuator->getPin(), $actuator->getName());
@@ -143,9 +146,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         return $a;
     }
 
-    protected function sensorInitialize(Sensor $sensor, $deviceLink, OutputInterface $output) {
+    protected function sensorInitialize(Sensor $sensor, $deviceLink) {
 
-        $output->writeln("Starting Sensor :" . $sensor->getName() . " with pin " . $sensor->getPin());
+        $this->output->writeln("Starting Sensor :" . $sensor->getName() . " with pin " . $sensor->getPin());
 
         $class = $sensor->getClass();
         $s = new $class($deviceLink, $sensor->getPin(), $sensor->getName());
@@ -161,6 +164,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
 
+        $this->output = $output;
+
         $firedAt = new \DateTime();
         $this->data = array();
 
@@ -168,7 +173,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $output->writeln("");
         foreach ($this->devices as $deviceId => $device) {
             if (array_key_exists('sensors', $this->devices[$deviceId]))  {
-                $this->readDeviceSensors($this->devices[$deviceId]['sensors'], $output);
+                $this->readDeviceSensors($this->devices[$deviceId]['sensors']);
             }
         }
         $output->writeln("");
@@ -177,7 +182,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $output->writeln("");
         foreach ($this->devices as $deviceId => $device) {
             if (array_key_exists('actuators', $this->devices[$deviceId]))  {
-                $this->setDeviceActuators($this->devices[$deviceId]['actuators'], $output);
+                $this->setDeviceActuators($this->devices[$deviceId]['actuators']);
             }
         }
         $output->writeln("");
@@ -209,7 +214,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $this->tick += 10;
     }
 
-    protected function readDeviceSensors(array $sensors, OutputInterface $output) {
+    protected function readDeviceSensors(array $sensors) {
 
         foreach ($sensors as $sensorId => $sensor) {
 
@@ -217,12 +222,12 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
             if ($this->data[$sensorId]) {
                 if (array_key_exists('error', $this->data[$sensorId]) && !empty($this->data[$sensorId]['error'])) {
-                    $output->writeln("Sensor " . $sensor->getName()  . " Error:" . $this->data[$sensorId]['error']);
+                    $this->output->writeln("Sensor " . $sensor->getName()  . " Error:" . $this->data[$sensorId]['error']);
                 } else {
                     unset($this->data[$sensorId]['error']);
                     foreach ($this->data[$sensorId] as $key => $value) {
                         $fields = $sensor::getFields();
-                        $output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value . " " . $fields[$key]['unit']);
+                        $this->output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value . " " . $fields[$key]['unit']);
                     }
                 }
             }
@@ -231,7 +236,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         }
     }
 
-    protected function setDeviceActuators(array $actuators, OutputInterface $output) {
+    protected function setDeviceActuators(array $actuators) {
 
         $actuatorManager = $this->getActuatorManager();
 
@@ -247,8 +252,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
             $actuator->writeStatus($actuatorData->getState());
             
-            $output->writeln("Actuator " . $actuator->getName()  . " set to value: " .  $actuatorData->getState());
-            $output->writeln("");
+            $this->output->writeln("Actuator " . $actuator->getName()  . " set to value: " .  $actuatorData->getState());
+            $this->output->writeln("");
             usleep(100000);
         }
     }
@@ -256,18 +261,23 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected function persistValues($sensorData, $sensorId, $firedAt) {
 
         $analyticsManager = $this->getAnalyticsManager();
-        
-        foreach ($sensorData as $key => $value) {
-            if ($key !== 'error') {
 
-                $analytics = new Analytics(
-                    array(
-                        'eventKey' => $sensorId .  '_' . $key,
-                        'eventValue' => $value,
-                        'eventDate' => $firedAt
-                    )
-                );
-                $analyticsManager->save($analytics);
+        if (!empty($sensorData)) {
+
+            foreach ($sensorData as $key => $value) {
+                if ($key !== 'error') {
+
+                    $analytics = new Analytics(
+                        array(
+                            'eventKey' => $sensorId . '_' . $key,
+                            'eventValue' => $value,
+                            'eventDate' => $firedAt
+                        )
+                    );
+                    $analyticsManager->save($analytics);
+                } else {
+                    $this->output->writeln("Error value for sensor " . $sensorId  . ": " .  $value);
+                }
             }
         }
     }
