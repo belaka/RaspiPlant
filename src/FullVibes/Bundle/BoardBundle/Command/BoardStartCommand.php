@@ -27,6 +27,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected $data = array();
     protected $tick = 0;
     protected $output;
+    protected $light;
 
     protected function configure() {
         $this->setName('raspiplant:board:start')
@@ -40,6 +41,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected function initialize(InputInterface $input, OutputInterface $output) {
 
         $this->output = $output;
+        $this->light = 0;
 
         //Start alt commands eg:start motors|start motion)
         $command = $this->getApplication()->find('raspiplant:motors:manage');
@@ -195,7 +197,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             }
         }
 
-        if ((($this->tick % 7200) === 0)) {
+        if ((($this->tick % 7200) === 0) && ($this->light > 100)) {
             //Tak a picture in folder web/motion
             // raspistill -hf -vf -n -w 1024 -h 768 -q 100 -o $(date +"%Y-%m-%d_%H%M").jpg
             $imgDirectory = $this->getContainer()->getParameter('stills_directory');
@@ -226,6 +228,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                 } else {
                     unset($this->data[$sensorId]['error']);
                     foreach ($this->data[$sensorId] as $key => $value) {
+                        if ($key == 'light') {
+                            $this->light = $value;
+                        }
                         $fields = $sensor::getFields();
                         $this->output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value . " " . $fields[$key]['unit']);
                     }
