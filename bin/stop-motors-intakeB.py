@@ -50,7 +50,7 @@ try:
         m.MotorDirectionSet(0b1010)
         time.sleep(0.2)
         print("Start Motor A1 et B1")
-	m.MotorSpeedSetAB(100,0)
+	m.MotorSpeedSetAB(0,100)
 	print("END")
 
 except IOError:
