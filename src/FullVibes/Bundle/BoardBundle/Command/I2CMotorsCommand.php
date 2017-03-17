@@ -75,6 +75,30 @@ class I2CMotorsCommand extends ContainerAwareCommand
 
                 echo $process->getOutput();
                 return;
+            break;
+            case "intakeA" :
+                $process = new Process('python ' . $rootDir . '/../bin/stop-motors-intakeA.py');
+                $process->run();
+
+                // executes after the command finishes
+                if (!$process->isSuccessful()) {
+                    throw new ProcessFailedException($process);
+                }
+
+                echo $process->getOutput();
+                return;
+                break;
+            case "intakeB" :
+                $process = new Process('python ' . $rootDir . '/../bin/stop-motors-intakeB.py');
+                $process->run();
+
+                // executes after the command finishes
+                if (!$process->isSuccessful()) {
+                    throw new ProcessFailedException($process);
+                }
+
+                echo $process->getOutput();
+                return;
                 break;
         }
 

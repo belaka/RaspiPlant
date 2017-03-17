@@ -17,7 +17,8 @@
         <field name="name"       column="name"      type="string"      length="255"  nullable="false" unique="true"/>
         <field name="slug"       column="slug"      type="string"      length="255"  nullable="false" unique="true"/>
         <field name="class"      column="class"     type="string"      length="255"  nullable="true"/>
-        <field name="address"    column="address"   type="string"      length="4"    nullable="false"/>
+        <field name="address"    column="address"   type="string"      length="255"  nullable="true"/>
+
         
         <many-to-one field="board" target-entity="FullVibes\Bundle\BoardBundle\Entity\Board" inversed-by="devices">
             <join-column name="board_id" referenced-column-name="id" />
