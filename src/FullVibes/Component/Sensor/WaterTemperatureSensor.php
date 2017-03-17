@@ -9,12 +9,6 @@ use FullVibes\Component\Device\W1Device;
  */
 class WaterTemperatureSensor extends AbstractSensor {
 
-    const DHT_SENSOR_WHITE = 1;
-    
-    const DHT_SENSOR_BLUE = 0;
-    
-    const DHT_TEMP_CMD = 40;
-    
     /**
      *
      * @var boolean
@@ -87,7 +81,7 @@ class WaterTemperatureSensor extends AbstractSensor {
     {
         // We want the value after the t= on the 2nd line
         preg_match("/t=(.+)/", preg_split("/\n/", $str)[1], $matches);
-        $celsius = round($matches[1] / 1000); //round the results
+        $celsius = round($matches[1] / 1000, 2); //round the results
 
         return $celsius;
     }
