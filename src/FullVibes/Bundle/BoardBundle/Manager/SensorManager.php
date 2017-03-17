@@ -87,6 +87,14 @@ class SensorManager
     {
         return $this->getRepository()->findAll();
     }
+
+    /**
+     *
+     */
+    public function findAllActive()
+    {
+        return $this->getRepository()->findAllActive();
+    }
     
     /**
      * @return \Doctrine\ORM\EntityManager

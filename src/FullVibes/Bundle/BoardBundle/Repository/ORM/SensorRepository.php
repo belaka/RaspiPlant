@@ -11,5 +11,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class SensorRepository extends EntityRepository
 {
-    
+    protected function findAllActive()
+    {
+        return $this->findBy(array(), array('active' => true));
+    }
 }

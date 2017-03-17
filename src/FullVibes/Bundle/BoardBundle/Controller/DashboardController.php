@@ -11,7 +11,7 @@ class DashboardController extends Controller
     {    
         $keys = array();
         
-        $sensors = $this->getSensorManager()->findAll();
+        $sensors = $this->getSensorManager()->findAllActive();
         
         foreach ($sensors as $sensor) {
             $class = $sensor->getClass();
