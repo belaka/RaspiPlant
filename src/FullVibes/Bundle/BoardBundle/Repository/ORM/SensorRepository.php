@@ -16,6 +16,6 @@ class SensorRepository extends EntityRepository
      */
     public function findAllActive()
     {
-        return $this->findBy(array(), array('active' => true));
+        return $this->findBy(array('active' => true));
     }
 }
