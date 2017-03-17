@@ -109,7 +109,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
         $fd = $device->getAddress();
 
-        if ($device instanceof I2CDevice) {
+        if ($device->getClass() == "FullVibes\\Component\\Device\\I2CDevice") {
             //address is a varchar and need hexdec before being sent
             $fd = WiringPi::wiringPiI2CSetup(hexdec($device->getAddress()));
         }
