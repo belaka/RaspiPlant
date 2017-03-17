@@ -7,7 +7,7 @@ use FullVibes\Component\Device\W1Device;
 /**
  * 
  */
-class WaterTemperaturSensor extends AbstractSensor {
+class WaterTemperatureSensor extends AbstractSensor {
 
     const DHT_SENSOR_WHITE = 1;
     

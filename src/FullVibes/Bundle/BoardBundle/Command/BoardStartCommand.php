@@ -6,6 +6,7 @@ use Wrep\Daemonizable\Command\EndlessContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use FullVibes\Component\Device\DeviceInterface;
+use FullVibes\Component\Device\I2CDevice;
 use FullVibes\Component\Actuator\ActuatorInterface;
 use FullVibes\Component\Sensor\SensorInterface;
 use FullVibes\Bundle\BoardBundle\Entity\Analytics;
@@ -106,8 +107,13 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
         $this->output->writeln("Starting Device :" . $device->getName() . " with address " . $device->getAddress());
 
-        //address is a varchar and need hexdec before being sent
-        $fd = WiringPi::wiringPiI2CSetup(hexdec($device->getAddress()));
+        $fd = $device->getAddress();
+
+        if ($device instanceof I2CDevice) {
+            //address is a varchar and need hexdec before being sent
+            $fd = WiringPi::wiringPiI2CSetup(hexdec($device->getAddress()));
+        }
+
         $class = $device->getClass();
         $deviceLink = new $class($fd);
         
