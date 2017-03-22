@@ -154,6 +154,12 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         return $a;
     }
 
+    /**
+     * @param Sensor $sensor
+     * @param $deviceLink
+     * @return mixed
+     * @throws \Exception
+     */
     protected function sensorInitialize(Sensor $sensor, $deviceLink) {
 
         $this->output->writeln("Starting Sensor :" . $sensor->getName() . " with pin " . $sensor->getPin());
@@ -272,14 +278,18 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected function persistValues($sensorData, $sensorId, $firedAt) {
 
         $analyticsManager = $this->getAnalyticsManager();
+        $sensorManager = $this->getSensorManager();
 
-        if (!empty($sensorData)) {
+        $sensor = $sensorManager->find($sensorId);
+
+        if (!empty($sensorData) && $sensor) {
 
             foreach ($sensorData as $key => $value) {
                 if ($key !== 'error') {
 
                     $analytics = new Analytics(
                         array(
+                            'sensor' => $sensor,
                             'eventKey' => $sensorId . '_' . $key,
                             'eventValue' => $value,
                             'eventDate' => $firedAt
@@ -309,6 +319,15 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected function getActuatorManager() {
 
         return $this->getContainer()->get("board.manager.actuator_manager");
+    }
+
+    /**
+     *
+     * @return \FullVibes\Bundle\BoardBundle\Manager\SensorManager
+     */
+    protected function getSensorManager() {
+
+        return $this->getContainer()->get("board.manager.sensor_manager");
     }
 
     /**

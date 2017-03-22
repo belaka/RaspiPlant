@@ -2,6 +2,8 @@
 
 namespace FullVibes\Bundle\BoardBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use FullVibes\Bundle\BoardBundle\Entity\SensorValue;
 use FullVibes\Component\Model\AbstractModel;
 use FullVibes\Bundle\BoardBundle\Entity\Device;
 
@@ -44,12 +46,18 @@ class SensorModel extends AbstractModel implements ActivableInterface
     protected $active;
 
     /**
+     * @var ArrayCollection
+     */
+    protected $sensorValues;
+
+    /**
      * SensorModel constructor.
      * @param array $data
      */
     public function __construct($data = array())
     {
         $this->active = false;
+        $this->sensorValues = new ArrayCollection();
         parent::__construct($data);
     }
 
@@ -105,6 +113,26 @@ class SensorModel extends AbstractModel implements ActivableInterface
     }
 
     /**
+     * @return float
+     */
+    public function getSensorValues()
+    {
+        return $this->sensorValues;
+    }
+
+    /**
+     * @param $key
+     * @return mixed|null
+     * @throws \Exception
+     */
+    public function getSensorValue($key)
+    {
+        if ($this->sensorValues->containsKey($key)) {
+            return $this->sensorValues->get($key);
+        }
+    }
+
+    /**
      * @param $class
      * @return $this
      */
@@ -156,6 +184,26 @@ class SensorModel extends AbstractModel implements ActivableInterface
     public function setActive($active)
     {
         $this->active = $active;
+        return $this;
+    }
+
+    /**
+     * @param ArrayCollection $sensorValues
+     * @return $this
+     */
+    public function setSensorValues(ArrayCollection $sensorValues)
+    {
+        $this->sensorValues = $sensorValues;
+        return $this;
+    }
+
+    /**
+     * @param SensorValue $sensorValue
+     * @return $this
+     */
+    public function addSensorValue(SensorValue $sensorValue)
+    {
+        $this->sensorValues->add($sensorValue);
         return $this;
     }
 

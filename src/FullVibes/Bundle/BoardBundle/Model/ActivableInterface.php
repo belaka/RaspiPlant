@@ -10,6 +10,7 @@ interface ActivableInterface
     public function isActive();
 
     /**
+     * @param $active
      * @return mixed
      */
     public function setActive($active);

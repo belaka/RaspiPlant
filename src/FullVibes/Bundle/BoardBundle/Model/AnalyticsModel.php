@@ -3,9 +3,15 @@
 namespace FullVibes\Bundle\BoardBundle\Model;
 
 use FullVibes\Component\Model\AbstractModel;
+use FullVibes\Bundle\BoardBundle\Entity\Sensor;
+use FullVibes\Component\Sensor\SensorInterface;
 
 class AnalyticsModel extends AbstractModel
 {
+    /**
+     * @var Sensor
+     */
+    protected $sensor;
     
     /**
      *
@@ -35,6 +41,14 @@ class AnalyticsModel extends AbstractModel
     }
 
     /**
+     * @return Sensor
+     */
+    public function getSensor()
+    {
+        return $this->sensor;
+    }
+
+    /**
      * 
      * @return string
      */
@@ -56,6 +70,16 @@ class AnalyticsModel extends AbstractModel
      */
     public function getEventDate() {
         return $this->eventDate;
+    }
+
+    /**
+     * @param SensorInterface $sensor
+     * @return $this
+     */
+    public function setSensor(SensorInterface $sensor)
+    {
+        $this->sensor = $sensor;
+        return $this;
     }
 
     /**
