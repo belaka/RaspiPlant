@@ -21,19 +21,19 @@ class SensorValueModel extends AbstractModel
      *
      * @var string
      */
-    protected $k;
+    protected $sensorKey;
     
     /**
      *
      * @var double
      */
-    protected $v;
+    protected $sensorValue;
     
     /**
      *
      * @var \DateTime
      */
-    protected $d;
+    protected $sensorDate;
 
     /**
      * @var Sensor
@@ -54,7 +54,7 @@ class SensorValueModel extends AbstractModel
      */
     function __toString()
     {
-        return $this->d->format(DATE_ISO8601) . ':' . $this->k . ':' . $this->v;
+        return $this->sensorDate->format(DATE_ISO8601) . ':' . $this->sensorKey . ':' . $this->sensorValue;
     }
 
     /**
@@ -67,22 +67,22 @@ class SensorValueModel extends AbstractModel
     /**
      * @return string
      */
-    public function getK() {
-        return $this->name;
+    public function getSensorKey() {
+        return $this->sensorKey;
     }
 
     /**
      * @return string
      */
-    public function getV() {
-        return $this->slug;
+    public function getSensorValue() {
+        return $this->sensorValue;
     }
 
     /**
      * @return string
      */
-    public function getD() {
-        return $this->class;
+    public function getSensorDate() {
+        return $this->sensorDate;
     }
 
     /**
@@ -93,29 +93,29 @@ class SensorValueModel extends AbstractModel
     }
 
     /**
-     * @param string $k
+     * @param string $sensorKey
      * @return $this
      */
-    public function setK($k) {
-        $this->k = $k;
+    public function setSensorKey($sensorKey) {
+        $this->sensorKey = $sensorKey;
         return $this;
     }
 
     /**
-     * @param double $v
+     * @param double $sensorValue
      * @return $this
      */
-    public function setV($v) {
-        $this->v = $v;
+    public function setSensorValue($sensorValue) {
+        $this->sensorValue = $sensorValue;
         return $this;
     }
 
     /**
-     * @param \DateTime|null $d
+     * @param \DateTime|null $sensorDate
      * @return $this
      */
-    public function setD(\DateTime $d = null) {
-        $this->d = $d;
+    public function setSensorDate(\DateTime $sensorDate = null) {
+        $this->sensorDate = $sensorDate;
         return $this;
     }
 
