@@ -393,7 +393,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      */
     private function isMinMax($vk, $sv, $value)
     {
-        if (isnull($sv)) {
+        if (is_null($sv)) {
             return true;
         }
 
