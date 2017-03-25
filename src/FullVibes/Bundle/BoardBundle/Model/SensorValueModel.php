@@ -88,7 +88,7 @@ class SensorValueModel extends AbstractModel
      * @return string
      */
     public function getSensorValueKey() {
-        return $this->sensorKey;
+        return $this->sensorValueKey;
     }
 
     /**
