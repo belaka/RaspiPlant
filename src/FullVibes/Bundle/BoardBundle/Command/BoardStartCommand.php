@@ -6,7 +6,6 @@ use Wrep\Daemonizable\Command\EndlessContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use FullVibes\Component\Device\DeviceInterface;
-use FullVibes\Component\Device\I2CDevice;
 use FullVibes\Component\Actuator\ActuatorInterface;
 use FullVibes\Component\Sensor\SensorInterface;
 use FullVibes\Bundle\BoardBundle\Entity\Analytics;
@@ -18,6 +17,8 @@ use FullVibes\Component\WiringPi\WiringPi;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Doctrine\Common\Collections\ArrayCollection;
+use FullVibes\Bundle\BoardBundle\Entity\SensorValue;
 
 class BoardStartCommand extends EndlessContainerAwareCommand {
 
@@ -30,6 +31,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected $output;
     protected $light;
 
+    /**
+     *
+     */
     protected function configure() {
         $this->setName('raspiplant:board:start')
                 ->setDescription('Board loop start command.')
@@ -38,7 +42,12 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         ;
     }
 
-    // This is a normal Command::initialize() method and it's called exactly once before the first execute call
+    /**
+     * This is a normal Command::initialize() method and it's called exactly once before the first execute call
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throws \Exception
+     */
     protected function initialize(InputInterface $input, OutputInterface $output) {
 
         $this->output = $output;
@@ -89,6 +98,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $output->writeln("");
     }
 
+    /**
+     * @param Board $board
+     */
     protected function boardInitialize(Board $board) {
 
         $this->output->writeln("Starting Board :" . $board->getName());
@@ -103,6 +115,11 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         }
     }
 
+    /**
+     * @param Device $device
+     * @return mixed
+     * @throws \Exception
+     */
     protected function deviceInitialize(Device $device) {
 
         $this->output->writeln("Starting Device :" . $device->getName() . " with address " . $device->getAddress());
@@ -138,6 +155,12 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         return $deviceLink;
     }
 
+    /**
+     * @param Actuator $actuator
+     * @param $deviceLink
+     * @return mixed
+     * @throws \Exception
+     */
     protected function actuatorInitialize(Actuator $actuator, $deviceLink) {
 
         $this->output->writeln("Starting Actuator :" . $actuator->getName() . " with pin " . $actuator->getPin());
@@ -176,6 +199,11 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         return $s;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return void
+     */
     protected function execute(InputInterface $input, OutputInterface $output) {
 
         $this->output = $output;
@@ -228,6 +256,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $this->tick += 10;
     }
 
+    /**
+     * @param array $sensors
+     */
     protected function readDeviceSensors(array $sensors) {
 
         foreach ($sensors as $sensorId => $sensor) {
@@ -253,6 +284,10 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         }
     }
 
+    /**
+     * @param array $actuators
+     * @throws \Exception
+     */
     protected function setDeviceActuators(array $actuators) {
 
         $actuatorManager = $this->getActuatorManager();
@@ -275,6 +310,11 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         }
     }
 
+    /**
+     * @param $sensorData
+     * @param $sensorId
+     * @param $firedAt
+     */
     protected function persistValues($sensorData, $sensorId, $firedAt) {
 
         $analyticsManager = $this->getAnalyticsManager();
@@ -285,6 +325,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         if (!empty($sensorData) && $sensor) {
 
             foreach ($sensorData as $key => $value) {
+
+                $this->setSensorMinMax($sensor, $key, $value, $firedAt);
+
                 if ($key !== 'error') {
 
                     $analytics = new Analytics(
@@ -301,6 +344,76 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                 }
             }
         }
+    }
+
+    /**
+     * @param SensorInterface $sensor
+     * @param $key
+     * @param $value
+     * @param $firedAt
+     */
+    protected function setSensorMinMax(SensorInterface $sensor, $key, $value, $firedAt)
+    {
+        $sensorMinMax = $sensor->getSensorValues();
+
+        if (!$sensor->getSensorValues()) {
+            $sensor->setSensorValues(new ArrayCollection(SensorValue::getSensorValueArray()));
+            $sensorMinMax = $sensor->getSensorValues();
+        }
+
+        foreach ($sensorMinMax as $sensorValue) {
+
+            $vk = $sensorValue->getSensorValueKey();
+            $sv = $sensorValue->getSensorValue();
+
+            if ($this->isMinMax($vk, $sv, $value)) {
+                $sensorValue->setSensorKey($key);
+                $sensorValue->setSensorValue($value);
+                $sensorValue->setSensorDate($firedAt);
+            }
+
+        }
+
+        $this->getSensorManager()->update($sensor);
+    }
+
+    /**
+     * @param $vk
+     * @param $sv
+     * @param $value
+     * @return bool
+     */
+    private function isMinMax($vk, $sv, $value)
+    {
+        if (isnull($sv)) {
+            return true;
+        }
+
+        if ($vk === 'min' && $sv > $value) {
+            return true;
+        }
+
+        if ($vk === 'max' && $sv < $value) {
+            return true;
+        }
+
+        if ($this->light > 100 && $vk === 'day_min' && $sv > $value) {
+            return true;
+        }
+
+        if ($this->light > 100 && $vk === 'day_max' && $sv < $value) {
+            return true;
+        }
+
+        if ($this->light < 100 && $vk === 'night_min' && $sv > $value) {
+            return true;
+        }
+
+        if ($this->light < 100 && $vk === 'night_max' && $sv < $value) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

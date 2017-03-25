@@ -71,17 +71,17 @@ class SensorManager
         $this->em->remove($sensor);
         $this->em->flush($sensor);
     }
-    
+
     /**
-     * 
+     *
      */
     public function clear()
     {
         $this->em->clear($this->classNamespace);
     }
-    
+
     /**
-     * 
+     * @return array
      */
     public function findAll()
     {
@@ -89,7 +89,7 @@ class SensorManager
     }
 
     /**
-     *
+     * @return array
      */
     public function findAllActive()
     {
@@ -103,8 +103,9 @@ class SensorManager
     {
         return $this->em->getConnection();
     }
+
     /**
-     * @return \Effinet\Bundle\DataWarehouseBundle\Repository\ORM\Contact\IdentityRepository
+     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository|\FullVibes\Bundle\BoardBundle\Repository\ORM\SensorRepository
      */
     public function getRepository()
     {

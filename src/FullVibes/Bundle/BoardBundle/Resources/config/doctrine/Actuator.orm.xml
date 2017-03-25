@@ -9,10 +9,15 @@
             table="actuator" 
             repository-class="FullVibes\Bundle\BoardBundle\Repository\ORM\ActuatorRepository">
 
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="prePersist"/>
+            <lifecycle-callback type="preUpdate" method="preUpdate"/>
+        </lifecycle-callbacks>
+
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO" />
         </id>
-        
+
         <field name="name"       column="name"      type="string"      length="255"  nullable="false" unique="true"/>
         <field name="slug"       column="slug"      type="string"      length="255"  nullable="false" unique="true"/>
         <field name="class"      column="class"     type="string"      length="255"  nullable="true"/>
@@ -23,11 +28,6 @@
         <many-to-one field="device" target-entity="FullVibes\Bundle\BoardBundle\Entity\Device" inversed-by="actuators">
             <join-column name="device_id" referenced-column-name="id" />
         </many-to-one>
-
-        <lifecycle-callbacks>
-            <lifecycle-callback type="prePersist" method="prePersist"/>
-            <lifecycle-callback type="preUpdate" method="preUpdate"/>
-        </lifecycle-callbacks>
                
     </entity>
 

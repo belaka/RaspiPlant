@@ -9,6 +9,11 @@
             table="board" 
             repository-class="FullVibes\Bundle\BoardBundle\Repository\ORM\BoardRepository">
 
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="prePersist"/>
+            <lifecycle-callback type="preUpdate" method="preUpdate"/>
+        </lifecycle-callbacks>
+
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO" />
         </id>
@@ -18,11 +23,6 @@
         <field name="active"     column="active"    type="boolean"                   nullable="false"/>
 
         <one-to-many field="devices" target-entity="Device" mapped-by="board" />
-
-        <lifecycle-callbacks>
-            <lifecycle-callback type="prePersist" method="prePersist"/>
-            <lifecycle-callback type="preUpdate" method="preUpdate"/>
-        </lifecycle-callbacks>
         
     </entity>
 

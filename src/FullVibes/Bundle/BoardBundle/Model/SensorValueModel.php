@@ -22,6 +22,12 @@ class SensorValueModel extends AbstractModel
      * @var string
      */
     protected $sensorKey;
+
+    /**
+     *
+     * @var string
+     */
+    protected $sensorValueKey;
     
     /**
      *
@@ -54,7 +60,7 @@ class SensorValueModel extends AbstractModel
      */
     function __toString()
     {
-        return $this->sensorDate->format(DATE_ISO8601) . ':' . $this->sensorKey . ':' . $this->sensorValue;
+        return $this->sensorValueKey . ':' . $this->sensorDate->format(DATE_ISO8601) . ':' . $this->sensorKey . ':' . $this->sensorValue;
     }
 
     /**
@@ -65,9 +71,23 @@ class SensorValueModel extends AbstractModel
     }
 
     /**
+     * @return array
+     */
+    public static function getSensorValueArray() {
+        return array_fill_keys(self::SENSOR_VALUE_KEYS, null);
+    }
+
+    /**
      * @return string
      */
     public function getSensorKey() {
+        return $this->sensorKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSensorValueKey() {
         return $this->sensorKey;
     }
 
@@ -98,6 +118,15 @@ class SensorValueModel extends AbstractModel
      */
     public function setSensorKey($sensorKey) {
         $this->sensorKey = $sensorKey;
+        return $this;
+    }
+
+    /**
+     * @param string $sensorValueKey
+     * @return $this
+     */
+    public function setSensorValueKey($sensorValueKey) {
+        $this->sensorValueKey = $sensorValueKey;
         return $this;
     }
 
