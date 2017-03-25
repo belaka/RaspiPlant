@@ -25,12 +25,11 @@
 
         <field name="active"     column="active"    type="boolean"                   nullable="false"/>
 
-        <!--
-        <field name="min"    column="min"   type="decimal"     scale="10"    precision="20"    nullable="true"/>
-        <field name="max"    column="max"   type="decimal"     scale="10"    precision="20"    nullable="true"/>
-        -->
-
-        <one-to-many field="sensorValues" target-entity="FullVibes\Bundle\BoardBundle\Entity\SensorValue" mapped-by="sensor" />
+        <one-to-many field="sensorValues" target-entity="FullVibes\Bundle\BoardBundle\Entity\SensorValue" mapped-by="sensor">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
 
         <many-to-one field="device" target-entity="FullVibes\Bundle\BoardBundle\Entity\Device" inversed-by="sensors">
             <join-column name="device_id" referenced-column-name="id" />
