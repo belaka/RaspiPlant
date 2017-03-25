@@ -352,7 +352,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      * @param $value
      * @param $firedAt
      */
-    protected function setSensorMinMax(SensorInterface $sensor, $key, $value, $firedAt)
+    protected function setSensorMinMax(Sensor $sensor, $key, $value, $firedAt)
     {
         $sensorMinMax = $sensor->getSensorValues();
 
