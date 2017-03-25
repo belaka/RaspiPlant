@@ -57,7 +57,7 @@ class SensorModel extends AbstractModel implements ActivableInterface
     public function __construct($data = array())
     {
         $this->active = false;
-        $this->sensorValues = new ArrayCollection(SensorValue::getSensorValueArray());
+        $this->sensorValues = new ArrayCollection();
 
         parent::__construct($data);
     }

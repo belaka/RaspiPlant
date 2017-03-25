@@ -356,12 +356,18 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     {
         $sensorMinMax = $sensor->getSensorValues();
 
-        if (!$sensor->getSensorValues()) {
-            $sensor->setSensorValues(new ArrayCollection(SensorValue::getSensorValueArray()));
-            $sensorMinMax = $sensor->getSensorValues();
+        if (count($sensorMinMax === 0)) {
+            foreach (SensorValue::getSensorValueKeys() as $sensorValueKey) {
+                $sv = new SensorValue();
+                $sv->setSensor($sensor);
+                $sv->setSensorDate(new \DateTime());
+                $sv->setSensorKey($key);
+                $sv->setSensorValue(null);
+                $sv->setSensorValueKey($sensorValueKey);
+            }
         }
 
-        foreach ($sensorMinMax as $sensorValue) {
+        foreach ($sensor->getSensorValues() as $sensorValue) {
 
             $vk = $sensorValue->getSensorValueKey();
             $sv = $sensorValue->getSensorValue();
