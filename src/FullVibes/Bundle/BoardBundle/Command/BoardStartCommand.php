@@ -347,7 +347,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     }
 
     /**
-     * @param SensorInterface $sensor
+     * @param Sensor $sensor
      * @param $key
      * @param $value
      * @param $firedAt

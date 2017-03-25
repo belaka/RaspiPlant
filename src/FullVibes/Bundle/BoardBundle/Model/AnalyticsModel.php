@@ -4,7 +4,6 @@ namespace FullVibes\Bundle\BoardBundle\Model;
 
 use FullVibes\Component\Model\AbstractModel;
 use FullVibes\Bundle\BoardBundle\Entity\Sensor;
-use FullVibes\Component\Sensor\SensorInterface;
 
 class AnalyticsModel extends AbstractModel
 {
@@ -73,10 +72,10 @@ class AnalyticsModel extends AbstractModel
     }
 
     /**
-     * @param SensorInterface $sensor
+     * @param Sensor $sensor
      * @return $this
      */
-    public function setSensor(SensorInterface $sensor)
+    public function setSensor(Sensor $sensor)
     {
         $this->sensor = $sensor;
         return $this;
