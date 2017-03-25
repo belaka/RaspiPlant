@@ -89,6 +89,14 @@ class SensorManager
     }
 
     /**
+     * @return Sensor
+     */
+    public function find($id)
+    {
+        return $this->getRepository()->find($id);
+    }
+
+    /**
      * @return array
      */
     public function findAllActive()
