@@ -364,6 +364,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                 $sv->setSensorKey($key);
                 $sv->setSensorValue(null);
                 $sv->setSensorValueKey($sensorValueKey);
+                $sensor->addSensorValue($sv);
             }
         }
 
