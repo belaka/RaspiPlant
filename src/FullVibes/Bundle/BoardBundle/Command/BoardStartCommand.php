@@ -358,12 +358,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $this->output->writeln("Check Sensor Min and Max for key: " . $key);
 
         $sensorValueManager = $this->getSensorValueManager();
+        $sensorKeyValues = $sensorValueManager->findAllWithKey($key);
 
-        $sensorMinMax = $sensor->getSensorValues()->toArray();
-
-        $this->output->writeln("SensorMinMax count:" . count($sensorMinMax));
-
-        if (count($sensorMinMax) < 1) {
+        if (count($sensorKeyValues) < 1) {
             foreach (SensorValue::getSensorValueKeys() as $sensorValueKey) {
                 $sv = new SensorValue();
                 $sv->setSensor($sensor);
@@ -375,7 +372,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
             }
         }
 
-        foreach ($sensor->getSensorValues() as $sensorValue) {
+        foreach ($sensorKeyValues as $sensorValue) {
 
             $vk = $sensorValue->getSensorValueKey();
             $sv = $sensorValue->getSensorValue();

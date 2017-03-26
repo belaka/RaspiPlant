@@ -11,5 +11,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class SensorValueRepository extends EntityRepository
 {
-
+    /**
+     * @param $key
+     * @return array
+     */
+    public function findAllWithKey($key)
+    {
+        return $this->findBy(array('sensorKey' => $key));
+    }
 }

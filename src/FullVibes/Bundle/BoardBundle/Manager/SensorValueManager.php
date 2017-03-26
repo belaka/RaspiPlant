@@ -89,6 +89,15 @@ class SensorValueManager
     }
 
     /**
+     * @param $key
+     * @return mixed
+     */
+    public function findAllWithKey($key)
+    {
+        return $this->getRepository()->findAllWithKey($key);
+    }
+
+    /**
      * @param $id
      * @return null|object
      */
