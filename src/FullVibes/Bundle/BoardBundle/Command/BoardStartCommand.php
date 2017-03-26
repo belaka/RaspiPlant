@@ -460,7 +460,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      */
     protected function getSensorValueManager() {
 
-        return $this->getContainer()->get("board.manager.actuator_manager");
+        return $this->getContainer()->get("board.manager.sensor_value_manager");
     }
 
     /**
