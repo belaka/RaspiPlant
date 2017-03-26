@@ -380,7 +380,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                 $sensorValue->setSensorKey($key);
                 $sensorValue->setSensorValue($value);
                 $sensorValue->setSensorDate($firedAt);
-                $sensorValueManager->persist($sensorValue);
+                $sensorValueManager->save($sensorValue);
                 $this->output->writeln("New Sensor " . $vk  . " value  for " . $key . ": " . $value . " ");
             }
         }
