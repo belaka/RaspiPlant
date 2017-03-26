@@ -53,7 +53,7 @@
                     <th>Sensor Values</th>
                     <td>
                         {% for sensorValue in sensor.sensorValues %}
-                            {{ sensorValue.sensorKey }} : {{ sensorValue.sensorValueKey }} : {{ sensorValue.sensorValue }}<br/>
+                           {{ sensorValue.sensorDate }} :  {{ sensorValue.sensorKey }} : {{ sensorValue.sensorValueKey }} : {{ sensorValue.sensorValue }}<br/>
                         {% endfor %}
                     </td>
                 </tr>
