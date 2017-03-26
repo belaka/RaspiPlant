@@ -119,6 +119,6 @@ class SensorValueManager
      */
     public function getRepository()
     {
-        return $this->em->getRepository('SensorValue');
+        return $this->em->getRepository('BoardBundle:SensorValue');
     }
 }
