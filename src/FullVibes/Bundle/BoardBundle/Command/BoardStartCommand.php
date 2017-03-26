@@ -355,6 +355,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      */
     protected function setSensorMinMax(Sensor $sensor, $key, $value, $firedAt)
     {
+        $this->output->writeln("Check Sensor Min and Max for key: " . $key);
+        
         $sensorValueManager = $this->getSensorValueManager();
 
         $sensorMinMax = $sensor->getSensorValues()->toArray();
