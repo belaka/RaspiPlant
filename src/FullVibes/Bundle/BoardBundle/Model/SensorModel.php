@@ -114,7 +114,7 @@ class SensorModel extends AbstractModel implements ActivableInterface
     }
 
     /**
-     * @return float
+     * @return ArrayCollection
      */
     public function getSensorValues()
     {

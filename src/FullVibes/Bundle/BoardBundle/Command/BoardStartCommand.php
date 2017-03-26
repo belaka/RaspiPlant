@@ -276,9 +276,6 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                         }
                         $fields = $sensor::getFields();
                         $this->output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value . " " . $fields[$key]['unit']);
-
-                        $this->setSensorMinMax($sensor, $key, $value, new \DateTime());
-
                     }
                 }
             }
@@ -329,6 +326,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
             foreach ($sensorData as $key => $value) {
 
+                $this->setSensorMinMax($sensor, $key, $value, $firedAt);
+
                 if ($key !== 'error') {
 
                     $analytics = new Analytics(
@@ -355,9 +354,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      */
     protected function setSensorMinMax(Sensor $sensor, $key, $value, $firedAt)
     {
-        $sensorMinMax = $sensor->getSensorValues();
+        $sensorMinMax = $sensor->getSensorValues()->toArray();
 
-        if ($sensorMinMax->count() === 0) {
+        if (count($sensorMinMax) < 1) {
             foreach (SensorValue::getSensorValueKeys() as $sensorValueKey) {
                 $sv = new SensorValue();
                 $sv->setSensor($sensor);
@@ -373,14 +372,15 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
             $vk = $sensorValue->getSensorValueKey();
             $sv = $sensorValue->getSensorValue();
+            $sk = $sensorValue->getSensorKey()
 
-            if ($this->isMinMax($vk, $sv, $value)) {
+
+            if ($sk === $key && $this->isMinMax($vk, $sv, $value)) {
                 $sensorValue->setSensorKey($key);
                 $sensorValue->setSensorValue($value);
                 $sensorValue->setSensorDate($firedAt);
                 $this->output->writeln("New Sensor " . $vk  . " value  for " . $key . ": " . $value . " ");
             }
-
         }
 
         $this->getSensorManager()->update($sensor);
