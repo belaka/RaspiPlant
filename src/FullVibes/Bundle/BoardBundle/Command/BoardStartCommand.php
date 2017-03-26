@@ -326,8 +326,6 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
             foreach ($sensorData as $key => $value) {
 
-                $this->setSensorMinMax($sensor, $key, $value, $firedAt);
-
                 if ($key !== 'error') {
 
                     $analytics = new Analytics(
@@ -339,6 +337,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                         )
                     );
                     $analyticsManager->save($analytics);
+
+                    $this->setSensorMinMax($sensor, $key, $value, $firedAt);
+
                 } else {
                     $this->output->writeln("Error value for sensor " . $sensorId  . ": " .  $value);
                 }
