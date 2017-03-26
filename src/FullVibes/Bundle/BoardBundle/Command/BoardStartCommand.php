@@ -354,6 +354,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      */
     protected function setSensorMinMax(Sensor $sensor, $key, $value, $firedAt)
     {
+        $sensorValueManager = $this->getSensorValueManager();
+
         $sensorMinMax = $sensor->getSensorValues()->toArray();
 
         if (count($sensorMinMax) < 1) {
@@ -378,6 +380,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                 $sensorValue->setSensorKey($key);
                 $sensorValue->setSensorValue($value);
                 $sensorValue->setSensorDate($firedAt);
+                $sensorValueManager->persist($sensorValue);
                 $this->output->writeln("New Sensor " . $vk  . " value  for " . $key . ": " . $value . " ");
             }
         }
@@ -449,6 +452,15 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected function getSensorManager() {
 
         return $this->getContainer()->get("board.manager.sensor_manager");
+    }
+
+    /**
+     *
+     * @return \FullVibes\Bundle\BoardBundle\Manager\SensorValueManager
+     */
+    protected function getSensorValueManager() {
+
+        return $this->getContainer()->get("board.manager.actuator_manager");
     }
 
     /**
