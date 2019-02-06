@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                   https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+
+    <entity name="RaspiPlant\Bundle\BoardBundle\Entity\Analytics"
+            table="analytics"
+            repository-class="RaspiPlant\Bundle\BoardBundle\Repository\ORM\AnalyticsRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="eventKey"      column="event_key"     type="string"      length="255"  nullable="true"/>
+        <field name="eventValue"    column="event_value"   type="decimal"     scale="10"    precision="20"    nullable="true"/>
+        <field name="eventDate"     column="event_date"    type="datetime"    nullable="false"/>
+
+        <many-to-one field="sensor" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Sensor">
+            <join-column name="sensor_id" referenced-column-name="id" />
+        </many-to-one>
+
+    </entity>
+
+</doctrine-mapping>

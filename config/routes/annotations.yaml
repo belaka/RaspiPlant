@@ -1,0 +1,3 @@
+controllers:
+    resource: ../../src/RaspiPlant/Bundle/BoardBundle/Controller/
+    type: annotation
