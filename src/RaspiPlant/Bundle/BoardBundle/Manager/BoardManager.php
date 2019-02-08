@@ -34,7 +34,7 @@ class BoardManager
     public function __construct(RegistryInterface $registry)
     {
         $this->em = $registry->getManager();
-        $this->classNamespace = 'RaspiPlant\Bundle\BoardBundle\Entity\Board';
+        $this->classNamespace = Board::class;
         $this->metadata = $this->em->getClassMetadata($this->classNamespace);
     }
 

@@ -2,8 +2,8 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Manager;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use RaspiPlant\Bundle\BoardBundle\Entity\Actuator;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @author Vincent Honnorat <vincenth@effi-net.com>
@@ -28,17 +28,20 @@ class ActuatorManager
     protected $classNamespace;
 
     /**
-     * @param \Doctrine\Bundle\DoctrineBundle\Registry $registry
+     * ActuatorManager constructor.
+     * @param RegistryInterface $registry
      */
-    public function __construct(Registry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         $this->em = $registry->getManager();
-        $this->classNamespace = 'RaspiPlant\Bundle\BoardBundle\Entity\Actuator';
+        $this->classNamespace = Actuator::class;
         $this->metadata = $this->em->getClassMetadata($this->classNamespace);
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Actuator $actuator
+     * @param Actuator $actuator
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function create(Actuator $actuator)
     {
@@ -47,7 +50,9 @@ class ActuatorManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Actuator $actuator
+     * @param Actuator $actuator
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function save(Actuator $actuator)
     {
@@ -56,7 +61,9 @@ class ActuatorManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Actuator $actuator
+     * @param Actuator $actuator
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function update(Actuator $actuator)
     {
@@ -64,7 +71,9 @@ class ActuatorManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Actuator $actuator
+     * @param Actuator $actuator
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function remove(Actuator $actuator)
     {
@@ -81,7 +90,8 @@ class ActuatorManager
     }
 
     /**
-     *
+     * @param $id
+     * @return object|null
      */
     public function find($id)
     {
@@ -89,7 +99,7 @@ class ActuatorManager
     }
 
     /**
-     *
+     * @return array|object[]
      */
     public function findAll()
     {
@@ -103,11 +113,12 @@ class ActuatorManager
     {
         return $this->em->getConnection();
     }
+
     /**
-     * @return \Effinet\Bundle\DataWarehouseBundle\Repository\ORM\Contact\IdentityRepository
+     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository
      */
     public function getRepository()
     {
-        return $this->em->getRepository('BoardBundle:Actuator');
+        return $this->em->getRepository(Actuator::class);
     }
 }

@@ -15,12 +15,12 @@
         </lifecycle-callbacks>
 
         <id name="id" type="integer" column="id">
-            <generator strategy="AUTO" />
+            <generator />
         </id>
 
-        <field name="name"       column="name"      type="string"      length="255"  nullable="false" unique="true"/>
-        <field name="slug"       column="slug"      type="string"      length="255"  nullable="false" unique="true"/>
-        <field name="active"     column="active"    type="boolean"                   nullable="false"/>
+        <field name="name" column="name" length="191" unique="true"/>
+        <field name="slug" column="slug" length="191" unique="true"/>
+        <field name="active" column="active" type="boolean" />
 
         <one-to-many field="devices" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Device" mapped-by="board" />
 

@@ -1,3 +1,23 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+dashboard:
+  resource: "@BoardBundle/Resources/config/routing.xml"
+  prefix:   /
+
+board_board:
+  resource: "@BoardBundle/Resources/config/routing/board.xml"
+  prefix:   /board
+
+board_device:
+  resource: "@BoardBundle/Resources/config/routing/device.xml"
+  prefix:   /device
+
+board_sensor:
+  resource: "@BoardBundle/Resources/config/routing/sensor.xml"
+  prefix:   /sensor
+
+board_actuator:
+  resource: "@BoardBundle/Resources/config/routing/actuator.xml"
+  prefix:   /actuator
+
+board_analytics:
+  resource: "@BoardBundle/Resources/config/routing/analytics.xml"
+  prefix:   /analytics

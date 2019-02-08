@@ -3,25 +3,27 @@
 namespace RaspiPlant\Bundle\BoardBundle\Controller;
 
 use RaspiPlant\Bundle\BoardBundle\Entity\Actuator;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use RaspiPlant\Bundle\BoardBundle\Form\ActuatorType;
+use RaspiPlant\Bundle\BoardBundle\Manager\ActuatorManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Actuator controller.
  *
  */
-class ActuatorController extends Controller
+class ActuatorController extends AbstractController
 {
     /**
-     * Lists all actuator entities.
-     *
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction(ActuatorManager $actuatorManager)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $actuators = $em->getRepository('BoardBundle:Actuator')->findAll();
+        $actuators = $actuatorManager->getRepository('BoardBundle:Actuator')->findAll();
 
         return $this->render('actuator/index.html.twig', array(
             'actuators' => $actuators,
@@ -29,13 +31,13 @@ class ActuatorController extends Controller
     }
 
     /**
-     * Creates a new actuator entity.
-     *
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
         $actuator = new Actuator();
-        $form = $this->createForm('RaspiPlant\Bundle\BoardBundle\Form\ActuatorType', $actuator);
+        $form = $this->createForm(ActuatorType::class, $actuator);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,8 +55,8 @@ class ActuatorController extends Controller
     }
 
     /**
-     * Finds and displays a actuator entity.
-     *
+     * @param Actuator $actuator
+     * @return Response
      */
     public function showAction(Actuator $actuator)
     {
@@ -67,17 +69,19 @@ class ActuatorController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing actuator entity.
-     *
+     * @param Request $request
+     * @param Actuator $actuator
+     * @param ActuatorManager $actuatorManager
+     * @return RedirectResponse|Response
      */
-    public function editAction(Request $request, Actuator $actuator)
+    public function editAction(Request $request, Actuator $actuator, ActuatorManager $actuatorManager)
     {
         $deleteForm = $this->createDeleteForm($actuator);
-        $editForm = $this->createForm('RaspiPlant\Bundle\BoardBundle\Form\ActuatorType', $actuator);
+        $editForm = $this->createForm(ActuatorType::class, $actuator);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $actuatorManager->flush();
 
             return $this->redirectToRoute('actuator_edit', array('id' => $actuator->getId()));
         }
@@ -90,8 +94,9 @@ class ActuatorController extends Controller
     }
 
     /**
-     * Deletes a actuator entity.
-     *
+     * @param Request $request
+     * @param Actuator $actuator
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Actuator $actuator)
     {
@@ -109,13 +114,13 @@ class ActuatorController extends Controller
 
     /**
      * @param Request $request
+     * @param ActuatorManager $actuatorManager
      * @param $id
      * @return JsonResponse
      * @throws \Exception
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, ActuatorManager $actuatorManager, $id)
     {
-        $actuatorManager = $this->getActuatorManager();
         $actuator = $actuatorManager->find($id);
 
         if (!($actuator instanceof Actuator)) {
@@ -136,11 +141,8 @@ class ActuatorController extends Controller
     }
 
     /**
-     * Creates a form to delete a actuator entity.
-     *
-     * @param Actuator $actuator The actuator entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @param Actuator $actuator
+     * @return FormInterface
      */
     private function createDeleteForm(Actuator $actuator)
     {
@@ -151,8 +153,4 @@ class ActuatorController extends Controller
         ;
     }
 
-    private function getActuatorManager()
-    {
-        return $this->container->get("board.manager.actuator_manager");
-    }
 }

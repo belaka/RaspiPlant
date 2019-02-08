@@ -2,8 +2,8 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Manager;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use RaspiPlant\Bundle\BoardBundle\Entity\Analytics;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @author Vincent Honnorat <vincenth@effi-net.com>
@@ -28,17 +28,20 @@ class AnalyticsManager
     protected $classNamespace;
 
     /**
-     * @param \Doctrine\Bundle\DoctrineBundle\Registry $registry
+     * AnalyticsManager constructor.
+     * @param RegistryInterface $registry
      */
-    public function __construct(Registry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         $this->em = $registry->getManager();
-        $this->classNamespace = 'RaspiPlant\Bundle\BoardBundle\Entity\Analytics';
+        $this->classNamespace = Analytics::class;
         $this->metadata = $this->em->getClassMetadata($this->classNamespace);
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\analytics $analytics
+     * @param Analytics $analytics
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function create(Analytics $analytics)
     {
@@ -47,7 +50,9 @@ class AnalyticsManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\analytics $analytics
+     * @param Analytics $analytics
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function save(Analytics $analytics)
     {
@@ -56,7 +61,9 @@ class AnalyticsManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\analytics $analytics
+     * @param Analytics $analytics
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function update(Analytics $analytics)
     {
@@ -64,7 +71,9 @@ class AnalyticsManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\analytics $analytics
+     * @param Analytics $analytics
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function remove(Analytics $analytics)
     {
@@ -73,7 +82,7 @@ class AnalyticsManager
     }
 
     /**
-     *
+     * @throws \Doctrine\Common\Persistence\Mapping\MappingException
      */
     public function clear()
     {
@@ -81,7 +90,8 @@ class AnalyticsManager
     }
 
     /**
-     *
+     * @param $eventDate
+     * @return mixed
      */
     public function findByEventDate($eventDate)
     {
@@ -89,7 +99,8 @@ class AnalyticsManager
     }
 
     /**
-     *
+     * @param $key
+     * @return mixed
      */
     public function findAllByKey($key)
     {
@@ -97,10 +108,9 @@ class AnalyticsManager
     }
 
     /**
-     *
-     * @param string $key
-     * @param \DateTime $date
-     * @return array
+     * @param $key
+     * @param $date
+     * @return mixed
      */
     public function findByKeyAndDate($key, $date)
     {
@@ -108,7 +118,7 @@ class AnalyticsManager
     }
 
     /**
-     *
+     * @return mixed
      */
     public function findAll()
     {
@@ -116,17 +126,18 @@ class AnalyticsManager
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @return \Doctrine\DBAL\Connection
      */
     public function getConnection()
     {
         return $this->em->getConnection();
     }
+
     /**
-     * @return \Effinet\Bundle\DataWarehouseBundle\Repository\ORM\Contact\IdentityRepository
+     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository
      */
     public function getRepository()
     {
-        return $this->em->getRepository('BoardBundle:Analytics');
+        return $this->em->getRepository(Analytics::class);
     }
 }

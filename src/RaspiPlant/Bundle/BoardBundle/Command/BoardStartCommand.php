@@ -2,24 +2,31 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Command;
 
-use Wrep\Daemonizable\Command\EndlessContainerAwareCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use RaspiPlant\Component\Device\DeviceInterface;
-use RaspiPlant\Component\Actuator\ActuatorInterface;
-use RaspiPlant\Component\Sensor\SensorInterface;
+use RaspiPlant\Bundle\BoardBundle\Entity\Actuator;
 use RaspiPlant\Bundle\BoardBundle\Entity\Analytics;
 use RaspiPlant\Bundle\BoardBundle\Entity\Board;
 use RaspiPlant\Bundle\BoardBundle\Entity\Device;
-use RaspiPlant\Bundle\BoardBundle\Entity\Actuator;
 use RaspiPlant\Bundle\BoardBundle\Entity\Sensor;
+use RaspiPlant\Bundle\BoardBundle\Entity\SensorValue;
+use RaspiPlant\Bundle\BoardBundle\Manager\ActuatorManager;
+use RaspiPlant\Bundle\BoardBundle\Manager\AnalyticsManager;
+use RaspiPlant\Bundle\BoardBundle\Manager\BoardManager;
+use RaspiPlant\Bundle\BoardBundle\Manager\SensorManager;
+use RaspiPlant\Bundle\BoardBundle\Manager\SensorValueManager;
+use RaspiPlant\Component\Actuator\ActuatorInterface;
+use RaspiPlant\Component\Device\DeviceInterface;
+use RaspiPlant\Component\Sensor\SensorInterface;
 use RaspiPlant\Component\WiringPi\WiringPi;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Process\Process;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use RaspiPlant\Bundle\BoardBundle\Entity\SensorValue;
+use Symfony\Component\Process\Process;
+use Wrep\Daemonizable\Command\EndlessContainerAwareCommand;
 
-class BoardStartCommand extends EndlessContainerAwareCommand {
+class BoardStartCommand extends EndlessContainerAwareCommand
+{
 
     const ISO8601 = 'Y-m-d\TH:i:sP';
 
@@ -30,14 +37,61 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     protected $output;
     protected $light;
 
+    /** @var ParameterBagInterface  */
+    private $params;
+
+    /** @var BoardManager  */
+    private $boardManager;
+
+    /** @var ActuatorManager  */
+    private $actuatorManager;
+
+    /** @var SensorManager  */
+    private $sensorManager;
+
+    /** @var SensorValueManager  */
+    private $sensorValueManager;
+
+    /** @var AnalyticsManager  */
+    private $analyticsManager;
+
+    /**
+     * BoardStartCommand constructor.
+     * @param ParameterBagInterface $params
+     * @param BoardManager $boardManager
+     * @param ActuatorManager $actuatorManager
+     * @param SensorManager $sensorManager
+     * @param SensorValueManager $sensorValueManager
+     * @param AnalyticsManager $analyticsManager
+     */
+    public function __construct(
+        ParameterBagInterface $params,
+        BoardManager $boardManager,
+        ActuatorManager $actuatorManager,
+        SensorManager $sensorManager,
+        SensorValueManager $sensorValueManager,
+        AnalyticsManager $analyticsManager
+    )
+    {
+        $this->params = $params;
+        $this->boardManager = $boardManager;
+        $this->actuatorManager = $actuatorManager;
+        $this->sensorManager = $sensorManager;
+        $this->sensorValueManager = $sensorValueManager;
+        $this->analyticsManager = $analyticsManager;
+
+        parent::__construct();
+    }
+
     /**
      *
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this->setName('raspiplant:board:start')
-                ->setDescription('Board loop start command.')
-                ->setHelp("This command allows you to start your board loop...")
-                ->setTimeout(10) // Set the timeout in seconds between two calls to the "execute" method
+            ->setDescription('Board loop start command.')
+            ->setHelp("This command allows you to start your board loop...")
+            ->setTimeout(10) // Set the timeout in seconds between two calls to the "execute" method
         ;
     }
 
@@ -47,7 +101,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      * @param OutputInterface $output
      * @throws \Exception
      */
-    protected function initialize(InputInterface $input, OutputInterface $output) {
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
 
         $this->output = $output;
         $this->light = 0;
@@ -56,7 +111,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $command = $this->getApplication()->find('raspiplant:motors:manage');
         $arguments = array(
             'command' => 'raspiplant:motors:manage',
-            'action'    => 'start'
+            'action' => 'start'
         );
 
         $motorsInput = new ArrayInput($arguments);
@@ -66,14 +121,14 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $this->tick = 0;
 
         /**
-          $airQualityPin = 2;
-          $moisturePin1 = 0;
-          $moisturePin2 = 1;
-          $atomizerPin = 5;
-
-          $dhtPin = 6;
+         * $airQualityPin = 2;
+         * $moisturePin1 = 0;
+         * $moisturePin2 = 1;
+         * $atomizerPin = 5;
+         *
+         * $dhtPin = 6;
          * */
-        $boards = $this->getBoardManager()->findAll();
+        $boards = $this->boardManager->findAll();
 
         if (!$boards) {
             throw new \Exception("No boards found...");
@@ -99,8 +154,10 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
     /**
      * @param Board $board
+     * @throws \Exception
      */
-    protected function boardInitialize(Board $board) {
+    protected function boardInitialize(Board $board)
+    {
 
         $this->output->writeln("Starting Board :" . $board->getName());
 
@@ -119,7 +176,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      * @return mixed
      * @throws \Exception
      */
-    protected function deviceInitialize(Device $device) {
+    protected function deviceInitialize(Device $device)
+    {
 
         $this->output->writeln("Starting Device :" . $device->getName() . " with address " . $device->getAddress());
 
@@ -155,34 +213,13 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     }
 
     /**
-     * @param Actuator $actuator
-     * @param $deviceLink
-     * @return mixed
-     * @throws \Exception
-     */
-    protected function actuatorInitialize(Actuator $actuator, $deviceLink) {
-
-        $this->output->writeln("Starting Actuator :" . $actuator->getName() . " with pin " . $actuator->getPin());
-
-        $class = $actuator->getClass();
-        $a = new $class($deviceLink, $actuator->getPin(), $actuator->getName());
-
-        if (!($a instanceof ActuatorInterface)) {
-            throw new \Exception("Initialization error of actuator: " . $class);
-        }
-
-        usleep(100000);
-
-        return $a;
-    }
-
-    /**
      * @param Sensor $sensor
      * @param $deviceLink
      * @return mixed
      * @throws \Exception
      */
-    protected function sensorInitialize(Sensor $sensor, $deviceLink) {
+    protected function sensorInitialize(Sensor $sensor, $deviceLink)
+    {
 
         $this->output->writeln("Starting Sensor :" . $sensor->getName() . " with pin " . $sensor->getPin());
 
@@ -199,11 +236,36 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     }
 
     /**
+     * @param Actuator $actuator
+     * @param $deviceLink
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function actuatorInitialize(Actuator $actuator, $deviceLink)
+    {
+
+        $this->output->writeln("Starting Actuator :" . $actuator->getName() . " with pin " . $actuator->getPin());
+
+        $class = $actuator->getClass();
+        $a = new $class($deviceLink, $actuator->getPin(), $actuator->getName());
+
+        if (!($a instanceof ActuatorInterface)) {
+            throw new \Exception("Initialization error of actuator: " . $class);
+        }
+
+        usleep(100000);
+
+        return $a;
+    }
+
+    /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return void
+     * @return int|void|null
+     * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
 
         $this->output = $output;
 
@@ -213,7 +275,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $output->writeln("#Read from sensors at " . $firedAt->format(self::ISO8601));
         $output->writeln("");
         foreach ($this->devices as $deviceId => $device) {
-            if (array_key_exists('sensors', $this->devices[$deviceId]))  {
+            if (array_key_exists('sensors', $this->devices[$deviceId])) {
                 $this->readDeviceSensors($this->devices[$deviceId]['sensors']);
             }
         }
@@ -222,7 +284,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
         $output->writeln("#Writing to actuators at " . $firedAt->format(self::ISO8601));
         $output->writeln("");
         foreach ($this->devices as $deviceId => $device) {
-            if (array_key_exists('actuators', $this->devices[$deviceId]))  {
+            if (array_key_exists('actuators', $this->devices[$deviceId])) {
                 $this->setDeviceActuators($this->devices[$deviceId]['actuators']);
             }
         }
@@ -258,7 +320,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     /**
      * @param array $sensors
      */
-    protected function readDeviceSensors(array $sensors) {
+    protected function readDeviceSensors(array $sensors)
+    {
 
         foreach ($sensors as $sensorId => $sensor) {
 
@@ -266,7 +329,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
 
             if ($this->data[$sensorId]) {
                 if (array_key_exists('error', $this->data[$sensorId]) && !empty($this->data[$sensorId]['error'])) {
-                    $this->output->writeln("Sensor " . $sensor->getName()  . " Error:" . $this->data[$sensorId]['error']);
+                    $this->output->writeln("Sensor " . $sensor->getName() . " Error:" . $this->data[$sensorId]['error']);
                 } else {
                     unset($this->data[$sensorId]['error']);
                     foreach ($this->data[$sensorId] as $key => $value) {
@@ -274,7 +337,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                             $this->light = $value;
                         }
                         $fields = $sensor::getFields();
-                        $this->output->writeln("Sensor " . $sensor->getName()  . " " . $key . ": " . $value . " " . $fields[$key]['unit']);
+                        $this->output->writeln("Sensor " . $sensor->getName() . " " . $key . ": " . $value . " " . $fields[$key]['unit']);
                     }
                 }
             }
@@ -287,23 +350,22 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      * @param array $actuators
      * @throws \Exception
      */
-    protected function setDeviceActuators(array $actuators) {
-
-        $actuatorManager = $this->getActuatorManager();
+    protected function setDeviceActuators(array $actuators)
+    {
 
         foreach ($actuators as $actuatorId => $actuator) {
 
             //We get the value from database
-            $actuatorData = $actuatorManager->find($actuatorId);
+            $actuatorData = $this->actuatorManager->find($actuatorId);
 
             if (!($actuatorData instanceof Actuator)) {
-                throw new \Exception("No actuatorData found verify actuator repository for id:" .  $actuatorId);
+                throw new \Exception("No actuatorData found verify actuator repository for id:" . $actuatorId);
             }
 
 
             $actuator->writeStatus($actuatorData->getState());
 
-            $this->output->writeln("Actuator " . $actuator->getName()  . " set to value: " .  $actuatorData->getState());
+            $this->output->writeln("Actuator " . $actuator->getName() . " set to value: " . $actuatorData->getState());
             $this->output->writeln("");
             usleep(100000);
         }
@@ -313,13 +375,13 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      * @param $sensorData
      * @param $sensorId
      * @param $firedAt
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    protected function persistValues($sensorData, $sensorId, $firedAt) {
+    protected function persistValues($sensorData, $sensorId, $firedAt)
+    {
 
-        $analyticsManager = $this->getAnalyticsManager();
-        $sensorManager = $this->getSensorManager();
-
-        $sensor = $sensorManager->find($sensorId);
+        $sensor = $this->sensorManager->find($sensorId);
 
         if (!empty($sensorData) && $sensor) {
 
@@ -335,12 +397,12 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                             'eventDate' => $firedAt
                         )
                     );
-                    $analyticsManager->save($analytics);
+                    $this->analyticsManager->save($analytics);
 
                     $this->setSensorMinMax($sensor, $key, $value, $firedAt);
 
                 } else {
-                    $this->output->writeln("Error value for sensor " . $sensorId  . ": " .  $value);
+                    $this->output->writeln("Error value for sensor " . $sensorId . ": " . $value);
                 }
             }
         }
@@ -351,13 +413,14 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
      * @param $key
      * @param $value
      * @param $firedAt
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function setSensorMinMax(Sensor $sensor, $key, $value, $firedAt)
     {
         $this->output->writeln("Check Sensor Min and Max for key: " . $key);
 
-        $sensorValueManager = $this->getSensorValueManager();
-        $sensorKeyValues = $sensorValueManager->findAllWithKey($key);
+        $sensorKeyValues = $this->sensorValueManager->findAllWithKey($key);
 
         if (count($sensorKeyValues) < 1) {
             foreach (SensorValue::getSensorValueKeys() as $sensorValueKey) {
@@ -381,12 +444,12 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
                 $sensorValue->setSensorKey($key);
                 $sensorValue->setSensorValue($value);
                 $sensorValue->setSensorDate($firedAt);
-                $sensorValueManager->save($sensorValue);
-                $this->output->writeln("New Sensor " . $vk  . " value  for " . $key . ": " . $value . " ");
+                $this->sensorValueManager->save($sensorValue);
+                $this->output->writeln("New Sensor " . $vk . " value  for " . $key . ": " . $value . " ");
             }
         }
 
-        $this->getSensorManager()->update($sensor);
+        $this->sensorManager->update($sensor);
     }
 
     /**
@@ -429,64 +492,21 @@ class BoardStartCommand extends EndlessContainerAwareCommand {
     }
 
     /**
-     *
-     * @return \RaspiPlant\Bundle\BoardBundle\Manager\BoardManager
-     */
-    protected function getBoardManager() {
-
-        return $this->getContainer()->get("board.manager.board_manager");
-    }
-
-    /**
-     *
-     * @return \RaspiPlant\Bundle\BoardBundle\Manager\ActuatorManager
-     */
-    protected function getActuatorManager() {
-
-        return $this->getContainer()->get("board.manager.actuator_manager");
-    }
-
-    /**
-     *
-     * @return \RaspiPlant\Bundle\BoardBundle\Manager\SensorManager
-     */
-    protected function getSensorManager() {
-
-        return $this->getContainer()->get("board.manager.sensor_manager");
-    }
-
-    /**
-     *
-     * @return \RaspiPlant\Bundle\BoardBundle\Manager\SensorValueManager
-     */
-    protected function getSensorValueManager() {
-
-        return $this->getContainer()->get("board.manager.sensor_value_manager");
-    }
-
-    /**
-     *
-     * @return \RaspiPlant\Bundle\BoardBundle\Manager\AnalyticsManager
-     */
-    protected function getAnalyticsManager() {
-
-        return $this->getContainer()->get("board.manager.analytics_manager");
-    }
-
-    /**
-     * Called after each iteration
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
+     * @throws \Doctrine\Common\Persistence\Mapping\MappingException
      */
-    protected function finishIteration(InputInterface $input, OutputInterface $output) {
+    protected function finishIteration(InputInterface $input, OutputInterface $output)
+    {
         // Do some cleanup/memory management here, don't forget to call the parent implementation!
-        $this->getActuatorManager()->clear();
-        $this->getAnalyticsManager()->clear();
+        $this->actuatorManager->clear();
+        $this->analyticsManager->clear();
         parent::finishIteration($input, $output);
     }
 
     // Called once on shutdown after the last iteration finished
-    protected function finalize(InputInterface $input, OutputInterface $output) {
+    protected function finalize(InputInterface $input, OutputInterface $output)
+    {
         // Do some cleanup here, don't forget to call the parent implementation!
         parent::finalize($input, $output);
         // Keep it short! We may need to exit because the OS wants to shutdown

@@ -2,14 +2,15 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class I2CMotorsCommand extends ContainerAwareCommand
+class I2CMotorsCommand extends Command
 {
 
     protected $container;
@@ -17,6 +18,15 @@ class I2CMotorsCommand extends ContainerAwareCommand
     protected $input;
 
     protected $output;
+
+    private $params;
+
+    public function __construct(ParameterBagInterface $params)
+    {
+        $this->params = $params;
+
+        parent::__construct();
+    }
 
     protected function configure() {
         $this
@@ -35,7 +45,7 @@ class I2CMotorsCommand extends ContainerAwareCommand
 
         $action = $input->getArgument('action');
 
-        $rootDir = $this->getContainer()->getParameter('kernel.root_dir');
+        $rootDir = $this->params->get('kernel.root_dir');
 
         switch ($action) {
             default:

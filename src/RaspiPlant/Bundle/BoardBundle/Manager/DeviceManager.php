@@ -2,8 +2,8 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Manager;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use RaspiPlant\Bundle\BoardBundle\Entity\Device;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @author Vincent Honnorat <vincenth@effi-net.com>
@@ -28,17 +28,20 @@ class DeviceManager
     protected $classNamespace;
 
     /**
-     * @param \Doctrine\Bundle\DoctrineBundle\Registry $registry
+     * DeviceManager constructor.
+     * @param RegistryInterface $registry
      */
-    public function __construct(Registry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         $this->em = $registry->getManager();
-        $this->classNamespace = 'RaspiPlant\Bundle\BoardBundle\Entity\Device';
+        $this->classNamespace = Device::class;
         $this->metadata = $this->em->getClassMetadata($this->classNamespace);
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Device $device
+     * @param Device $device
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function create(Device $device)
     {
@@ -47,7 +50,9 @@ class DeviceManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Device $device
+     * @param Device $device
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function save(Device $device)
     {
@@ -56,7 +61,9 @@ class DeviceManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Device $device
+     * @param Device $device
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function update(Device $device)
     {
@@ -64,7 +71,9 @@ class DeviceManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Device $device
+     * @param Device $device
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function remove(Device $device)
     {
@@ -73,7 +82,7 @@ class DeviceManager
     }
 
     /**
-     *
+     * @throws \Doctrine\Common\Persistence\Mapping\MappingException
      */
     public function clear()
     {
@@ -81,7 +90,7 @@ class DeviceManager
     }
 
     /**
-     *
+     * @return mixed
      */
     public function findAll()
     {
@@ -89,17 +98,18 @@ class DeviceManager
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @return \Doctrine\DBAL\Connection
      */
     public function getConnection()
     {
         return $this->em->getConnection();
     }
+
     /**
-     * @return \Effinet\Bundle\DataWarehouseBundle\Repository\ORM\Contact\IdentityRepository
+     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository
      */
     public function getRepository()
     {
-        return $this->em->getRepository('BoardBundle:Device');
+        return $this->em->getRepository(Device::class);
     }
 }

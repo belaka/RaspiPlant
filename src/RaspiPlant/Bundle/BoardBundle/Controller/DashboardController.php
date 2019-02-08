@@ -2,16 +2,23 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use RaspiPlant\Bundle\BoardBundle\Manager\AnalyticsManager;
+use RaspiPlant\Bundle\BoardBundle\Manager\SensorManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class DashboardController extends Controller
+class DashboardController extends AbstractController
 {
-    public function indexAction(Request $request)
+    /**
+     * @param SensorManager $sensorManager
+     * @param AnalyticsManager $analyticsManager
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function indexAction(SensorManager $sensorManager, AnalyticsManager $analyticsManager)
     {
         $keys = array();
 
-        $sensors = $this->getSensorManager()->findAllActive();
+        $sensors = $sensorManager->findAllActive();
 
         foreach ($sensors as $sensor) {
             $class = $sensor->getClass();
@@ -31,7 +38,7 @@ class DashboardController extends Controller
 
         foreach ($keys as $sensorData) {
 
-            $keyDatas = $this->getAnalyticsManager()->findByKeyAndDate($sensorData['key'], $date);
+            $keyDatas = $analyticsManager->findByKeyAndDate($sensorData['key'], $date);
 
             foreach ($keyDatas as $keyData) {
                 $keyValue = round($keyData->getEventValue(), 2);
@@ -55,16 +62,6 @@ class DashboardController extends Controller
                     'analytics' => json_encode($analytics, JSON_UNESCAPED_SLASHES)
                 )
         );
-    }
-
-    protected function getAnalyticsManager()
-    {
-        return $this->container->get("board.manager.analytics_manager");
-    }
-
-    protected function getSensorManager()
-    {
-        return $this->container->get("board.manager.sensor_manager");
     }
 
 }

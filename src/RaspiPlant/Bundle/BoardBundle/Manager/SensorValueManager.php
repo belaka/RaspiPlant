@@ -2,8 +2,8 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Manager;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use RaspiPlant\Bundle\BoardBundle\Entity\SensorValue;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @author Vincent Honnorat <vincenth@effi-net.com>
@@ -28,17 +28,20 @@ class SensorValueManager
     protected $classNamespace;
 
     /**
-     * @param \Doctrine\Bundle\DoctrineBundle\Registry $registry
+     * SensorValueManager constructor.
+     * @param RegistryInterface $registry
      */
-    public function __construct(Registry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         $this->em = $registry->getManager();
-        $this->classNamespace = 'RaspiPlant\Bundle\BoardBundle\Entity\SensorValue';
+        $this->classNamespace = SensorValue::class;
         $this->metadata = $this->em->getClassMetadata($this->classNamespace);
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\SensorValue $sensor
+     * @param SensorValue $sensor
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function create(SensorValue $sensor)
     {
@@ -47,7 +50,9 @@ class SensorValueManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\SensorValue $sensor
+     * @param SensorValue $sensor
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function save(SensorValue $sensor)
     {
@@ -56,7 +61,9 @@ class SensorValueManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\SensorValue $sensor
+     * @param SensorValue $sensor
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function update(SensorValue $sensor)
     {
@@ -64,7 +71,9 @@ class SensorValueManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\SensorValue $sensor
+     * @param SensorValue $sensor
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function remove(SensorValue $sensor)
     {
@@ -73,7 +82,7 @@ class SensorValueManager
     }
 
     /**
-     *
+     * @throws \Doctrine\Common\Persistence\Mapping\MappingException
      */
     public function clear()
     {
@@ -81,7 +90,7 @@ class SensorValueManager
     }
 
     /**
-     * @return array
+     * @return array|object[]
      */
     public function findAll()
     {
@@ -90,7 +99,7 @@ class SensorValueManager
 
     /**
      * @param $key
-     * @return mixed
+     * @return array
      */
     public function findAllWithKey($key)
     {
@@ -99,7 +108,7 @@ class SensorValueManager
 
     /**
      * @param $id
-     * @return null|object
+     * @return object|null
      */
     public function find($id)
     {
@@ -107,7 +116,7 @@ class SensorValueManager
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @return \Doctrine\DBAL\Connection
      */
     public function getConnection()
     {
@@ -115,10 +124,10 @@ class SensorValueManager
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository|\RaspiPlant\Bundle\BoardBundle\Repository\ORM\SensorValueRepository
+     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository
      */
     public function getRepository()
     {
-        return $this->em->getRepository('BoardBundle:SensorValue');
+        return $this->em->getRepository(SensorValue::class);
     }
 }

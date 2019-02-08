@@ -10,16 +10,16 @@
             repository-class="RaspiPlant\Bundle\BoardBundle\Repository\ORM\SensorValueRepository">
 
         <id name="id" type="integer" column="id">
-            <generator strategy="AUTO" />
+            <generator />
         </id>
 
-        <field name="sensorValueKey"    column="sensor_value_key"   type="string"   length="255"                    nullable="false"  />
-        <field name="sensorKey"         column="sensor_key"         type="string"   length="255"                    nullable="false"  />
+        <field name="sensorValueKey"    column="sensor_value_key"   length="255" />
+        <field name="sensorKey"         column="sensor_key"         length="255" />
         <field name="sensorValue"       column="sensor_value"       type="decimal"   scale="10"   precision="20"    nullable="true"  />
-        <field name="sensorDate"        column="sensor_date"        type="datetime"                                 nullable="false" />
+        <field name="sensorDate"        column="sensor_date"        type="datetime" />
 
         <many-to-one field="sensor" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Sensor" inversed-by="sensorValues">
-            <join-column name="sensor_id" referenced-column-name="id" />
+            <join-column name="sensor_id" />
         </many-to-one>
 
     </entity>

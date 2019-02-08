@@ -2,8 +2,8 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Manager;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use RaspiPlant\Bundle\BoardBundle\Entity\Sensor;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @author Vincent Honnorat <vincenth@effi-net.com>
@@ -28,17 +28,20 @@ class SensorManager
     protected $classNamespace;
 
     /**
-     * @param \Doctrine\Bundle\DoctrineBundle\Registry $registry
+     * SensorManager constructor.
+     * @param RegistryInterface $registry
      */
-    public function __construct(Registry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         $this->em = $registry->getManager();
-        $this->classNamespace = 'RaspiPlant\Bundle\BoardBundle\Entity\Sensor';
+        $this->classNamespace = Sensor::class;
         $this->metadata = $this->em->getClassMetadata($this->classNamespace);
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Sensor $sensor
+     * @param Sensor $sensor
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function create(Sensor $sensor)
     {
@@ -47,7 +50,9 @@ class SensorManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Sensor $sensor
+     * @param Sensor $sensor
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function save(Sensor $sensor)
     {
@@ -56,7 +61,9 @@ class SensorManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Sensor $sensor
+     * @param Sensor $sensor
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function update(Sensor $sensor)
     {
@@ -64,7 +71,9 @@ class SensorManager
     }
 
     /**
-     * @param \RaspiPlant\Bundle\BoardBundle\Entity\Sensor $sensor
+     * @param Sensor $sensor
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function remove(Sensor $sensor)
     {
@@ -73,7 +82,7 @@ class SensorManager
     }
 
     /**
-     *
+     * @throws \Doctrine\Common\Persistence\Mapping\MappingException
      */
     public function clear()
     {
@@ -81,7 +90,7 @@ class SensorManager
     }
 
     /**
-     * @return array
+     * @return array|object[]
      */
     public function findAll()
     {
@@ -89,7 +98,8 @@ class SensorManager
     }
 
     /**
-     * @return Sensor
+     * @param $id
+     * @return object|null
      */
     public function find($id)
     {
@@ -113,10 +123,10 @@ class SensorManager
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository|\RaspiPlant\Bundle\BoardBundle\Repository\ORM\SensorRepository
+     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository
      */
     public function getRepository()
     {
-        return $this->em->getRepository('BoardBundle:Sensor');
+        return $this->em->getRepository(Sensor::class);
     }
 }

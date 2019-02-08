@@ -15,20 +15,20 @@
         </lifecycle-callbacks>
 
         <id name="id" type="integer" column="id">
-            <generator strategy="AUTO" />
+            <generator />
         </id>
 
-        <field name="name"       column="name"      type="string"      length="255"  nullable="false" unique="true"/>
-        <field name="slug"       column="slug"      type="string"      length="255"  nullable="false" unique="true"/>
-        <field name="class"      column="class"     type="string"      length="255"  nullable="true"/>
-        <field name="address"    column="address"   type="string"      length="255"  nullable="true"/>
-        <field name="active"     column="active"    type="boolean"                   nullable="false"/>
+        <field name="name" column="name" length="191" unique="true"/>
+        <field name="slug" column="slug" length="191" unique="true"/>
+        <field name="class"      column="class"     length="255"  nullable="true"/>
+        <field name="address"    column="address"   length="255"  nullable="true"/>
+        <field name="active"     column="active"    type="boolean" />
 
         <one-to-many field="sensors"   target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Sensor"     mapped-by="device" />
         <one-to-many field="actuators" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Actuator"   mapped-by="device" />
 
         <many-to-one field="board" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Board" inversed-by="devices">
-            <join-column name="board_id" referenced-column-name="id" />
+            <join-column name="board_id" />
         </many-to-one>
 
     </entity>

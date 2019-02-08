@@ -15,15 +15,16 @@
         </lifecycle-callbacks>
 
         <id name="id" type="integer" column="id">
-            <generator strategy="AUTO" />
+            <generator />
         </id>
 
-        <field name="name"       column="name"      type="string"      length="255"  nullable="false" unique="true"/>
-        <field name="slug"       column="slug"      type="string"      length="255"  nullable="false" unique="true"/>
-        <field name="class"      column="class"     type="string"      length="255"  nullable="false"/>
-        <field name="pin"        column="pin"       type="integer"                   nullable="true"/>
+        <field name="name" column="name" length="191" unique="true"/>
+        <field name="slug" column="slug" length="191" unique="true"/>
 
-        <field name="active"     column="active"    type="boolean"                   nullable="false"/>
+        <field name="class" column="class" length="255"  />
+        <field name="pin" column="pin" type="integer" nullable="true"/>
+
+        <field name="active" column="active" type="boolean" />
 
         <one-to-many field="sensorValues" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\SensorValue" mapped-by="sensor">
             <cascade>
@@ -32,7 +33,7 @@
         </one-to-many>
 
         <many-to-one field="device" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Device" inversed-by="sensors">
-            <join-column name="device_id" referenced-column-name="id" />
+            <join-column name="device_id" />
         </many-to-one>
 
     </entity>
