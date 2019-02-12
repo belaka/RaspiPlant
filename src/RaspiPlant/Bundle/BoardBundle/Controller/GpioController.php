@@ -2,19 +2,18 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use RaspiPlant\Component\WiringPi\WiringPi;
 use Symfony\Component\HttpFoundation\Request;
 
-class GpioController extends Controller
+class GpioController extends AbstractController
 {
     /**
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function gpioAction(Request $request)
+    public function gpioAction()
     {
         if (isset($_GET['c'])) {
                 if ($_GET['c'] == 'pm') {

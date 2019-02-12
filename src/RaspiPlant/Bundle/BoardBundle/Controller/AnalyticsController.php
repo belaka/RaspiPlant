@@ -3,24 +3,23 @@
 namespace RaspiPlant\Bundle\BoardBundle\Controller;
 
 use RaspiPlant\Bundle\BoardBundle\Entity\Analytics;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use RaspiPlant\Bundle\BoardBundle\Manager\AnalyticsManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 /**
  * Analytic controller.
  *
  */
-class AnalyticsController extends Controller
+class AnalyticsController extends AbstractController
 {
     /**
-     * Lists all analytic entities.
-     *
+     * @param AnalyticsManager $analyticsManager
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(AnalyticsManager $analyticsManager)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $analytics = $em->getRepository('BoardBundle:Analytics')->findAll();
+        $analytics = $analyticsManager->findAll();
 
         return $this->render('analytics/index.html.twig', array(
             'analytics' => $analytics,
@@ -28,8 +27,8 @@ class AnalyticsController extends Controller
     }
 
     /**
-     * Finds and displays a analytic entity.
-     *
+     * @param Analytics $analytic
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Analytics $analytic)
     {

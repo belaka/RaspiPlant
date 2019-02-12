@@ -19,11 +19,12 @@ use Symfony\Component\Form\FormInterface;
 class ActuatorController extends AbstractController
 {
     /**
+     * @param ActuatorManager $actuatorManager
      * @return Response
      */
     public function indexAction(ActuatorManager $actuatorManager)
     {
-        $actuators = $actuatorManager->getRepository('BoardBundle:Actuator')->findAll();
+        $actuators = $actuatorManager->findAll();
 
         return $this->render('actuator/index.html.twig', array(
             'actuators' => $actuators,
@@ -32,18 +33,18 @@ class ActuatorController extends AbstractController
 
     /**
      * @param Request $request
+     * @param ActuatorManager $actuatorManager
      * @return RedirectResponse|Response
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, ActuatorManager $actuatorManager)
     {
         $actuator = new Actuator();
         $form = $this->createForm(ActuatorType::class, $actuator);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($actuator);
-            $em->flush($actuator);
+            $actuatorManager->persist($actuator);
+            $actuatorManager->flush($actuator);
 
             return $this->redirectToRoute('actuator_show', array('id' => $actuator->getId()));
         }
@@ -95,18 +96,20 @@ class ActuatorController extends AbstractController
 
     /**
      * @param Request $request
+     * @param ActuatorManager $actuatorManager
      * @param Actuator $actuator
      * @return RedirectResponse
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function deleteAction(Request $request, Actuator $actuator)
+    public function deleteAction(Request $request, ActuatorManager $actuatorManager, Actuator $actuator)
     {
         $form = $this->createDeleteForm($actuator);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($actuator);
-            $em->flush($actuator);
+            $actuatorManager->remove($actuator);
+            $actuatorManager->flush($actuator);
         }
 
         return $this->redirectToRoute('actuator_index');

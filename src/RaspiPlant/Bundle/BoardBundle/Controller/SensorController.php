@@ -3,24 +3,24 @@
 namespace RaspiPlant\Bundle\BoardBundle\Controller;
 
 use RaspiPlant\Bundle\BoardBundle\Entity\Sensor;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use RaspiPlant\Bundle\BoardBundle\Form\SensorType;
+use RaspiPlant\Bundle\BoardBundle\Manager\SensorManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Sensor controller.
  *
  */
-class SensorController extends Controller
+class SensorController extends AbstractController
 {
     /**
-     * Lists all sensor entities.
-     *
+     * @param SensorManager $sensorManager
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(SensorManager $sensorManager)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $sensors = $em->getRepository('BoardBundle:Sensor')->findAll();
+        $sensors = $sensorManager->findAll();
 
         return $this->render('sensor/index.html.twig', array(
             'sensors' => $sensors,
@@ -28,19 +28,19 @@ class SensorController extends Controller
     }
 
     /**
-     * Creates a new sensor entity.
-     *
+     * @param Request $request
+     * @param SensorManager $sensorManager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, SensorManager $sensorManager)
     {
         $sensor = new Sensor();
-        $form = $this->createForm('RaspiPlant\Bundle\BoardBundle\Form\SensorType', $sensor);
+        $form = $this->createForm(SensorType::class, $sensor);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($sensor);
-            $em->flush($sensor);
+            $sensorManager->persist($sensor);
+            $sensorManager->flush($sensor);
 
             return $this->redirectToRoute('sensor_show', array('id' => $sensor->getId()));
         }
@@ -52,8 +52,8 @@ class SensorController extends Controller
     }
 
     /**
-     * Finds and displays a sensor entity.
-     *
+     * @param Sensor $sensor
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Sensor $sensor)
     {
@@ -66,17 +66,19 @@ class SensorController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing sensor entity.
-     *
+     * @param Request $request
+     * @param SensorManager $sensorManager
+     * @param Sensor $sensor
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Sensor $sensor)
+    public function editAction(Request $request, SensorManager $sensorManager, Sensor $sensor)
     {
         $deleteForm = $this->createDeleteForm($sensor);
-        $editForm = $this->createForm('RaspiPlant\Bundle\BoardBundle\Form\SensorType', $sensor);
+        $editForm = $this->createForm(SensorType::class, $sensor);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $sensorManager->flush();
 
             return $this->redirectToRoute('sensor_edit', array('id' => $sensor->getId()));
         }
@@ -89,29 +91,29 @@ class SensorController extends Controller
     }
 
     /**
-     * Deletes a sensor entity.
-     *
+     * @param Request $request
+     * @param SensorManager $sensorManager
+     * @param Sensor $sensor
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function deleteAction(Request $request, Sensor $sensor)
+    public function deleteAction(Request $request, SensorManager $sensorManager, Sensor $sensor)
     {
         $form = $this->createDeleteForm($sensor);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($sensor);
-            $em->flush($sensor);
+            $sensorManager->remove($sensor);
+            $sensorManager->flush($sensor);
         }
 
         return $this->redirectToRoute('sensor_index');
     }
 
     /**
-     * Creates a form to delete a sensor entity.
-     *
-     * @param Sensor $sensor The sensor entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @param Sensor $sensor
+     * @return \Symfony\Component\Form\FormInterface
      */
     private function createDeleteForm(Sensor $sensor)
     {

@@ -3,24 +3,24 @@
 namespace RaspiPlant\Bundle\BoardBundle\Controller;
 
 use RaspiPlant\Bundle\BoardBundle\Entity\Device;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use RaspiPlant\Bundle\BoardBundle\Form\DeviceType;
+use RaspiPlant\Bundle\BoardBundle\Manager\DeviceManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Device controller.
  *
  */
-class DeviceController extends Controller
+class DeviceController extends AbstractController
 {
     /**
-     * Lists all device entities.
-     *
+     * @param DeviceManager $deviceManager
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(DeviceManager $deviceManager)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $devices = $em->getRepository('BoardBundle:Device')->findAll();
+        $devices = $deviceManager->findAll();
 
         return $this->render('device/index.html.twig', array(
             'devices' => $devices,
@@ -34,7 +34,7 @@ class DeviceController extends Controller
     public function newAction(Request $request)
     {
         $device = new Device();
-        $form = $this->createForm('RaspiPlant\Bundle\BoardBundle\Form\DeviceType', $device);
+        $form = $this->createForm(DeviceType::class, $device);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -72,7 +72,7 @@ class DeviceController extends Controller
     public function editAction(Request $request, Device $device)
     {
         $deleteForm = $this->createDeleteForm($device);
-        $editForm = $this->createForm('RaspiPlant\Bundle\BoardBundle\Form\DeviceType', $device);
+        $editForm = $this->createForm(DeviceType::class, $device);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -89,29 +89,29 @@ class DeviceController extends Controller
     }
 
     /**
-     * Deletes a device entity.
-     *
+     * @param Request $request
+     * @param DeviceManager $deviceManager
+     * @param Device $device
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function deleteAction(Request $request, Device $device)
+    public function deleteAction(Request $request, DeviceManager $deviceManager, Device $device)
     {
         $form = $this->createDeleteForm($device);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($device);
-            $em->flush($device);
+            $deviceManager->remove($device);
+            $deviceManager->flush($device);
         }
 
         return $this->redirectToRoute('device_index');
     }
 
     /**
-     * Creates a form to delete a device entity.
-     *
-     * @param Device $device The device entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @param Device $device
+     * @return \Symfony\Component\Form\FormInterface
      */
     private function createDeleteForm(Device $device)
     {

@@ -3,24 +3,24 @@
 namespace RaspiPlant\Bundle\BoardBundle\Controller;
 
 use RaspiPlant\Bundle\BoardBundle\Entity\Board;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use RaspiPlant\Bundle\BoardBundle\Form\BoardType;
+use RaspiPlant\Bundle\BoardBundle\Manager\BoardManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Board controller.
  *
  */
-class BoardController extends Controller
+class BoardController extends AbstractController
 {
     /**
-     * Lists all board entities.
-     *
+     * @param BoardManager $boardManager
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(BoardManager $boardManager)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $boards = $em->getRepository('BoardBundle:Board')->findAll();
+        $boards = $boardManager->findAll();
 
         return $this->render('board/index.html.twig', array(
             'boards' => $boards,
@@ -28,19 +28,19 @@ class BoardController extends Controller
     }
 
     /**
-     * Creates a new board entity.
-     *
+     * @param Request $request
+     * @param BoardManager $boardManager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, BoardManager $boardManager)
     {
         $board = new Board();
-        $form = $this->createForm('RaspiPlant\Bundle\BoardBundle\Form\BoardType', $board);
+        $form = $this->createForm(BoardType::class, $board);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($board);
-            $em->flush($board);
+            $boardManager->persist($board);
+            $boardManager->flush($board);
 
             return $this->redirectToRoute('board_show', array('id' => $board->getId()));
         }
@@ -52,8 +52,8 @@ class BoardController extends Controller
     }
 
     /**
-     * Finds and displays a board entity.
-     *
+     * @param Board $board
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Board $board)
     {
@@ -66,17 +66,19 @@ class BoardController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing board entity.
-     *
+     * @param Request $request
+     * @param BoardManager $boardManager
+     * @param Board $board
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Board $board)
+    public function editAction(Request $request, BoardManager $boardManager, Board $board)
     {
         $deleteForm = $this->createDeleteForm($board);
-        $editForm = $this->createForm('RaspiPlant\Bundle\BoardBundle\Form\BoardType', $board);
+        $editForm = $this->createForm(BoardType::class, $board);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $boardManager->flush();
 
             return $this->redirectToRoute('board_edit', array('id' => $board->getId()));
         }
@@ -89,29 +91,29 @@ class BoardController extends Controller
     }
 
     /**
-     * Deletes a board entity.
-     *
+     * @param Request $request
+     * @param BoardManager $boardManager
+     * @param Board $board
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function deleteAction(Request $request, Board $board)
+    public function deleteAction(Request $request, BoardManager $boardManager, Board $board)
     {
         $form = $this->createDeleteForm($board);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($board);
-            $em->flush($board);
+            $boardManager->remove($board);
+            $boardManager->flush($board);
         }
 
         return $this->redirectToRoute('board_index');
     }
 
     /**
-     * Creates a form to delete a board entity.
-     *
-     * @param Board $board The board entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @param Board $board
+     * @return \Symfony\Component\Form\FormInterface
      */
     private function createDeleteForm(Board $board)
     {
