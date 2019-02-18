@@ -51,18 +51,19 @@
         <i class="fa fa-circle"></i>
     </li>
     <li>
-        <a href="{{path('board.board.main')}}">Board</a>
+        <a href="{{path('board_index')}}">Board</a>
         <i class="fa fa-circle"></i>
     </li>
     <li>
-        <a href="{{path('board.board.main')}}">Gpio</a>
+        <a href="{{path('board_gpio')}}">Gpio</a>
         <i class="fa fa-circle"></i>
     </li>
 {% endblock %}
 
 {% block page_content %}
-    {% for flash_message in app.session.flashBag.get('notice') %}
-        <div class="flash-notice">
+
+    {% for flash_message in app.session.flashBag.get('error') %}
+        <div class="alert alert-danger">
             {{ flash_message }}
         </div>
     {% endfor %}

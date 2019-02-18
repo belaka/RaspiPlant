@@ -5,23 +5,23 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="board_index" path="/" methods="GET">
-        <default key="_controller">BoardBundle:Board:index</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\BoardController::indexAction</default>
     </route>
 
     <route id="board_show" path="/{id}/show" methods="GET">
-        <default key="_controller">BoardBundle:Board:show</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\BoardController::showAction</default>
     </route>
 
     <route id="board_new" path="/new" methods="GET|POST">
-        <default key="_controller">BoardBundle:Board:new</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\BoardController::newAction</default>
     </route>
 
     <route id="board_edit" path="/{id}/edit" methods="GET|POST">
-        <default key="_controller">BoardBundle:Board:edit</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\BoardController::editAction</default>
     </route>
 
     <route id="board_delete" path="/{id}/delete" methods="DELETE">
-        <default key="_controller">BoardBundle:Board:delete</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\BoardController::deleteAction</default>
     </route>
 
 </routes>

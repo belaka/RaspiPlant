@@ -38,6 +38,20 @@ class BoardManager
         $this->metadata = $this->em->getClassMetadata($this->classNamespace);
     }
 
+    //--------------------------------------------------------------------------
+    // Call
+    //--------------------------------------------------------------------------
+
+    /**
+     * @param string $name
+     * @param array $arguments
+     */
+    public function __call($name, $arguments)
+    {
+        return $this->em->$name(...$arguments);
+    }
+
+
     /**
      * @param Board $board
      * @throws \Doctrine\ORM\ORMException

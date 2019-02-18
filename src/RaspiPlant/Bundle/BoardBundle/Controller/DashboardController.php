@@ -28,7 +28,7 @@ class DashboardController extends AbstractController
             $keys = array_merge($fields, $keys);
         }
 
-        $keynames = array_map(function ($v) {return $v['name'].'_'.$v['key'];}, $keys);
+        $keyNames = array_map(function ($v) {return $v['name'].'_'.$v['key'];}, $keys);
 
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('Europe/Paris'));
@@ -38,25 +38,27 @@ class DashboardController extends AbstractController
 
         foreach ($keys as $sensorData) {
 
-            $keyDatas = $analyticsManager->findByKeyAndDate($sensorData['key'], $date);
+            $keyDataS = $analyticsManager->findByKeyAndDate($sensorData['key'], $date);
 
-            foreach ($keyDatas as $keyData) {
+            foreach ($keyDataS as $keyData) {
                 $keyValue = round($keyData->getEventValue(), 2);
                 if ($keyValue > 0 && $keyValue < 1500) {
                     $eventDate = $keyData->getEventDate()->setTimezone(new \DateTimeZone('Europe/Paris'));
                     $analytics[$sensorData['name'] .'_'. $sensorData['key']][] = [addslashes($eventDate->format('H:i')), round($keyValue, 2)];
                 }
             }
+
             $data[$sensorData['name'] .'_'. $sensorData['key']] = array(
                 'value' => end($analytics[$sensorData['name'] .'_'. $sensorData['key']])[1],
                 'date' => end($analytics[$sensorData['name'] .'_'. $sensorData['key']])[0]
             );
+
         }
 
         return $this->render(
                 'dashboard/index.html.twig',
                 array(
-                    'keys' => $keynames,
+                    'keys' => $keyNames,
                     'data' => $data,
                     'date' => $date,
                     'analytics' => json_encode($analytics, JSON_UNESCAPED_SLASHES)

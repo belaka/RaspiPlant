@@ -5,11 +5,11 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="analytics_index" path="/" methods="GET">
-        <default key="_controller">BoardBundle:Analytics:index</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\AnalyticsController::indexAction</default>
     </route>
 
     <route id="analytics_show" path="/{id}/show" methods="GET">
-        <default key="_controller">BoardBundle:Analytics:show</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\AnalyticsController::showAction</default>
     </route>
 
 
