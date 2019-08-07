@@ -13,8 +13,6 @@ class DHTSensor extends AbstractSensor {
 
     const DHT_SENSOR_BLUE = 0;
 
-    const DHT_TEMP_CMD = 40;
-
     /**
      *
      * @var boolean
@@ -67,7 +65,7 @@ class DHTSensor extends AbstractSensor {
 
         try {
 
-            $this->device->digitalWrite(self::DHT_TEMP_CMD, $this->pin, $this->type, 0);
+            $this->device->digitalWrite(I2CDevice::DHT_TEMP_CMD, $this->pin, $this->type, 0);
             usleep(100000);
 
             $number = $this->device->readBuffer(1, $this->pin, 32);

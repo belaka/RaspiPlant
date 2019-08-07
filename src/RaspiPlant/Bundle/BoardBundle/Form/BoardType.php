@@ -16,7 +16,6 @@ class BoardType extends AbstractType
     {
         $builder
             ->add('name', Type\TextType::class, array('label' => 'Name'))
-            //->add('slug', Type\TextType::class, array('label' => 'Slug'))
             ->add('active', Type\CheckboxType::class, array('label' => 'isActive', 'required' => false))
         ;
     }

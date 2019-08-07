@@ -18,7 +18,6 @@ class DeviceType extends AbstractType
     {
         $builder
             ->add('name', Type\TextType::class, array('label' => 'Name'))
-            //->add('slug', Type\TextType::class, array('label' => 'Slug'))
             ->add('class', Type\TextType::class, array('label' => 'Class'))
             ->add('address', Type\TextType::class, array('label' => 'Address'))
             ->add('active', Type\CheckboxType::class, array('label' => 'isActive', 'required' => false))

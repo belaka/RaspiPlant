@@ -1,6 +1,7 @@
-#easy_admin:
-#    entities:
+easy_admin:
+    entities:
 #        # List the entity class name you want to manage
-#        - App\Entity\Product
-#        - App\Entity\Category
-#        - App\Entity\User
+        - RaspiPlant\Bundle\BoardBundle\Entity\Board
+        - RaspiPlant\Bundle\BoardBundle\Entity\Device
+        - RaspiPlant\Bundle\BoardBundle\Entity\Sensor
+        - RaspiPlant\Bundle\BoardBundle\Entity\Actuator
