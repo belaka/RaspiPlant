@@ -5,23 +5,23 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="device_index" path="/" methods="GET">
-        <default key="_controller">BoardBundle:Device:index</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\DeviceController::indexAction</default>
     </route>
 
     <route id="device_show" path="/{id}/show" methods="GET">
-        <default key="_controller">BoardBundle:Device:show</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\DeviceController::showAction</default>
     </route>
 
     <route id="device_new" path="/new" methods="GET|POST">
-        <default key="_controller">BoardBundle:Device:new</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\DeviceController::newAction</default>
     </route>
 
     <route id="device_edit" path="/{id}/edit" methods="GET|POST">
-        <default key="_controller">BoardBundle:Device:edit</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\DeviceController::editAction</default>
     </route>
 
     <route id="device_delete" path="/{id}/delete" methods="DELETE">
-        <default key="_controller">BoardBundle:Device:delete</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\DeviceController::deleteAction</default>
     </route>
 
 </routes>

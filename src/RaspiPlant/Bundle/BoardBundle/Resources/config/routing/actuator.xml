@@ -5,26 +5,26 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="actuator_index" path="/" methods="GET">
-        <default key="_controller">BoardBundle:Actuator:index</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\ActuatorController::indexAction</default>
     </route>
 
     <route id="actuator_show" path="/{id}/show" methods="GET">
-        <default key="_controller">BoardBundle:Actuator:show</default>
+        <default key="_controller">BRaspiPlant\Bundle\BoardBundle\Controller\ActuatorController::showAction</default>
     </route>
 
     <route id="actuator_new" path="/new" methods="GET|POST">
-        <default key="_controller">BoardBundle:Actuator:new</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\ActuatorController::newAction</default>
     </route>
 
     <route id="actuator_edit" path="/{id}/edit" methods="GET|POST">
-        <default key="_controller">BoardBundle:Actuator:edit</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\ActuatorController::editAction</default>
     </route>
 
     <route id="actuator_delete" path="/{id}/delete" methods="DELETE">
-        <default key="_controller">BoardBundle:Actuator:delete</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\ActuatorController::deleteAction</default>
     </route>
 
     <route id="actuator_update" path="/{id}/update" methods="POST">
-        <default key="_controller">BoardBundle:Actuator:update</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\ActuatorController::updateAction</default>
     </route>
 </routes>

@@ -7,6 +7,7 @@ use RaspiPlant\Bundle\BoardBundle\Form\BoardType;
 use RaspiPlant\Bundle\BoardBundle\Manager\BoardManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
  * Board controller.
@@ -52,11 +53,18 @@ class BoardController extends AbstractController
     }
 
     /**
-     * @param Board $board
+     * @param BoardManager $boardManager
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Board $board)
+    public function showAction(BoardManager $boardManager, $id)
     {
+        $board = $boardManager->getRepository()->find($id);
+
+        if (!($board instanceof Board)) {
+            throw new NotFoundResourceException();
+        }
+
         $deleteForm = $this->createDeleteForm($board);
 
         return $this->render('board/show.html.twig', array(
@@ -68,11 +76,17 @@ class BoardController extends AbstractController
     /**
      * @param Request $request
      * @param BoardManager $boardManager
-     * @param Board $board
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, BoardManager $boardManager, Board $board)
+    public function editAction(Request $request, BoardManager $boardManager, $id)
     {
+        $board = $boardManager->getRepository()->find($id);
+
+        if (!($board instanceof Board)) {
+            throw new NotFoundResourceException();
+        }
+
         $deleteForm = $this->createDeleteForm($board);
         $editForm = $this->createForm(BoardType::class, $board);
         $editForm->handleRequest($request);
@@ -93,13 +107,17 @@ class BoardController extends AbstractController
     /**
      * @param Request $request
      * @param BoardManager $boardManager
-     * @param Board $board
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function deleteAction(Request $request, BoardManager $boardManager, Board $board)
+    public function deleteAction(Request $request, BoardManager $boardManager, $id)
     {
+        $board = $boardManager->getRepository()->find($id);
+
+        if (!($board instanceof Board)) {
+            throw new NotFoundResourceException();
+        }
+
         $form = $this->createDeleteForm($board);
         $form->handleRequest($request);
 

@@ -7,6 +7,7 @@ use RaspiPlant\Bundle\BoardBundle\Form\SensorType;
 use RaspiPlant\Bundle\BoardBundle\Manager\SensorManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
  * Sensor controller.
@@ -52,11 +53,18 @@ class SensorController extends AbstractController
     }
 
     /**
-     * @param Sensor $sensor
+     * @param SensorManager $sensorManager
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Sensor $sensor)
+    public function showAction(SensorManager $sensorManager, $id)
     {
+        $sensor = $sensorManager->getRepository()->find($id);
+
+        if (!($sensor instanceof Sensor)) {
+            throw new NotFoundResourceException();
+        }
+
         $deleteForm = $this->createDeleteForm($sensor);
 
         return $this->render('sensor/show.html.twig', array(
@@ -68,11 +76,17 @@ class SensorController extends AbstractController
     /**
      * @param Request $request
      * @param SensorManager $sensorManager
-     * @param Sensor $sensor
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, SensorManager $sensorManager, Sensor $sensor)
+    public function editAction(Request $request, SensorManager $sensorManager, $id)
     {
+        $sensor = $sensorManager->getRepository()->find($id);
+
+        if (!($sensor instanceof Sensor)) {
+            throw new NotFoundResourceException();
+        }
+
         $deleteForm = $this->createDeleteForm($sensor);
         $editForm = $this->createForm(SensorType::class, $sensor);
         $editForm->handleRequest($request);
@@ -93,13 +107,17 @@ class SensorController extends AbstractController
     /**
      * @param Request $request
      * @param SensorManager $sensorManager
-     * @param Sensor $sensor
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function deleteAction(Request $request, SensorManager $sensorManager, Sensor $sensor)
+    public function deleteAction(Request $request, SensorManager $sensorManager, $id)
     {
+        $sensor = $sensorManager->getRepository()->find($id);
+
+        if (!($sensor instanceof Sensor)) {
+            throw new NotFoundResourceException();
+        }
+
         $form = $this->createDeleteForm($sensor);
         $form->handleRequest($request);
 

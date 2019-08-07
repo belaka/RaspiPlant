@@ -14,16 +14,7 @@ namespace RaspiPlant\Component\WiringPi;
 
 // Try to load our extension if it's not already loaded.
 if (!extension_loaded('wiringpi')) {
-    if (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
-        if (!dl('php_wiringpi.dll')) return;
-    } else {
-        // PHP_SHLIB_SUFFIX gives 'dylib' on MacOS X but modules are 'so'.
-        if (PHP_SHLIB_SUFFIX === 'dylib') {
-            if (!dl('wiringpi.so')) return;
-        } else {
-            if (!dl('wiringpi.' . PHP_SHLIB_SUFFIX)) return;
-        }
-    }
+    return;
 }
 
 

@@ -28,8 +28,8 @@ class DeviceController extends AbstractController
     }
 
     /**
-     * Creates a new device entity.
-     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
@@ -52,11 +52,18 @@ class DeviceController extends AbstractController
     }
 
     /**
-     * Finds and displays a device entity.
-     *
+     * @param DeviceManager $deviceManager
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Device $device)
+    public function showAction(DeviceManager $deviceManager, $id)
     {
+        $device = $deviceManager->getRepository()->find($id);
+
+        if (!($device instanceof Device)) {
+            throw new NotFoundResourceException();
+        }
+
         $deleteForm = $this->createDeleteForm($device);
 
         return $this->render('device/show.html.twig', array(
@@ -66,11 +73,19 @@ class DeviceController extends AbstractController
     }
 
     /**
-     * Displays a form to edit an existing device entity.
-     *
+     * @param Request $request
+     * @param DeviceManager $deviceManager
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Device $device)
+    public function editAction(Request $request, DeviceManager $deviceManager, $id)
     {
+        $device = $deviceManager->getRepository()->find($id);
+
+        if (!($device instanceof Device)) {
+            throw new NotFoundResourceException();
+        }
+
         $deleteForm = $this->createDeleteForm($device);
         $editForm = $this->createForm(DeviceType::class, $device);
         $editForm->handleRequest($request);
@@ -91,13 +106,17 @@ class DeviceController extends AbstractController
     /**
      * @param Request $request
      * @param DeviceManager $deviceManager
-     * @param Device $device
+     * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function deleteAction(Request $request, DeviceManager $deviceManager, Device $device)
+    public function deleteAction(Request $request, DeviceManager $deviceManager, $id)
     {
+        $device = $deviceManager->getRepository()->find($id);
+
+        if (!($device instanceof Device)) {
+            throw new NotFoundResourceException();
+        }
+
         $form = $this->createDeleteForm($device);
         $form->handleRequest($request);
 

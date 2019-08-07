@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use RaspiPlant\Component\WiringPi\WiringPi;
-use Symfony\Component\HttpFoundation\Request;
 
 class GpioController extends AbstractController
 {
@@ -30,7 +29,11 @@ class GpioController extends AbstractController
 
         // executes after the command finishes
         if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+            $exception = new ProcessFailedException($process);
+            $this->addFlash(
+                'error',
+                $exception->getMessage()
+            );
         }
 
         $gpioTable = explode(PHP_EOL, $process->getOutput());

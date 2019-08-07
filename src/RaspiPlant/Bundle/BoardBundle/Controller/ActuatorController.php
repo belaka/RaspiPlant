@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
  * Actuator controller.
@@ -56,11 +57,18 @@ class ActuatorController extends AbstractController
     }
 
     /**
-     * @param Actuator $actuator
+     * @param ActuatorManager $actuatorManager
+     * @param $id
      * @return Response
      */
-    public function showAction(Actuator $actuator)
+    public function showAction(ActuatorManager $actuatorManager, $id)
     {
+        $actuator = $actuatorManager->getRepository()->find($id);
+
+        if (!($actuator instanceof Actuator)) {
+            throw new NotFoundResourceException();
+        }
+
         $deleteForm = $this->createDeleteForm($actuator);
 
         return $this->render('actuator/show.html.twig', array(
@@ -71,12 +79,18 @@ class ActuatorController extends AbstractController
 
     /**
      * @param Request $request
-     * @param Actuator $actuator
      * @param ActuatorManager $actuatorManager
+     * @param $id
      * @return RedirectResponse|Response
      */
-    public function editAction(Request $request, Actuator $actuator, ActuatorManager $actuatorManager)
+    public function editAction(Request $request, ActuatorManager $actuatorManager, $id)
     {
+        $actuator = $actuatorManager->getRepository()->find($id);
+
+        if (!($actuator instanceof Actuator)) {
+            throw new NotFoundResourceException();
+        }
+
         $deleteForm = $this->createDeleteForm($actuator);
         $editForm = $this->createForm(ActuatorType::class, $actuator);
         $editForm->handleRequest($request);
@@ -97,13 +111,17 @@ class ActuatorController extends AbstractController
     /**
      * @param Request $request
      * @param ActuatorManager $actuatorManager
-     * @param Actuator $actuator
+     * @param $id
      * @return RedirectResponse
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function deleteAction(Request $request, ActuatorManager $actuatorManager, Actuator $actuator)
+    public function deleteAction(Request $request, ActuatorManager $actuatorManager, $id)
     {
+        $actuator = $actuatorManager->getRepository()->find($id);
+
+        if (!($actuator instanceof Actuator)) {
+            throw new NotFoundResourceException();
+        }
+
         $form = $this->createDeleteForm($actuator);
         $form->handleRequest($request);
 
@@ -124,10 +142,10 @@ class ActuatorController extends AbstractController
      */
     public function updateAction(Request $request, ActuatorManager $actuatorManager, $id)
     {
-        $actuator = $actuatorManager->find($id);
+        $actuator = $actuatorManager->getRepository()->find($id);
 
         if (!($actuator instanceof Actuator)) {
-            throw new \Exception("Actuator not found.");
+            throw new NotFoundResourceException();
         }
 
         $state = 0;
