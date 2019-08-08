@@ -21,3 +21,6 @@ board_actuator:
 board_analytics:
   resource: "@BoardBundle/Resources/config/routing/analytics.xml"
   prefix:   /analytics
+
+fos_user:
+  resource: "@FOSUserBundle/Resources/config/routing/all.xml"
