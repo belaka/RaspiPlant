@@ -48,10 +48,19 @@ class DashboardController extends AbstractController
                 }
             }
 
-            $data[$sensorData['name'] .'_'. $sensorData['key']] = array(
-                'value' => end($analytics[$sensorData['name'] .'_'. $sensorData['key']])[1],
-                'date' => end($analytics[$sensorData['name'] .'_'. $sensorData['key']])[0]
-            );
+            if (!array_key_exists($sensorData['name'] .'_'. $sensorData['key'], $analytics)) {
+                $data[$sensorData['name'] .'_'. $sensorData['key']] = array(
+                    'value' => 'NAN',
+                    'date' => new \DateTime(),
+                );
+            } else {
+                $data[$sensorData['name'] .'_'. $sensorData['key']] = array(
+                    'value' => end($analytics[$sensorData['name'] .'_'. $sensorData['key']])[1],
+                    'date' => end($analytics[$sensorData['name'] .'_'. $sensorData['key']])[0]
+                );
+            }
+
+
 
         }
 
