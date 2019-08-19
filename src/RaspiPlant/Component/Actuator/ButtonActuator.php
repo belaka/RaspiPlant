@@ -52,7 +52,7 @@ class ButtonActuator extends AbstractActuator {
      */
     public function readStatus() {
         # read relay status
-        return $this->device->digitalRead(self::DIGITAL_READ_COMMAND, $this->pin);
+        return $this->device->digitalRead(I2CDevice::DIGITAL_READ_CMD, $this->pin);
     }
 
     /**

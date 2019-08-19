@@ -9,8 +9,6 @@ use RaspiPlant\Component\Device\I2CDevice;
  */
 class UltrasonicSensor extends AbstractSensor {
 
-    const ULTRASONIC_READ_CMD = 7;
-
     /**
      *
      * @var boolean
@@ -67,9 +65,9 @@ class UltrasonicSensor extends AbstractSensor {
 
         try {
 
-            $this->device->digitalWrite(self::ULTRASONIC_READ_CMD, $this->pin, self::I2C_UNUSED_VALUE, self::I2C_UNUSED_VALUE);
+            $this->device->digitalWrite(I2CDevice::ULTRASONIC_READ_CMD, $this->pin, I2CDevice::I2C_UNUSED_VALUE, self::I2C_UNUSED_VALUE);
             usleep(100000);
-            $number = $this->device->readBuffer(self::ULTRASONIC_READ_CMD, 0, 0, 32);
+            $number = $this->device->readBuffer(I2CDevice::ULTRASONIC_READ_CMD, 0, 0, 32);
             $result = array_map ( function($val){return hexdec($val);} , explode(':', $number));
 
             return json_encode(

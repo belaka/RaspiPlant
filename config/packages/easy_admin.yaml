@@ -1,7 +1,7 @@
 easy_admin:
     entities:
         User:
-            class: RaspiPlant\Bundle\BoardBundle\Entity\User
+            class: RaspiPlant\Bundle\AdminBundle\Entity\User
             form:
                 fields:
                     - username

@@ -7,12 +7,8 @@ namespace RaspiPlant\Component\Actuator;
  *
  * @author Vincent Honnorat <full-vibes@gmail.com>
  */
-abstract class AbstractActuator implements ActuatorInterface {
-
-    const DIGITAL_WRITE_COMMAND = 2; // Digital Write Command byte
-
-    const DIGITAL_READ_COMMAND = 1; // Digital Write Command byte
-
+abstract class AbstractActuator implements ActuatorInterface
+{
 
     public function getName() {
         return $this->name;

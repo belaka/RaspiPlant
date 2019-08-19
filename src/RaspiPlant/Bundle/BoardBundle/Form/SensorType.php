@@ -18,7 +18,6 @@ class SensorType extends AbstractType
     {
         $builder
             ->add('name', Type\TextType::class, array('label' => 'Name'))
-            //->add('slug', Type\TextType::class, array('label' => 'Slug'))
             ->add('class', Type\TextType::class, array('label' => 'Class'))
             ->add('pin', Type\IntegerType::class, array('label' => 'Pin', 'required' => false))
             ->add('active', Type\CheckboxType::class, array('label' => 'isActive', 'required' => false))

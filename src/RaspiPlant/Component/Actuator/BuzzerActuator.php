@@ -59,7 +59,7 @@ class BuzzerActuator extends AbstractActuator {
      */
     public function writeStatus($status) {
         # switch relay on
-        $this->device->digitalWrite(self::DIGITAL_WRITE_COMMAND, $this->pin, $status, 0);
+        $this->device->digitalWrite(I2CDevice::DIGITAL_WRITE_CMD, $this->pin, $status, 0);
 
         return 1;
     }
@@ -68,7 +68,7 @@ class BuzzerActuator extends AbstractActuator {
      *
      */
     public function __destruct() {
-        $this->device->digitalWrite(self::DIGITAL_WRITE_COMMAND, $this->pin, 0, 0);
+        $this->device->digitalWrite(I2CDevice::DIGITAL_WRITE_CMD, $this->pin, 0, 0);
     }
 
     public static function getControls() {

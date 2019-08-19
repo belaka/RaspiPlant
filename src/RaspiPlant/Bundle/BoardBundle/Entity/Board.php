@@ -10,7 +10,7 @@ use Cocur\Slugify\Slugify;
  */
 
 /**
- * Description of Board modelclass
+ * Description of Board model class
  *
  * @author belaka
  */

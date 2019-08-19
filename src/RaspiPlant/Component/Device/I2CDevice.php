@@ -1,6 +1,6 @@
 <?php
 
-namespace RaspiPlant\omponent\Device;
+namespace RaspiPlant\Component\Device;
 
 use RaspiPlant\Component\WiringPi\WiringPi;
 
@@ -16,6 +16,22 @@ class I2CDevice extends AbstractDevice
     const I2C_SMBUS_BLOCK_MAX = 32;
 
     const RPI_I2C_ADDRESS = 0x04;
+
+    const DIGITAL_READ_CMD = 1;
+    const DIGITAL_WRITE_CMD = 2;
+    const ANALOG_READ_CMD = 3;
+    const ANALOG_WRITE_CMD = 4;
+
+    const PIN_MODE_CMD = 5;
+    const ULTRASONIC_READ_CMD = 7;
+
+    const VERSION_CMD = 8;
+    const ACC_XYZ_CMD = 20;
+    const RTC_TIME_CMD = 30;
+
+    const DHT_TEMP_CMD = 40;
+
+    const I2C_UNUSED_VALUE = 0;
 
     /* Command Format
     # digitalRead() command format header
@@ -126,7 +142,7 @@ class I2CDevice extends AbstractDevice
 
         WiringPi::wiringPiI2CWriteBuffer($this->address, 1, $cmd, $value1, $value2, $value3, 4);
 
-	return 1;
+	    return 1;
     }
 
     # Arduino Digital Read

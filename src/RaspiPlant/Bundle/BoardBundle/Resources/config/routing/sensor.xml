@@ -24,8 +24,4 @@
         <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\SensorController::deleteAction</default>
     </route>
 
-    <route id="sensor_analytics" path="/{id}/analytics" methods="GET">
-        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\SensorController::analyticsAction</default>
-    </route>
-
 </routes>

@@ -1,10 +1,10 @@
 <?php
-namespace RaspiPlant\Bundle\BoardBundle\Controller;
 
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
-use RaspiPlant\Bundle\BoardBundle\Entity\Sensor;
+namespace RaspiPlant\Bundle\AdminBundle\Controller;
 
-class AdminController extends BaseAdminController
+use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+
+class AdminController extends EasyAdminController
 {
     public function createNewUserEntity()
     {
@@ -22,5 +22,4 @@ class AdminController extends BaseAdminController
         $this->get('fos_user.user_manager')->updateUser($user, false);
         parent::updateEntity($user);
     }
-
 }

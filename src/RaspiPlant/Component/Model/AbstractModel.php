@@ -12,8 +12,9 @@ abstract class AbstractModel
     use UtilsTrait;
 
     /**
-     *
+     * AbstractModel constructor.
      * @param array $data
+     * @throws \ReflectionException
      */
     public function __construct($data = array())
     {
@@ -31,8 +32,8 @@ abstract class AbstractModel
 
 
     /**
-     *
      * @return array
+     * @throws \ReflectionException
      */
     protected function getProperties()
     {
