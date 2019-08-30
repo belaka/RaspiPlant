@@ -1,4 +1,17 @@
 easy_admin:
+    site_name: 'FullVibes <em style="font-size: 80%;">RaspiPlant.</em>'
+    design:
+        brand_color: '#FF5733'
+        menu:
+            -   label: 'My Account'
+                children:
+                    #- { label: 'New Board', icon: 'file-new', route: 'createBoard' }
+                    - { label: 'Boards', icon: 'chess-board', entity: 'Board', permission: 'ROLE_USER' }
+                    - { label: 'Sensors', icon: 'dashboard', entity: 'Sensor', params: { default: 'true' } }
+                    - { label: 'Analytics', icon: 'chart-pie', permission: 'ROLE_USER' , route: 'board.dashboard.main'}
+            -   label: 'Admin'
+                children:
+                    - { label: 'Users', icon: 'user', entity: 'User', permission: 'ROLE_ADMIN' }
     entities:
         User:
             class: RaspiPlant\Bundle\AdminBundle\Entity\User
@@ -18,3 +31,5 @@ easy_admin:
             class: RaspiPlant\Bundle\BoardBundle\Entity\Device
         Sensor:
             class: RaspiPlant\Bundle\BoardBundle\Entity\Sensor
+        Actuator:
+            class: RaspiPlant\Bundle\BoardBundle\Entity\Actuator

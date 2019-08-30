@@ -1,3 +1,7 @@
+parameters:
+    raspiplant_version: '0.1'
+    raspiplant_name: 'RaspiPlant'
+
 framework:
     secret: '%env(APP_SECRET)%'
     default_locale: en
