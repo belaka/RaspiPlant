@@ -33,6 +33,7 @@ class BoardModel extends AbstractModel implements ActivableInterface
     /**
      * BoardModel constructor.
      * @param array $data
+     * @throws \ReflectionException
      */
     public function __construct($data = array())
     {

@@ -68,7 +68,6 @@ class BoardStartCommand extends EndlessContainerAwareCommand
     public function __construct(
         ParameterBagInterface $params,
         BoardManager $boardManager,
-        DeviceProvider $deviceProvider,
         ActuatorManager $actuatorManager,
         SensorManager $sensorManager,
         SensorValueManager $sensorValueManager,
@@ -77,13 +76,10 @@ class BoardStartCommand extends EndlessContainerAwareCommand
     {
         $this->params = $params;
         $this->boardManager = $boardManager;
-        $this->deviceProvider = $deviceProvider;
         $this->actuatorManager = $actuatorManager;
         $this->sensorManager = $sensorManager;
         $this->sensorValueManager = $sensorValueManager;
         $this->analyticsManager = $analyticsManager;
-
-        //dd($deviceProvider->all());
 
         parent::__construct();
     }
@@ -108,8 +104,6 @@ class BoardStartCommand extends EndlessContainerAwareCommand
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        dd($this->deviceProvider->all());
-
         $this->output = $output;
         $this->light = 0;
 
