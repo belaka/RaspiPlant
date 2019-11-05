@@ -47,8 +47,9 @@ class SensorValueModel extends AbstractModel
     protected $sensor;
 
     /**
-     * SensorModel constructor.
+     * SensorValueModel constructor.
      * @param array $data
+     * @throws \ReflectionException
      */
     public function __construct($data = array())
     {

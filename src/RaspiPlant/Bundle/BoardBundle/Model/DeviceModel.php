@@ -18,7 +18,7 @@ class DeviceModel extends AbstractModel implements ActivableInterface
      *
      * @var string
      */
-    protected $class = "FullVibes\\Component\\Device\\I2CDevice";
+    protected $class = "FullVibes\\Component\\Device\\I2CProtocol";
 
     /**
      *
@@ -58,6 +58,7 @@ class DeviceModel extends AbstractModel implements ActivableInterface
     /**
      * DeviceModel constructor.
      * @param array $data
+     * @throws \ReflectionException
      */
     public function __construct($data = array())
     {

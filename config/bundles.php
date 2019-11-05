@@ -17,4 +17,5 @@ return [
     FOS\UserBundle\FOSUserBundle::class => ['all' => true],
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     RaspiPlant\Bundle\AdminBundle\AdminBundle::class => ['all' => true],
+    RaspiPlant\Bundle\DeviceBundle\DeviceBundle::class => ['all' => true],
 ];

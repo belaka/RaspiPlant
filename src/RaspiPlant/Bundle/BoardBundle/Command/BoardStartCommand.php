@@ -13,6 +13,7 @@ use RaspiPlant\Bundle\BoardBundle\Manager\AnalyticsManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\BoardManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\SensorManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\SensorValueManager;
+use RaspiPlant\Bundle\DeviceBundle\Provider\DeviceProvider;
 use RaspiPlant\Component\Actuator\ActuatorInterface;
 use RaspiPlant\Component\Device\DeviceInterface;
 use RaspiPlant\Component\Sensor\SensorInterface;
@@ -67,6 +68,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
     public function __construct(
         ParameterBagInterface $params,
         BoardManager $boardManager,
+        DeviceProvider $deviceProvider,
         ActuatorManager $actuatorManager,
         SensorManager $sensorManager,
         SensorValueManager $sensorValueManager,
@@ -75,10 +77,13 @@ class BoardStartCommand extends EndlessContainerAwareCommand
     {
         $this->params = $params;
         $this->boardManager = $boardManager;
+        $this->deviceProvider = $deviceProvider;
         $this->actuatorManager = $actuatorManager;
         $this->sensorManager = $sensorManager;
         $this->sensorValueManager = $sensorValueManager;
         $this->analyticsManager = $analyticsManager;
+
+        //dd($deviceProvider->all());
 
         parent::__construct();
     }
@@ -103,6 +108,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
+        dd($this->deviceProvider->all());
 
         $this->output = $output;
         $this->light = 0;
@@ -183,7 +189,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
 
         $fd = $device->getAddress();
 
-        if ($device->getClass() == "RaspiPlant\\Component\\Device\\I2CDevice") {
+        if ($device->getClass() == "RaspiPlant\\Component\\Device\\I2CProtocol") {
             //address is a varchar and need hexdec before being sent
             $fd = WiringPi::wiringPiI2CSetup(hexdec($device->getAddress()));
         }
@@ -266,7 +272,6 @@ class BoardStartCommand extends EndlessContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $this->output = $output;
 
         $firedAt = new \DateTime();

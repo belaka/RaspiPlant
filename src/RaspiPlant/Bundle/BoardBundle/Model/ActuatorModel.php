@@ -51,6 +51,7 @@ class ActuatorModel extends AbstractModel implements ActivableInterface
     /**
      * ActuatorModel constructor.
      * @param array $data
+     * @throws \ReflectionException
      */
     public function __construct($data = array())
     {
