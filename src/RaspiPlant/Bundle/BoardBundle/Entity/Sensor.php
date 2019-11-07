@@ -2,8 +2,8 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Entity;
 
-use RaspiPlant\Bundle\BoardBundle\Model\SensorModel;
 use Cocur\Slugify\Slugify;
+use RaspiPlant\Bundle\BoardBundle\Model\SensorModel;
 
 /*
  * Sensor Entity
@@ -14,7 +14,8 @@ use Cocur\Slugify\Slugify;
  *
  * @author belaka
  */
-class Sensor extends SensorModel {
+class Sensor extends SensorModel
+{
 
     /**
      *
@@ -24,20 +25,22 @@ class Sensor extends SensorModel {
 
     /**
      *
-     * @param int $id
-     * @return \RaspiPlant\Bundle\BoardBundle\Entity\Sensor
+     * @return int
      */
-    public function setId($id) {
-        $this->id = $id;
-        return $this;
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
      *
-     * @return int
+     * @param int $id
+     * @return \RaspiPlant\Bundle\BoardBundle\Entity\Sensor
      */
-    public function getId() {
-        return $this->id;
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**

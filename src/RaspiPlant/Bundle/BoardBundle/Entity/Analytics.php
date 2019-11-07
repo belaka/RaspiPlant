@@ -13,7 +13,8 @@ use RaspiPlant\Bundle\BoardBundle\Model\AnalyticsModel;
  *
  * @author belaka
  */
-class Analytics extends AnalyticsModel {
+class Analytics extends AnalyticsModel
+{
 
     /**
      *
@@ -23,20 +24,22 @@ class Analytics extends AnalyticsModel {
 
     /**
      *
-     * @param int $id
-     * @return \RaspiPlant\Bundle\BoardBundle\Entity\Analytics
+     * @return int
      */
-    public function setId($id) {
-        $this->id = $id;
-        return $this;
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
      *
-     * @return int
+     * @param int $id
+     * @return \RaspiPlant\Bundle\BoardBundle\Entity\Analytics
      */
-    public function getId() {
-        return $this->id;
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
 }

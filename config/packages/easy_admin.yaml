@@ -8,6 +8,9 @@ easy_admin:
                     #- { label: 'New Board', icon: 'file-new', route: 'createBoard' }
                     - { label: 'Boards', icon: 'chess-board', entity: 'Board', permission: 'ROLE_USER' }
                     - { label: 'Sensors', icon: 'dashboard', entity: 'Sensor', params: { default: 'true' } }
+                    - { label: 'Actuators', icon: 'toggle-on', entity: 'Actuator', params: { default: 'true' } }
+                    - { label: 'Communicators', icon: 'phone', entity: 'Communicator', params: { default: 'true' } }
+                    - { label: 'Displays', icon: 'tablet-alt', entity: 'Display', params: { default: 'true' } }
                     - { label: 'Analytics', icon: 'chart-pie', permission: 'ROLE_USER' , route: 'board.dashboard.main'}
             -   label: 'Admin'
                 children:
@@ -27,9 +30,43 @@ easy_admin:
 #        # List the entity class name you want to manage
         Board:
             class: RaspiPlant\Bundle\BoardBundle\Entity\Board
-        Device:
-            class: RaspiPlant\Bundle\BoardBundle\Entity\Device
+            form:
+                fields:
+                    - name
+                    - sensors
+                    - actuators
+                    #- communicators
+                    #- display
+                    - active
         Sensor:
             class: RaspiPlant\Bundle\BoardBundle\Entity\Sensor
+            form:
+                fields:
+                    - name
+                    - { property: 'class', type: 'choice', type_options: { choices: [], required: true } }
+                    - pin
+                    - active
         Actuator:
             class: RaspiPlant\Bundle\BoardBundle\Entity\Actuator
+            form:
+                fields:
+                    - name
+                    - { property: 'class', type: 'choice', type_options: { choices: [], required: true } }
+                    - pin
+                    - active
+        Communicator:
+            class: RaspiPlant\Bundle\BoardBundle\Entity\Communicator
+            form:
+                fields:
+                    - name
+                    - { property: 'class', type: 'choice', type_options: { choices: [], required: true } }
+                    - pin
+                    - active
+        Display:
+            class: RaspiPlant\Bundle\BoardBundle\Entity\Display
+            form:
+                fields:
+                    - name
+                    - { property: 'class', type: 'choice', type_options: { choices: [], required: true } }
+                    - pin
+                    - active

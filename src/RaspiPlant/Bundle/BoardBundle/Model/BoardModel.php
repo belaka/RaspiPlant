@@ -2,11 +2,17 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use RaspiPlant\Bundle\BoardBundle\Entity\Actuator;
+use RaspiPlant\Bundle\BoardBundle\Entity\Sensor;
 use RaspiPlant\Component\Model\AbstractModel;
 use Doctrine\Common\Collections\Collection;
+use RaspiPlant\Component\Traits\ActivableTrait;
 
 class BoardModel extends AbstractModel implements ActivableInterface
 {
+    use ActivableTrait;
+
     /**
      *
      * @var string
@@ -21,14 +27,15 @@ class BoardModel extends AbstractModel implements ActivableInterface
 
     /**
      *
-     * @var Collection
+     * @var ArrayCollection
      */
-    protected $devices;
+    protected $sensors;
 
     /**
-     * @var boolean
+     *
+     * @var ArrayCollection
      */
-    protected $active;
+    protected $actuators;
 
     /**
      * BoardModel constructor.
@@ -37,7 +44,8 @@ class BoardModel extends AbstractModel implements ActivableInterface
      */
     public function __construct($data = array())
     {
-        $this->active = false;
+        $this->sensors = new ArrayCollection();
+        $this->actuators = new ArrayCollection();
         parent::__construct($data);
     }
 
@@ -64,18 +72,17 @@ class BoardModel extends AbstractModel implements ActivableInterface
     }
 
     /**
-     * @return Collection
+     * @return ArrayCollection
      */
-    public function getDevices() {
-        return $this->devices;
+    public function getSensors() {
+        return $this->sensors;
     }
 
     /**
-     * @return bool
+     * @return ArrayCollection
      */
-    public function isActive()
-    {
-        return $this->active;
+    public function getActuators() {
+        return $this->actuators;
     }
 
     /**
@@ -97,23 +104,37 @@ class BoardModel extends AbstractModel implements ActivableInterface
     }
 
     /**
-     * @param Collection $devices
+     * @param ArrayCollection $sensors
      * @return $this
      */
-    public function setDevices(Collection $devices) {
-        $this->devices = $devices;
+    public function setSensors(ArrayCollection $sensors) {
+        $this->sensors = $sensors;
         return $this;
     }
 
     /**
-     * @param bool $active
-     * @return BoardModel
+     * @param Sensor $sensor
      */
-    public function setActive($active)
+    public function addSensor(Sensor $sensor)
     {
-        $this->active = $active;
+        $this->sensors[] = $sensor;
+    }
+
+    /**
+     * @param ArrayCollection $actuators
+     * @return $this
+     */
+    public function setActuators(ArrayCollection $actuators) {
+        $this->actuators = $actuators;
         return $this;
     }
 
+    /**
+     * @param Actuator $actuator
+     */
+    public function addActuator(Actuator $actuator)
+    {
+        $this->actuators[] = $actuator;
+    }
 
 }

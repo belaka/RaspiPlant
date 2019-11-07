@@ -3,10 +3,9 @@
 namespace RaspiPlant\Bundle\BoardBundle\Model;
 
 use RaspiPlant\Component\Model\AbstractModel;
-use RaspiPlant\Bundle\BoardBundle\Entity\Device;
 use RaspiPlant\Component\Traits\ActivableTrait;
 
-class ActuatorModel extends AbstractModel implements ActivableInterface
+class DisplayModel extends AbstractModel implements ActivableInterface
 {
     use ActivableTrait;
 
@@ -35,13 +34,7 @@ class ActuatorModel extends AbstractModel implements ActivableInterface
     protected $pin;
 
     /**
-     *
-     * @var int
-     */
-    protected $state;
-
-    /**
-     * ActuatorModel constructor.
+     * DisplayModel constructor.
      * @param array $data
      * @throws \ReflectionException
      */
@@ -70,13 +63,6 @@ class ActuatorModel extends AbstractModel implements ActivableInterface
      */
     public function getClass() {
         return $this->class;
-    }
-
-    /**
-     * @return int
-     */
-    public function getState() {
-        return $this->state;
     }
 
     /**
@@ -126,15 +112,6 @@ class ActuatorModel extends AbstractModel implements ActivableInterface
      */
     public function setClass($class) {
         $this->class = $class;
-        return $this;
-    }
-
-    /**
-     * @param $state
-     * @return $this
-     */
-    public function setState($state) {
-        $this->state = $state;
         return $this;
     }
 

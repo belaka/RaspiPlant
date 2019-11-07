@@ -13,7 +13,8 @@ use RaspiPlant\Bundle\BoardBundle\Model\SensorValueModel;
  *
  * @author belaka
  */
-class SensorValue extends SensorValueModel {
+class SensorValue extends SensorValueModel
+{
 
     /**
      *
@@ -23,20 +24,22 @@ class SensorValue extends SensorValueModel {
 
     /**
      *
-     * @param int $id
-     * @return \RaspiPlant\Bundle\BoardBundle\Entity\SensorValue
+     * @return int
      */
-    public function setId($id) {
-        $this->id = $id;
-        return $this;
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
      *
-     * @return int
+     * @param int $id
+     * @return \RaspiPlant\Bundle\BoardBundle\Entity\SensorValue
      */
-    public function getId() {
-        return $this->id;
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
 }

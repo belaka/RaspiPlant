@@ -22,7 +22,27 @@
         <field name="slug" column="slug" length="191" unique="true"/>
         <field name="active" column="active" type="boolean" />
 
-        <one-to-many field="devices" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Device" mapped-by="board" />
+        <many-to-many field="sensors" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Sensor">
+            <join-table name="board_sensors">
+                <join-columns>
+                    <join-column name="board_id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="sensor_id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+        <many-to-many field="actuators" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Actuator">
+            <join-table name="board_actuators">
+                <join-columns>
+                    <join-column name="board_id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="actuator_id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
 
     </entity>
 

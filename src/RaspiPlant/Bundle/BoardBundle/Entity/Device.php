@@ -2,8 +2,8 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Entity;
 
-use RaspiPlant\Bundle\BoardBundle\Model\DeviceModel;
 use Cocur\Slugify\Slugify;
+use RaspiPlant\Bundle\BoardBundle\Model\DeviceModel;
 
 /*
  * Device Entity
@@ -14,7 +14,8 @@ use Cocur\Slugify\Slugify;
  *
  * @author belaka
  */
-class Device extends DeviceModel {
+class Device extends DeviceModel
+{
 
     /**
      *
@@ -24,20 +25,22 @@ class Device extends DeviceModel {
 
     /**
      *
-     * @param int $id
-     * @return \RaspiPlant\Bundle\BoardBundle\Entity\Device
+     * @return int
      */
-    public function setId($id) {
-        $this->id = $id;
-        return $this;
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
      *
-     * @return int
+     * @param int $id
+     * @return \RaspiPlant\Bundle\BoardBundle\Entity\Device
      */
-    public function getId() {
-        return $this->id;
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**

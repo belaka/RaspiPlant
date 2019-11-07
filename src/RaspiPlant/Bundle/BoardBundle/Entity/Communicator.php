@@ -3,18 +3,18 @@
 namespace RaspiPlant\Bundle\BoardBundle\Entity;
 
 use Cocur\Slugify\Slugify;
-use RaspiPlant\Bundle\BoardBundle\Model\BoardModel;
+use RaspiPlant\Bundle\BoardBundle\Model\CommunicatorModel;
 
 /*
- * Board Entity
+ * Communicator Entity
  */
 
 /**
- * Description of Board model class
+ * Description of Analytics
  *
  * @author belaka
  */
-class Board extends BoardModel
+class Communicator extends CommunicatorModel
 {
 
     /**
@@ -35,7 +35,7 @@ class Board extends BoardModel
     /**
      *
      * @param int $id
-     * @return \RaspiPlant\Bundle\BoardBundle\Entity\Board
+     * @return \RaspiPlant\Bundle\BoardBundle\Entity\Communicator
      */
     public function setId($id)
     {
@@ -43,6 +43,9 @@ class Board extends BoardModel
         return $this;
     }
 
+    /**
+     *
+     */
     public function prePersist()
     {
         if (!empty($this->name)) {
@@ -51,6 +54,9 @@ class Board extends BoardModel
         }
     }
 
+    /**
+     *
+     */
     public function preUpdate()
     {
         if (!empty($this->name)) {
@@ -58,6 +64,5 @@ class Board extends BoardModel
             $this->setSlug($slugify->slugify($this->name));
         }
     }
-
 
 }

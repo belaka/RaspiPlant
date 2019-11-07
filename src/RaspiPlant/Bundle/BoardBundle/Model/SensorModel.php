@@ -5,10 +5,11 @@ namespace RaspiPlant\Bundle\BoardBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use RaspiPlant\Bundle\BoardBundle\Entity\SensorValue;
 use RaspiPlant\Component\Model\AbstractModel;
-use RaspiPlant\Bundle\BoardBundle\Entity\Device;
+use RaspiPlant\Component\Traits\ActivableTrait;
 
 class SensorModel extends AbstractModel implements ActivableInterface
 {
+    use ActivableTrait;
 
     /**
      *
@@ -35,17 +36,6 @@ class SensorModel extends AbstractModel implements ActivableInterface
     protected $pin = null;
 
     /**
-     *
-     * @var \RaspiPlant\Bundle\BoardBundle\Entity\Device
-     */
-    protected $device;
-
-    /**
-     * @var boolean
-     */
-    protected $active;
-
-    /**
      * @var ArrayCollection
      */
     protected $sensorValues;
@@ -53,12 +43,11 @@ class SensorModel extends AbstractModel implements ActivableInterface
     /**
      * SensorModel constructor.
      * @param array $data
+     * @throws \ReflectionException
      */
     public function __construct($data = array())
     {
-        $this->active = false;
         $this->sensorValues = new ArrayCollection();
-
         parent::__construct($data);
     }
 
@@ -96,21 +85,6 @@ class SensorModel extends AbstractModel implements ActivableInterface
      */
     public function getPin() {
         return $this->pin;
-    }
-
-    /**
-     * @return Device
-     */
-    public function getDevice() {
-        return $this->device;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive()
-    {
-        return $this->active;
     }
 
     /**
@@ -166,25 +140,6 @@ class SensorModel extends AbstractModel implements ActivableInterface
      */
     public function setPin($pin) {
         $this->pin = $pin;
-        return $this;
-    }
-
-    /**
-     * @param Device $device
-     * @return $this
-     */
-    public function setDevice(Device $device) {
-        $this->device = $device;
-        return $this;
-    }
-
-    /**
-     * @param bool $active
-     * @return SensorModel
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
         return $this;
     }
 
