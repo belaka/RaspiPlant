@@ -13,6 +13,8 @@ use RaspiPlant\Bundle\BoardBundle\Manager\AnalyticsManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\BoardManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\SensorManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\SensorValueManager;
+use RaspiPlant\Bundle\DeviceBundle\DependencyInjection\DeviceExtension;
+use RaspiPlant\Component\Device\DeviceInterface;
 use RaspiPlant\Component\WiringPi\WiringPi;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,6 +30,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
     const ISO8601 = 'Y-m-d\TH:i:sP';
 
     protected $debug;
+    protected $boards = array();
     protected $devices = array();
     protected $data = array();
     protected $tick = 0;
@@ -134,7 +137,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
 
         $output->writeln([
             '=======================================================================',
-            '========================   RASPIPLANT START    ========================',
+            '=====================   RASPIPLANT CLOCK START   ======================',
             '=======================================================================',
             php_uname(),
         ]);
@@ -144,7 +147,12 @@ class BoardStartCommand extends EndlessContainerAwareCommand
         foreach ($boards as $board) {
             if ($board->isActive()) {
                 $this->boardInitialize($board);
+                $this->boards[] = $board;
             }
+        }
+
+        if (empty($this->boards)) {
+            throw new \Exception("No active boards found...");
         }
 
         $output->writeln("");
@@ -158,15 +166,20 @@ class BoardStartCommand extends EndlessContainerAwareCommand
     {
         $this->output->writeln("Starting Board :" . $board->getName());
 
-        //$devices = $board->getDevices();
-        /**
-        foreach ($devices as $device) {
-            if ($device->isActive()) {
-                $this->devices[$device->getId()]['device'] = $this->deviceInitialize($device);
-                usleep(100000);
+        $deviceTypes = DeviceExtension::DEVICE_TYPES;
+
+        foreach ($deviceTypes as $key => $value) {
+            $method = 'get' . ucfirst($key);
+            $devices = $board->{$method}();
+            foreach ($devices as $device) {
+                if ($device->isActive()) {
+                    $this->devices[$key] = $this->deviceInitialize($device);
+                    usleep(100000);
+                }
             }
+
+            dd($this->devices);
         }
-         * **/
     }
 
     /**
@@ -174,7 +187,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
      * @return mixed
      * @throws \Exception
      */
-    protected function deviceInitialize(Device $device)
+    protected function deviceInitialize(DeviceInterface $device)
     {
 
         $this->output->writeln("Starting Device :" . $device->getName() . " with address " . $device->getAddress());
