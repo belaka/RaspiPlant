@@ -19,7 +19,7 @@ class DeviceExtension extends Extension implements PrependExtensionInterface
         'actuators' => ActuatorInterface::class,
         'sensors' => SensorInterface::class,
         'communicators' => CommunicatorInterface::class,
-        'display' => DisplayInterface::class
+        'displays' => DisplayInterface::class
     ];
 
     /**
@@ -65,7 +65,6 @@ class DeviceExtension extends Extension implements PrependExtensionInterface
             $container->setParameter('device.' . $key, $classes);
         }
 
-        //$container->prependExtensionConfig('device', $config);
     }
 
     /**

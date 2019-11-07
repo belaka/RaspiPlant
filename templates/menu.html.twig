@@ -62,14 +62,6 @@
             </li>
         </ul>
     </li>
-    <li class="nav-item {% if 'device_' in app.request.attributes.get('_route') %}active open{% else %}{% endif %}">
-        <a href="{{path('device_index')}}" class="nav-link nav-toggle">
-            <i class="fa fa-plug"></i>
-            <span class="title">Devices</span>
-            <span class="selected"></span>
-            <span class="arrow open"></span>
-        </a>
-    </li>
     <li class="nav-item {% if 'actuator_' in app.request.attributes.get('_route') %}active open{% else %}{% endif %}">
         <a href="{{path('actuator_index')}}" class="nav-link nav-toggle">
             <i class="fa fa-exchange"></i>

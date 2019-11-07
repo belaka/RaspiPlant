@@ -3,6 +3,7 @@
 namespace RaspiPlant\Bundle\BoardBundle\Command;
 
 use RaspiPlant\Bundle\BoardBundle\Manager\BoardManager;
+use RaspiPlant\Bundle\DeviceBundle\DependencyInjection\DeviceExtension;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,30 +35,31 @@ class BoardTreeCommand extends Command {
 
         $output->writeln([
             '=======================================================================',
-            '========================   RASPIPLANT START    ========================',
+            '========================   RASPIPLANT TREE    ========================',
             '=======================================================================',
             php_uname(),
         ]);
 
         $boards = $this->boardManager->getRepository()->findAll();
 
-        $output->writeln("BOARD:");
+        $output->writeln("BOARDS:");
+
+        $deviceTypes = DeviceExtension::DEVICE_TYPES;
+
         foreach ($boards as $board) {
             $output->writeln("- " . $board->getId() . " " . $board->getName() . " " . $board->getSlug());
             $output->writeln("  DEVICES:");
-            $devices = $board->getDevices();
-            foreach ($devices as $device) {
-                $output->writeln("  - " . $device->getId() . " " . $device->getName() . " " . $device->getSlug() . " " . $device->getAddress());
-                $output->writeln("      SENSORS:");
-                $sensors = $device->getSensors();
-                foreach ($sensors as $sensor) {
-                    $output->writeln("      - " . $sensor->getId() .  " " . $sensor->getName() . " " . $sensor->getSlug() . " " . $sensor->getPin());
+
+            foreach ($deviceTypes as $key => $value) {
+                $output->writeln("  - " . $key);
+                $method = 'get' . ucfirst($key);
+
+                $devices = $board->{$method}();
+
+                foreach ($devices as $device) {
+                    $output->writeln("      - " . $device->getId() .  " " . $device->getName() . " " . $device->getSlug() . " " . $device->getPin());
                 }
-                $output->writeln("      ACTUATORS:");
-                $actuators = $device->getActuators();
-                foreach ($actuators as $actuator) {
-                    $output->writeln("      - " . $actuator->getId() . " " . $actuator->getName() . " " . $actuator->getSlug() . " " . $actuator->getPin());
-                }
+
             }
         }
 

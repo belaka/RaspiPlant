@@ -6,10 +6,6 @@ board_board:
   resource: "@BoardBundle/Resources/config/routing/board.xml"
   prefix:   /board
 
-board_device:
-  resource: "@BoardBundle/Resources/config/routing/device.xml"
-  prefix:   /device
-
 board_sensor:
   resource: "@BoardBundle/Resources/config/routing/sensor.xml"
   prefix:   /sensor

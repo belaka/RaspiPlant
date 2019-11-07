@@ -37,7 +37,7 @@ class AirQualitySensor extends AbstractSensor
 
     /**
      *
-     * @param I2CProtocol $device
+     * @param I2CProtocol $protocol
      * @param int $pin
      * @param string $name
      * @param boolean $debug

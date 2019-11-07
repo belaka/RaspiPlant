@@ -5,7 +5,7 @@
 
     <entity name="RaspiPlant\Bundle\AdminBundle\Entity\User" table="user">
         <id name="id" type="integer" column="id">
-            <generator strategy="AUTO"/>
+            <generator />
         </id>
     </entity>
 </doctrine-mapping>

@@ -82,7 +82,7 @@ class AdminController extends EasyAdminController
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);
 
-        $display = $this->getParameter('device.display');
+        $display = $this->getParameter('device.displays');
         $displayKeys = str_replace(
             'RaspiPlant\Component\Device\Display\\', "", $display);
 

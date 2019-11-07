@@ -2,13 +2,13 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Manager;
 
-use RaspiPlant\Bundle\BoardBundle\Entity\Device;
+use RaspiPlant\Bundle\BoardBundle\Entity\Communicator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @author Vincent Honnorat <vincenth@effi-net.com>
  */
-class DeviceManager
+class CommunicatorManager
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -28,57 +28,57 @@ class DeviceManager
     protected $classNamespace;
 
     /**
-     * DeviceManager constructor.
+     * CommunicatorManager constructor.
      * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
         $this->em = $registry->getManager();
-        $this->classNamespace = Device::class;
+        $this->classNamespace = Communicator::class;
         $this->metadata = $this->em->getClassMetadata($this->classNamespace);
     }
 
     /**
-     * @param Device $device
+     * @param Communicator $communicator
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function create(Device $device)
+    public function create(Communicator $communicator)
     {
-        $this->em->persist($device);
-        $this->em->flush($device);
+        $this->em->persist($communicator);
+        $this->em->flush($communicator);
     }
 
     /**
-     * @param Device $device
+     * @param Communicator $communicator
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(Device $device)
+    public function save(Communicator $communicator)
     {
-        $this->em->persist($device);
-        $this->em->flush($device);
+        $this->em->persist($communicator);
+        $this->em->flush($communicator);
     }
 
     /**
-     * @param Device $device
+     * @param Communicator $communicator
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function update(Device $device)
+    public function update(Communicator $communicator)
     {
-        $this->em->flush($device);
+        $this->em->flush($communicator);
     }
 
     /**
-     * @param Device $device
+     * @param Communicator $communicator
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function remove(Device $device)
+    public function remove(Communicator $communicator)
     {
-        $this->em->remove($device);
-        $this->em->flush($device);
+        $this->em->remove($communicator);
+        $this->em->flush($communicator);
     }
 
     /**
@@ -110,6 +110,6 @@ class DeviceManager
      */
     public function getRepository()
     {
-        return $this->em->getRepository(Device::class);
+        return $this->em->getRepository(Communicator::class);
     }
 }

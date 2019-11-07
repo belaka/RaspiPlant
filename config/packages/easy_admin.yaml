@@ -35,8 +35,8 @@ easy_admin:
                     - name
                     - sensors
                     - actuators
-                    #- communicators
-                    #- display
+                    - communicators
+                    - displays
                     - active
         Sensor:
             class: RaspiPlant\Bundle\BoardBundle\Entity\Sensor

@@ -6,9 +6,8 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
- * Class for communicating with a W1 device using the console command.
- *
- * @author Vincent Honnorat <vincenth@effi-net.com>
+ * Class W1Protocol
+ * @package RaspiPlant\Bundle\DeviceBundle\Protocol
  */
 class W1Protocol extends AbstractProtocol
 {

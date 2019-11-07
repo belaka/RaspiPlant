@@ -3,9 +3,8 @@
 namespace RaspiPlant\Bundle\DeviceBundle\Protocol;
 
 /**
- * Interface Class for devices.
- *
- * @author Vincent Honnorat <full-vibes@gmail.com>
+ * Interface ProtocolInterface
+ * @package RaspiPlant\Bundle\DeviceBundle\Protocol
  */
 interface ProtocolInterface {
 

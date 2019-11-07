@@ -44,6 +44,28 @@
             </join-table>
         </many-to-many>
 
+        <many-to-many field="communicators" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Communicator">
+            <join-table name="board_communicators">
+                <join-columns>
+                    <join-column name="board_id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="communicator_id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+        <many-to-many field="displays" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Display">
+            <join-table name="board_displays">
+                <join-columns>
+                    <join-column name="board_id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="display_id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
     </entity>
 
 </doctrine-mapping>

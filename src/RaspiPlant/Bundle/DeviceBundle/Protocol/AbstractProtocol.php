@@ -3,9 +3,8 @@
 namespace RaspiPlant\Bundle\DeviceBundle\Protocol;
 
 /**
- * Abstract Class for communicating with a device.
- *
- * @author Vincent Honnorat <full-vibes@gmail.com>
+ * Class AbstractProtocol
+ * @package RaspiPlant\Bundle\DeviceBundle\Protocol
  */
 abstract class AbstractProtocol implements ProtocolInterface
 {

@@ -13,10 +13,6 @@ use RaspiPlant\Bundle\BoardBundle\Manager\AnalyticsManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\BoardManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\SensorManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\SensorValueManager;
-use RaspiPlant\Bundle\DeviceBundle\Provider\DeviceProvider;
-use RaspiPlant\Component\Actuator\ActuatorInterface;
-use RaspiPlant\Component\Device\DeviceInterface;
-use RaspiPlant\Component\Sensor\SensorInterface;
 use RaspiPlant\Component\WiringPi\WiringPi;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -108,6 +104,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
         $this->light = 0;
 
         //Start alt commands eg:start motors|start motion)
+        // @todo find a way to dynamize this !!!!!!!
         $command = $this->getApplication()->find('raspiplant:motors:manage');
         $arguments = array(
             'command' => 'raspiplant:motors:manage',
@@ -115,7 +112,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
         );
 
         $motorsInput = new ArrayInput($arguments);
-        $command->run($motorsInput, $output);
+        //$command->run($motorsInput, $output);
 
         $this->debug = false;
         $this->tick = 0;
@@ -128,6 +125,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
          *
          * $dhtPin = 6;
          * */
+
         $boards = $this->boardManager->findAll();
 
         if (!$boards) {
@@ -158,17 +156,17 @@ class BoardStartCommand extends EndlessContainerAwareCommand
      */
     protected function boardInitialize(Board $board)
     {
-
         $this->output->writeln("Starting Board :" . $board->getName());
 
-        $devices = $board->getDevices();
-
+        //$devices = $board->getDevices();
+        /**
         foreach ($devices as $device) {
             if ($device->isActive()) {
                 $this->devices[$device->getId()]['device'] = $this->deviceInitialize($device);
                 usleep(100000);
             }
         }
+         * **/
     }
 
     /**

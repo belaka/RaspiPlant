@@ -5,11 +5,8 @@ namespace RaspiPlant\Bundle\DeviceBundle\Protocol;
 use RaspiPlant\Component\WiringPi\WiringPi;
 
 /**
- * Class for communicating with an I2C device using the wiringPi I2C interface.
- * Allows reading and writing 8-bit, 16-bit, and byte array values to registers
- * on the device.
- *
- * @author Vincent Honnorat <vincenth@effi-net.com>
+ * Class I2CProtocol
+ * @package RaspiPlant\Bundle\DeviceBundle\Protocol
  */
 class I2CProtocol extends AbstractProtocol
 {

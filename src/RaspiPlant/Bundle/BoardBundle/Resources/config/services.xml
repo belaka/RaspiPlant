@@ -7,8 +7,9 @@
     <parameters>
         <parameter key="board.manager.analytics_manager.class">RaspiPlant\Bundle\BoardBundle\Manager\AnalyticsManager</parameter>
         <parameter key="board.manager.board_manager.class">RaspiPlant\Bundle\BoardBundle\Manager\BoardManager</parameter>
-        <parameter key="board.manager.device_manager.class">RaspiPlant\Bundle\BoardBundle\Manager\DeviceManager</parameter>
         <parameter key="board.manager.actuator_manager.class">RaspiPlant\Bundle\BoardBundle\Manager\ActuatorManager</parameter>
+        <parameter key="board.manager.communicator_manager.class">RaspiPlant\Bundle\BoardBundle\Manager\CommunicatorManager</parameter>
+        <parameter key="board.manager.display_manager.class">RaspiPlant\Bundle\BoardBundle\Manager\DisplayManager</parameter>
         <parameter key="board.manager.sensor_manager.class">RaspiPlant\Bundle\BoardBundle\Manager\SensorManager</parameter>
         <parameter key="board.manager.sensor_value_manager.class">RaspiPlant\Bundle\BoardBundle\Manager\SensorValueManager</parameter>
     </parameters>
@@ -23,10 +24,6 @@
             <argument type="service" id="doctrine" />
         </service>
 
-        <service id="board.manager.device_manager" class="%board.manager.device_manager.class%">
-            <argument type="service" id="doctrine" />
-        </service>
-
         <service id="board.manager.sensor_manager" class="%board.manager.sensor_manager.class%">
             <argument type="service" id="doctrine" />
         </service>
@@ -36,6 +33,14 @@
         </service>
 
         <service id="board.manager.actuator_manager" class="%board.manager.actuator_manager.class%">
+            <argument type="service" id="doctrine" />
+        </service>
+
+        <service id="board.manager.communicator_manager" class="%board.manager.communicator_manager.class%">
+            <argument type="service" id="doctrine" />
+        </service>
+
+        <service id="board.manager.display_manager" class="%board.manager.display_manager.class%">
             <argument type="service" id="doctrine" />
         </service>
 
