@@ -2,21 +2,14 @@
 
 namespace RaspiPlant\Component\Device\Actuator;
 
+use RaspiPlant\Component\Device\AbstractDevice;
+
 /**
  * Abstract Class for communicating with an actuator.
  *
  * @author Vincent Honnorat <full-vibes@gmail.com>
  */
-abstract class AbstractActuator implements ActuatorInterface
+abstract class AbstractActuator extends AbstractDevice  implements ActuatorInterface
 {
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
 
 }

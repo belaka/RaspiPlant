@@ -8,24 +8,18 @@ use RaspiPlant\Bundle\BoardBundle\Entity\Communicator;
 use RaspiPlant\Bundle\BoardBundle\Entity\Display;
 use RaspiPlant\Bundle\BoardBundle\Entity\Sensor;
 use RaspiPlant\Component\Model\AbstractModel;
-use Doctrine\Common\Collections\Collection;
 use RaspiPlant\Component\Traits\ActivableTrait;
+use RaspiPlant\Component\Traits\SluggableTrait;
 
 class BoardModel extends AbstractModel implements ActivableInterface
 {
-    use ActivableTrait;
+    use ActivableTrait, SluggableTrait;
 
     /**
      *
      * @var string
      */
     protected $name;
-
-    /**
-     *
-     * @var string
-     */
-    protected $slug;
 
     /**
      *
@@ -81,13 +75,6 @@ class BoardModel extends AbstractModel implements ActivableInterface
     }
 
     /**
-     * @return string
-     */
-    public function getSlug() {
-        return $this->slug;
-    }
-
-    /**
      * @return ArrayCollection
      */
     public function getSensors() {
@@ -121,15 +108,6 @@ class BoardModel extends AbstractModel implements ActivableInterface
      */
     public function setName($name) {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @param $slug
-     * @return $this
-     */
-    public function setSlug($slug) {
-        $this->slug = $slug;
         return $this;
     }
 

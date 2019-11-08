@@ -6,22 +6,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use RaspiPlant\Bundle\BoardBundle\Entity\SensorValue;
 use RaspiPlant\Component\Model\AbstractModel;
 use RaspiPlant\Component\Traits\ActivableTrait;
+use RaspiPlant\Component\Traits\SluggableTrait;
 
-class SensorModel extends AbstractModel implements ActivableInterface
+class SensorModel extends AbstractModel implements DeviceModelInterface, ActivableInterface
 {
-    use ActivableTrait;
+    use ActivableTrait, SluggableTrait;
 
     /**
      *
      * @var string
      */
     protected $name;
-
-    /**
-     *
-     * @var string
-     */
-    protected $slug;
 
     /**
      *
@@ -64,13 +59,6 @@ class SensorModel extends AbstractModel implements ActivableInterface
      */
     public function getName() {
         return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug() {
-        return $this->slug;
     }
 
     /**
@@ -122,15 +110,6 @@ class SensorModel extends AbstractModel implements ActivableInterface
      */
     public function setName($name) {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @param $slug
-     * @return $this
-     */
-    public function setSlug($slug) {
-        $this->slug = $slug;
         return $this;
     }
 

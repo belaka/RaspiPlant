@@ -249,7 +249,8 @@ class I2CProtocol extends AbstractProtocol
      * Read an unsigned 16-bit value from the specified register, in little
      * endian byte order.
      *
-     * @param type $register
+     * @param $register
+     * @return int
      */
     public function readU16LE($register) {
         return $this->readU16($register, true);
@@ -258,7 +259,8 @@ class I2CProtocol extends AbstractProtocol
     /**
      * Read an unsigned 16-bit value from the specified register, in big endian byte order.
      *
-     * @param type $register
+     * @param $register
+     * @return int
      */
     public function readU16BE($register) {
         return $this->readU16($register, false);
@@ -267,7 +269,8 @@ class I2CProtocol extends AbstractProtocol
     /**
      * Read a signed 16-bit value from the specified register, in little endian byte order.
      *
-     * @param type $register
+     * @param $register
+     * @return int
      */
     public function readS16LE($register) {
         return $this->readS16($register, true);
@@ -276,9 +279,83 @@ class I2CProtocol extends AbstractProtocol
     /**
      * Read a signed 16-bit value from the specified register, in big endian byte order.
      *
-     * @param hex $register
+     * @param $register
+     * @return int
      */
     public function readS16BE($register) {
         return $this->readS16($register, false);
     }
+
+    /*******************************************************************************************************************
+     * I2C And I2C Address of Seeed Product
+     * http://wiki.seeedstudio.com/I2C_And_I2C_Address_of_Seeed_Product/
+     *
+     * 111020043 	Grove -6-Position DIP Switch 	                                    0x03
+     * 111020048 	Grove -5-Way Switch 	                                            0x03
+     * 101020085 	Xadow - Multichannel Gas Sensor 	                                0x04
+     * 101020088 	Grove - Multichannel Gas Sensor 	                                0x04
+     * 105020001 	Grove - I2C Motor Driver 	                                        0x0F
+     * 105020001 	Grove -I2C Motor Driver 	                                        0x0F
+     * 107020006 	Grove - I2C FM Receiver 	                                        0x10
+     * 107020049 	Grove -I2C FM Receiver v1.1 	                                    0x11/0x12
+     * 103020133 	Grove -4-Channel SPDT Relay 	                                    0x11/0x12
+     * 103020135 	Grove -4-Channel Solid State Relay 	                                0x11/0x12
+     * 103020136 	Grove -8-Channel Solid State Relay 	                                0x11/0x12
+     * 101020582 	Grove -3-Axis Digital Accelerometer ±16g Ultra-low Power (BMA400) 	0x15(Default)/0x14(Optional)
+     * 101020582 	Grove -3-Axis Accelerometer ±16g Ultro-low Power (BMA400) 	        0x15(Default)/0x14(Optional)
+     * 101020071 	Grove - 3-Axis Digital Accelerometer(±400g) 	                    0x18
+     * 101020556 	Grove -I2C High Accuracy Temperature Sensor (MCP9808) 	            0x18(Default)/0x19~0x1F(Optional)
+     * 101020584 	Grove -6-Axis Accelerometer&Gyroscope（BMI088） 	                    0x19(Default)/0x18(Optional)
+     * 101020583 	Grove -Step Counter (BMA456) 	                                    0x19(Default)/0x18(Optional)
+     * 101020069 	Grove-Q Touch Sensor 	                                            0x1B
+     * 101020034 	Grove - 3-Axis Digital Compass 	                                    0x1E
+     * 101020081 	Grove - 6-Axis Accelerometer&Compass v2.0 	                        0x1E
+     * 101020061 	Grove - 6-Axis Accelerometer&Compass 	                            0x1E
+     * 113020006 	Grove - NFC 	                                                    0x24
+     * 101020030 	Grove - Digital Light Sensor 	                                    0x29
+     * 101020532 	Grove -Time of Flight Distance Sensor (VL53L0X) 	                0x29
+     * 101020341 	Grove -I2C Color Sensor v2.0 	                                    0x29/0x52
+     * 101020600 	Grove -I2C UV Sensor (VEML6070) 	                                0x38(Data LSB)/0x39(Data MSB)
+     * 101020041 	Grove - I2C Color Sensor 	                                        0x39
+     * 104030011 	Grove - OLED Display 1.12" 	                                        0x3C
+     * 104030008 	Grove - OLED Display 0.96" 	                                        0x3C
+     * 101020034 	Grove - 3-Axis Digital Compass 	                                    0x3C
+     * 101020452 	Grove -OLED Display 1.12'' V2 	                                    0x3C
+     * 104030001 	Grove - LCD RGB Backlight 	                                        0x3C/0x3E/0x62
+     * 104020113 	Grove -16 x 2 LCD (Black on Yellow) 	                            0x3E
+     * 104020112 	Grove -16 x 2 LCD (Black on Red) 	                                0x3E
+     * 104020111 	Grove -16 x 2 LCD (White on Blue) 	                                0x3E
+     * 101020074 	Grove - Temperature&Humidity Sensor (High-Accuracy & Mini) 	        0x40
+     * 101020212 	Grove -Temp&Humi Sensor(SHT31) 	                                    0x44
+     * 101020089 	Grove -Sunlight Sensor 	                                            0X45
+     * 101020091 	Grove -Mini Track ball 	                                            0X4A
+     * 101020039 	Grove - 3-Axis Digital Accelerometer(±1.5g) 	                    0x4C
+     * 102020083 	Grove -High Precision RTC 	                                        0x51
+     * 101020054 	Grove - 3-Axis Digital Accelerometer(±16g) 	                        0x53
+     * 101020070 	Grove - NFC Tag 	                                                0x53/0x57
+     * 103020013 	Grove - I2C ADC 	                                                0x55
+     * 101020512 	Grove -VOC and eCO2 Gas Sensor (SGP30) 	                            0X58
+     * 105020011 	Grove -Haptic Motor 	                                            0x5A
+     * 101020047 	Grove - I2C Touch Sensor 	                                        0x5A/0x5B/0x5C/0x5D
+     * 101020077 	Grove - Digital Infrared Temperature Sensor 	                    0x5B
+     * 101020534 	Grove -12 Key Capacitive I2C Touch Sensor V2 (MPR121) 	            0x5B(Default)/0x5C/0x5D
+     * 101020594 	Grove -I2C Thermocouple Amplifier (MCP9600) 	                    0x60(Default)/0x67(Optional)
+     * 104030001 	Grove - LCD RGB Backlight 	                                        0x62
+     * 101020013 	Grove - RTC 	                                                    0x68
+     * 101020050 	Grove - 3-Axis Digital Gyro 	                                    0x68
+     * 101020557 	Grove -Infrared Temperature Sensor Array (AMG8833) 	                0x68(Default)/0x69(Optional)
+     * 101020080 	Grove -IMU 9DOF v2.0 	                                            0x68/0x69
+     * 101020252 	Grove -IMU 10DOF v2.0 	                                            0x68/0x69
+     * 101020059 	Grove - IMU 9DOF 	                                                0x68/0x69/0x77
+     * 101020079 	Grove - IMU 10DOF 	                                                0x68/0x77
+     * 101020585 	Grove -IMU 9DOF (ICM20600 & AK09918) 	                            0x69(Default)/0x68(Optional)
+     * 101020083 	Grove - Gesture（PAJ7620U2） 	                                        0x73
+     * 101020068 	Grove - Barometer (High-Accuracy) 	                                0x76
+     * 101020513 	Grove -Temperature, Humidity, Pressure and Gas Sensor (BME680) 	    0x76(Default)/ 0x77(Optional)
+     * 101020032 	Grove - Barometer Sensor 	                                        0x77
+     * 101020072 	Grove - Barometer Sensor (BMP180) 	                                0x77
+     * 103020024 	Grove -Finger-clip Heart Rate Sensor 	                            0xA0
+     * 105020010 	Grove -I2C Mini Motor Driver 	                                    Default: CH1 Write(0xC4), CH1 Read(0xC5);CH2 Write(0xC0), CH2 Read(0xC1); Optional:CH1 Write(0xD0), CH1 Read(0xD1); CH2 Write(0xCC), CH2 Read(0xCD);
+     * 103020009 	Grove -Nunchuck 	                                                NA
+     *******************************************************************************************************************/
 }

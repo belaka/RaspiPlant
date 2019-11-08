@@ -15,8 +15,4 @@ interface SensorInterface extends DeviceInterface
     public static function getFields();
 
     public function readSensorData();
-
-    public function getName();
-
-    public function setName($name);
 }

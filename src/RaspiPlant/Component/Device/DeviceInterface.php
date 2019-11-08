@@ -9,5 +9,7 @@ namespace RaspiPlant\Component\Device;
  */
 interface DeviceInterface
 {
+    public function getName();
 
+    public function setName($name);
 }

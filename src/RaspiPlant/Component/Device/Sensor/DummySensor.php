@@ -4,12 +4,15 @@ namespace RaspiPlant\Component\Device\Sensor;
 
 use RaspiPlant\Bundle\DeviceBundle\Protocol\I2CProtocol;
 use RaspiPlant\Bundle\DeviceBundle\Protocol\ProtocolInterface;
+use RaspiPlant\Component\Device\AddressableInterface;
 
 /**
- *
+ * Class DummySensor
+ * @package RaspiPlant\Component\Device\Sensor
  */
-class DummySensor extends AbstractSensor
+class DummySensor extends AbstractSensor implements AddressableInterface
 {
+    const I2C_ADDRESS = '0x00';
 
     /**
      *
@@ -82,6 +85,14 @@ class DummySensor extends AbstractSensor
                 )
             );
         }
+    }
+
+    /**
+     * @return int|string
+     */
+    public static function getAddress()
+    {
+        return self::I2C_ADDRESS;
     }
 
 }

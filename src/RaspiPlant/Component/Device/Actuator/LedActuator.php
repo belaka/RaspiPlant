@@ -32,11 +32,14 @@ class LedActuator extends AbstractActuator {
     protected $debug;
 
     /**
-     *
-     * @param int $pin
-     * @param boolean $debug
+     * LedActuator constructor.
+     * @param I2CProtocol $protocol
+     * @param $pin
+     * @param $name
+     * @param bool $debug
      */
     public function __construct(I2CProtocol $protocol, $pin, $name, $debug = false) {
+
         $this->debug = $debug;
         $this->pin = $pin;
         $this->name = $name;

@@ -4,9 +4,16 @@ namespace RaspiPlant\Component\Device\Actuator;
 
 use RaspiPlant\Bundle\DeviceBundle\Protocol\I2CProtocol;
 use RaspiPlant\Bundle\DeviceBundle\Protocol\ProtocolInterface;
+use RaspiPlant\Component\Device\AddressableInterface;
 
-class DummyActuator extends AbstractActuator
+/**
+ * Class DummyActuator
+ * @package RaspiPlant\Component\Device\Actuator
+ */
+class DummyActuator extends AbstractActuator implements AddressableInterface
 {
+
+    const I2C_ADDRESS = '0x00';
 
     /**
      *
@@ -83,5 +90,11 @@ class DummyActuator extends AbstractActuator
         $this->status = $status;
     }
 
-
+    /**
+     * @return int|string
+     */
+    public static function getAddress()
+    {
+        return self::I2C_ADDRESS;
+    }
 }

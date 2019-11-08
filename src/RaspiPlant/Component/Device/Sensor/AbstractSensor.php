@@ -2,13 +2,9 @@
 
 namespace RaspiPlant\Component\Device\Sensor;
 
-abstract class AbstractSensor implements SensorInterface {
+use RaspiPlant\Component\Device\AbstractDevice;
 
-    public function getName() {
-        return $this->name;
-    }
+abstract class AbstractSensor extends AbstractDevice implements SensorInterface
+{
 
-    public function setName($name) {
-        $this->name = $name;
-    }
 }

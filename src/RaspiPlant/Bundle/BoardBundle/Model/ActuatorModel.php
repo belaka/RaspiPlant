@@ -5,22 +5,17 @@ namespace RaspiPlant\Bundle\BoardBundle\Model;
 use RaspiPlant\Component\Model\AbstractModel;
 use RaspiPlant\Bundle\BoardBundle\Entity\Device;
 use RaspiPlant\Component\Traits\ActivableTrait;
+use RaspiPlant\Component\Traits\SluggableTrait;
 
-class ActuatorModel extends AbstractModel implements ActivableInterface
+class ActuatorModel extends AbstractModel implements DeviceModelInterface, ActivableInterface
 {
-    use ActivableTrait;
+    use ActivableTrait, SluggableTrait;
 
     /**
      *
      * @var string
      */
     protected $name;
-
-    /**
-     *
-     * @var string
-     */
-    protected $slug;
 
     /**
      *
@@ -80,13 +75,6 @@ class ActuatorModel extends AbstractModel implements ActivableInterface
     }
 
     /**
-     * @return string
-     */
-    public function getSlug() {
-        return $this->slug;
-    }
-
-    /**
      * @return int
      */
     public function getPin() {
@@ -99,15 +87,6 @@ class ActuatorModel extends AbstractModel implements ActivableInterface
      */
     public function setName($name) {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @param $slug
-     * @return $this
-     */
-    public function setSlug($slug) {
-        $this->slug = $slug;
         return $this;
     }
 

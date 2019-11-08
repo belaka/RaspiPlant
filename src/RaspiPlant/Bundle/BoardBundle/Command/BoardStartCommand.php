@@ -5,7 +5,6 @@ namespace RaspiPlant\Bundle\BoardBundle\Command;
 use RaspiPlant\Bundle\BoardBundle\Entity\Actuator;
 use RaspiPlant\Bundle\BoardBundle\Entity\Analytics;
 use RaspiPlant\Bundle\BoardBundle\Entity\Board;
-use RaspiPlant\Bundle\BoardBundle\Entity\Device;
 use RaspiPlant\Bundle\BoardBundle\Entity\Sensor;
 use RaspiPlant\Bundle\BoardBundle\Entity\SensorValue;
 use RaspiPlant\Bundle\BoardBundle\Manager\ActuatorManager;
@@ -13,7 +12,9 @@ use RaspiPlant\Bundle\BoardBundle\Manager\AnalyticsManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\BoardManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\SensorManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\SensorValueManager;
+use RaspiPlant\Bundle\BoardBundle\Model\DeviceModelInterface;
 use RaspiPlant\Bundle\DeviceBundle\DependencyInjection\DeviceExtension;
+use RaspiPlant\Component\Device\AddressableInterface;
 use RaspiPlant\Component\Device\DeviceInterface;
 use RaspiPlant\Component\WiringPi\WiringPi;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -173,13 +174,15 @@ class BoardStartCommand extends EndlessContainerAwareCommand
             $devices = $board->{$method}();
             foreach ($devices as $device) {
                 if ($device->isActive()) {
+
+
                     $this->devices[$key] = $this->deviceInitialize($device);
                     usleep(100000);
                 }
             }
-
-            dd($this->devices);
         }
+
+        dd($this->devices);
     }
 
     /**
@@ -187,8 +190,14 @@ class BoardStartCommand extends EndlessContainerAwareCommand
      * @return mixed
      * @throws \Exception
      */
-    protected function deviceInitialize(DeviceInterface $device)
+    protected function deviceInitialize(DeviceModelInterface $device)
     {
+        $deviceClass = $device->getClass();
+        $reflectedClass = new \ReflectionClass($deviceClass);
+        if ($reflectedClass->implementsInterface(AddressableInterface::class)) {
+            $fd = $deviceClass::getAddresse();
+        }
+
 
         $this->output->writeln("Starting Device :" . $device->getName() . " with address " . $device->getAddress());
 

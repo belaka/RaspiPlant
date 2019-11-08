@@ -2,21 +2,14 @@
 
 namespace RaspiPlant\Component\Device\Communicator;
 
+use RaspiPlant\Component\Device\AbstractDevice;
+
 /**
  * Abstract Class for communicating with a communicator.
  *
  * @author Vincent Honnorat <full-vibes@gmail.com>
  */
-abstract class AbstractCommunicator implements CommunicatorInterface
+abstract class AbstractCommunicator extends AbstractDevice  implements CommunicatorInterface
 {
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
-    }
 
 }
