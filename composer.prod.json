@@ -6,6 +6,7 @@
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-wiringpi": "*",
         "api-platform/api-pack": "^1.2",
         "cocur/slugify": "^3.2",
         "easycorp/easyadmin-bundle": "^2.0",

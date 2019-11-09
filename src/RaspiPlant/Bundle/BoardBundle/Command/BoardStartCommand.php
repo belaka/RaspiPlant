@@ -14,6 +14,7 @@ use RaspiPlant\Bundle\BoardBundle\Manager\SensorManager;
 use RaspiPlant\Bundle\BoardBundle\Manager\SensorValueManager;
 use RaspiPlant\Bundle\BoardBundle\Model\DeviceModelInterface;
 use RaspiPlant\Bundle\DeviceBundle\DependencyInjection\DeviceExtension;
+use RaspiPlant\Bundle\DeviceBundle\Protocol\ProtocolInterface;
 use RaspiPlant\Component\Device\AddressableInterface;
 use RaspiPlant\Component\Device\DeviceInterface;
 use RaspiPlant\Component\WiringPi\WiringPi;
@@ -174,15 +175,13 @@ class BoardStartCommand extends EndlessContainerAwareCommand
             $devices = $board->{$method}();
             foreach ($devices as $device) {
                 if ($device->isActive()) {
-
-
-                    $this->devices[$key] = $this->deviceInitialize($device);
+                    $this->devices[$key][$device->getId()] = $this->deviceInitialize($device);
                     usleep(100000);
                 }
             }
         }
 
-        dd($this->devices);
+        //dd($this->devices);
     }
 
     /**
@@ -194,42 +193,48 @@ class BoardStartCommand extends EndlessContainerAwareCommand
     {
         $deviceClass = $device->getClass();
         $reflectedClass = new \ReflectionClass($deviceClass);
+        $fd = null;
+
         if ($reflectedClass->implementsInterface(AddressableInterface::class)) {
-            $fd = $deviceClass::getAddresse();
+            $fd = $deviceClass::getAddress();
         }
 
+        $this->output->writeln("Starting Device :" . $device->getName() . " with address " . $fd);
 
-        $this->output->writeln("Starting Device :" . $device->getName() . " with address " . $device->getAddress());
+        $constructParameters = $reflectedClass->getConstructor()->getParameters();
 
-        $fd = $device->getAddress();
+        // First is the protocol
+        $constructParams = [
+            'protocol' => '',//$this->getProtocol($constructParameters[0]),
+            'pin' => $device->getPin(),
+            'name' => $device->getName(),
+            'debug' => false
+        ];
 
-        if ($device->getClass() == "RaspiPlant\\Component\\Device\\I2CProtocol") {
+        // @todo find a dynamic way for scripts
+        if ($constructParameters[0] == "RaspiPlant\\Component\\Device\\I2CProtocol") {
             //address is a varchar and need hexdec before being sent
             $fd = WiringPi::wiringPiI2CSetup(hexdec($device->getAddress()));
         }
 
-        $class = $device->getClass();
+        // We retrieve the protocol class through the reflection class
+        $class = $constructParameters[0]->getClass()->getName();
         $deviceLink = new $class($fd);
 
-        if (!($deviceLink instanceof DeviceInterface)) {
-            throw new \Exception("Initialization error of device: " . $class . " with address " . $device->getAddress());
+        if (!($deviceLink instanceof ProtocolInterface)) {
+            throw new \Exception("Initialization error of protocol: " . $class . " with address " . $fd);
         }
 
-        $sensors = $device->getSensors();
-        foreach ($sensors as $sensor) {
-            if ($sensor->isActive()) {
-                $this->devices[$device->getId()]['sensors'][$sensor->getId()] = $this->sensorInitialize($sensor, $deviceLink);
-            }
+        $deviceClass = $device->getClass();
+        $device = new $deviceClass($deviceLink, $device->getPin(), $device->getName(), false);
+
+        if (!($device  instanceof DeviceInterface)) {
+            throw new \Exception("Initialization error of device: " . $deviceClass);
         }
 
-        $actuators = $device->getActuators();
-        foreach ($actuators as $actuator) {
-            if ($actuator->isActive()) {
-                $this->devices[$device->getId()]['actuators'][$actuator->getId()] = $this->actuatorInitialize($actuator, $deviceLink);
-            }
-        }
+        //$this->devices[$device->getId()]['sensors'][$sensor->getId()] = $this->sensorInitialize($sensor, $deviceLink);
 
-        return $deviceLink;
+        return $device;
     }
 
     /**
@@ -293,21 +298,25 @@ class BoardStartCommand extends EndlessContainerAwareCommand
 
         $output->writeln("#Read from sensors at " . $firedAt->format(self::ISO8601));
         $output->writeln("");
-        foreach ($this->devices as $deviceId => $device) {
-            if (array_key_exists('sensors', $this->devices[$deviceId])) {
-                $this->readDeviceSensors($this->devices[$deviceId]['sensors']);
-            }
+
+        if (array_key_exists('sensors', $this->devices)) {
+            $this->readDeviceSensors($this->devices['sensors']);
         }
+
         $output->writeln("");
+
+
 
         $output->writeln("#Writing to actuators at " . $firedAt->format(self::ISO8601));
         $output->writeln("");
-        foreach ($this->devices as $deviceId => $device) {
-            if (array_key_exists('actuators', $this->devices[$deviceId])) {
-                $this->setDeviceActuators($this->devices[$deviceId]['actuators']);
-            }
+
+        if (array_key_exists('actuators', $this->devices)) {
+            $this->setDeviceActuators($this->devices['actuators']);
         }
+
         $output->writeln("");
+
+        dd('should work');
 
         if (($this->tick % 120) === 0) {
             $output->writeln("Data added to database " . $firedAt->format(self::ISO8601));
@@ -508,6 +517,11 @@ class BoardStartCommand extends EndlessContainerAwareCommand
         }
 
         return false;
+    }
+
+    private function getProtocol($class, $fd = null)
+    {
+        return new $class($fd);
     }
 
     /**

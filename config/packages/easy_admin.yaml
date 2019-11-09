@@ -53,6 +53,7 @@ easy_admin:
                     - name
                     - { property: 'class', type: 'choice', type_options: { choices: [], required: true } }
                     - pin
+                    - state
                     - active
         Communicator:
             class: RaspiPlant\Bundle\BoardBundle\Entity\Communicator
