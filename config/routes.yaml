@@ -1,3 +1,11 @@
+login:
+  controller: RaspiPlant\Bundle\UserBundle\Controller\UserController::loginAction
+  path:   /login
+
+homepage:
+  controller: RaspiPlant\Bundle\AdminBundle\Controller\AdminController::homepageAction
+  path:   /
+
 easyadmin:
   controller: RaspiPlant\Bundle\AdminBundle\Controller\AdminController::indexAction
   path:   /admin/

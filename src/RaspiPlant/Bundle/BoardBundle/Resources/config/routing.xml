@@ -3,10 +3,12 @@
 <routes xmlns="http://symfony.com/schema/routing"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+<!--
 
     <route id="board.dashboard.main" path="/">
         <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\DashboardController::indexAction</default>
     </route>
+-->
 
     <route id="board_gpio" path="/board/gpio">
         <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\GpioController::gpioAction</default>

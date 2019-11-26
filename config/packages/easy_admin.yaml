@@ -1,9 +1,10 @@
 easy_admin:
-    site_name: 'FullVibes <em style="font-size: 80%;">RaspiPlant.</em>'
+    site_name: '<em style="font-size: 80%;">RaspiPlant.</em>'
     design:
         brand_color: '#FF5733'
         menu:
-            -   label: 'My Account'
+            -   label: 'My Boards'
+                permission: 'ROLE_USER'
                 children:
                     #- { label: 'New Board', icon: 'file-new', route: 'createBoard' }
                     - { label: 'Boards', icon: 'chess-board', entity: 'Board', permission: 'ROLE_USER' }
@@ -14,6 +15,7 @@ easy_admin:
                     - { label: 'Scripts', icon: 'scroll', entity: 'Script', params: { default: 'true' } }
                     - { label: 'Analytics', icon: 'chart-pie', permission: 'ROLE_USER' , route: 'board.dashboard.main'}
             -   label: 'Admin'
+                permission: 'ROLE_ADMIN'
                 children:
                     - { label: 'Users', icon: 'user', entity: 'User', permission: 'ROLE_ADMIN' }
     user:
@@ -28,7 +30,7 @@ easy_admin:
         avatar_property_path: 'gravatar'
     entities:
         User:
-            class: RaspiPlant\Bundle\AdminBundle\Entity\User
+            class: RaspiPlant\Bundle\UserBundle\Entity\User
             form:
                 fields:
                     - username

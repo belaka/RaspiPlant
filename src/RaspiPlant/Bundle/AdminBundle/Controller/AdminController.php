@@ -3,11 +3,22 @@
 namespace RaspiPlant\Bundle\AdminBundle\Controller;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends EasyAdminController
 {
+    /**
+     * @var UserManagerInterface
+     */
+    private $userManager;
+
+    public function __construct(UserManagerInterface $userManager)
+    {
+        $this->userManager = $userManager;
+    }
+
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -23,20 +34,35 @@ class AdminController extends EasyAdminController
         return parent::indexAction($request);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function homepageAction(Request $request)
+    {
+        $this->initialize($request);
+
+        if (null === $request->query->get('entity')) {
+            return $this->render('@AdminBundle/Resources/views/default/homepage.html.twig');
+        }
+
+        return parent::indexAction($request);
+    }
+
     public function createNewUserEntity()
     {
-        return $this->get('fos_user.user_manager')->createUser();
+        return $this->userManager->createUser();
     }
 
     public function persistUserEntity($user)
     {
-        $this->get('fos_user.user_manager')->updateUser($user, false);
+        $this->userManager->updateUser($user, false);
         parent::persistEntity($user);
     }
 
     public function updateUserEntity($user)
     {
-        $this->get('fos_user.user_manager')->updateUser($user, false);
+        $this->userManager->updateUser($user, false);
         parent::updateEntity($user);
     }
 
