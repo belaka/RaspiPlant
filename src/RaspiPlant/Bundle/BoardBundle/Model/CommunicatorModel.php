@@ -6,7 +6,7 @@ use RaspiPlant\Component\Model\AbstractModel;
 use RaspiPlant\Component\Traits\ActivableTrait;
 use RaspiPlant\Component\Traits\SluggableTrait;
 
-class CommunicatorModel extends AbstractModel implements DeviceModelInterface, ActivableInterface
+class CommunicatorModel extends AbstractModel implements DeviceModelInterface, ActivableInterface, SluggableInterface
 {
     use ActivableTrait, SluggableTrait;
 

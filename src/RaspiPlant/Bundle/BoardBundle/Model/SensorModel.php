@@ -8,7 +8,7 @@ use RaspiPlant\Component\Model\AbstractModel;
 use RaspiPlant\Component\Traits\ActivableTrait;
 use RaspiPlant\Component\Traits\SluggableTrait;
 
-class SensorModel extends AbstractModel implements DeviceModelInterface, ActivableInterface
+class SensorModel extends AbstractModel implements DeviceModelInterface, ActivableInterface, SluggableInterface
 {
     use ActivableTrait, SluggableTrait;
 

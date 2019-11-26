@@ -20,6 +20,10 @@
 
         <field name="name" column="name" length="191" unique="true"/>
         <field name="slug" column="slug" length="191" unique="true"/>
+        <field name="latitude"  column="latitude"  type="decimal" scale="16" precision="20" nullable="true" />
+        <field name="longitude" column="longitude" type="decimal" scale="16" precision="20" nullable="true" />
+
+
         <field name="active" column="active" type="boolean" />
 
         <many-to-many field="sensors" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Sensor">
@@ -62,6 +66,17 @@
                 </join-columns>
                 <inverse-join-columns>
                     <join-column name="display_id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+        <many-to-many field="scripts" target-entity="RaspiPlant\Bundle\ScriptBundle\Entity\Script">
+            <join-table name="board_scripts">
+                <join-columns>
+                    <join-column name="board_id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="script_id" />
                 </inverse-join-columns>
             </join-table>
         </many-to-many>

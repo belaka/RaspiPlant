@@ -11,10 +11,21 @@ easy_admin:
                     - { label: 'Actuators', icon: 'toggle-on', entity: 'Actuator', params: { default: 'true' } }
                     - { label: 'Communicators', icon: 'phone', entity: 'Communicator', params: { default: 'true' } }
                     - { label: 'Displays', icon: 'tablet-alt', entity: 'Display', params: { default: 'true' } }
+                    - { label: 'Scripts', icon: 'scroll', entity: 'Script', params: { default: 'true' } }
                     - { label: 'Analytics', icon: 'chart-pie', permission: 'ROLE_USER' , route: 'board.dashboard.main'}
             -   label: 'Admin'
                 children:
                     - { label: 'Users', icon: 'user', entity: 'User', permission: 'ROLE_ADMIN' }
+    user:
+        display_name: true
+        display_avatar: true
+        # this method/property must return the string representation of the user
+        # (Symfony will look for getFullName(), isFullName(), ..., and 'fullName' property)
+        name_property_path: 'username'
+
+        # this method/property must return the absolute URL of the user avatar image
+        # (Symfony will look for getGravatar(), isGravatar(), ..., and 'gravatar' property)
+        avatar_property_path: 'gravatar'
     entities:
         User:
             class: RaspiPlant\Bundle\AdminBundle\Entity\User
@@ -37,6 +48,9 @@ easy_admin:
                     - actuators
                     - communicators
                     - displays
+                    - scripts
+                    - latitude
+                    - longitude
                     - active
         Sensor:
             class: RaspiPlant\Bundle\BoardBundle\Entity\Sensor
@@ -70,4 +84,13 @@ easy_admin:
                     - name
                     - { property: 'class', type: 'choice', type_options: { choices: [], required: true } }
                     - pin
+                    - active
+
+        Script:
+            class: RaspiPlant\Bundle\ScriptBundle\Entity\Script
+            form:
+                fields:
+                    - name
+                    - type
+                    - script
                     - active

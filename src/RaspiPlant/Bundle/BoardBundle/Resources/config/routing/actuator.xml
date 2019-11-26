@@ -9,7 +9,7 @@
     </route>
 
     <route id="actuator_show" path="/{id}/show" methods="GET">
-        <default key="_controller">BRaspiPlant\Bundle\BoardBundle\Controller\ActuatorController::showAction</default>
+        <default key="_controller">RaspiPlant\Bundle\BoardBundle\Controller\ActuatorController::showAction</default>
     </route>
 
     <route id="actuator_new" path="/new" methods="GET|POST">

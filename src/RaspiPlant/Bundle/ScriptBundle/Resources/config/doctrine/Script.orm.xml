@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                   https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+
+    <entity name="RaspiPlant\Bundle\ScriptBundle\Entity\Script"
+            table="script"
+            repository-class="RaspiPlant\Bundle\ScriptBundle\Repository\ORM\ScriptRepository">
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="prePersist"/>
+            <lifecycle-callback type="preUpdate" method="preUpdate"/>
+        </lifecycle-callbacks>
+
+        <id name="id" type="integer" column="id">
+            <generator />
+        </id>
+
+        <field name="name" column="name" length="191" unique="true"/>
+        <field name="slug" column="slug" length="191" unique="true"/>
+
+        <field name="type" column="type" length="191"  />
+        <field name="script" column="script" type="text" />
+
+        <field name="active" column="active" type="boolean" />
+
+    </entity>
+
+</doctrine-mapping>

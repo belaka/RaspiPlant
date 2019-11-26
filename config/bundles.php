@@ -18,4 +18,5 @@ return [
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     RaspiPlant\Bundle\AdminBundle\AdminBundle::class => ['all' => true],
     RaspiPlant\Bundle\DeviceBundle\DeviceBundle::class => ['all' => true],
+    RaspiPlant\Bundle\ScriptBundle\ScriptBundle::class => ['all' => true],
 ];

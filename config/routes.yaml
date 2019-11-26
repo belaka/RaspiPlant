@@ -1,22 +1,10 @@
-dashboard:
-  resource: "@BoardBundle/Resources/config/routing.xml"
-  prefix:   /
+easyadmin:
+  controller: RaspiPlant\Bundle\AdminBundle\Controller\AdminController::indexAction
+  path:   /admin/
 
-board_board:
-  resource: "@BoardBundle/Resources/config/routing/board.xml"
-  prefix:   /board
-
-board_sensor:
-  resource: "@BoardBundle/Resources/config/routing/sensor.xml"
-  prefix:   /sensor
-
-board_actuator:
-  resource: "@BoardBundle/Resources/config/routing/actuator.xml"
-  prefix:   /actuator
-
-board_analytics:
-  resource: "@BoardBundle/Resources/config/routing/analytics.xml"
-  prefix:   /analytics
+board.dashboard.main:
+  controller: RaspiPlant\Bundle\AdminBundle\Controller\AdminController::indexAction
+  path:   /admin/
 
 fos_user:
   resource: "@FOSUserBundle/Resources/config/routing/all.xml"

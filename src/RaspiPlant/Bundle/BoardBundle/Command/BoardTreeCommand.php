@@ -61,6 +61,13 @@ class BoardTreeCommand extends Command {
                 }
 
             }
+
+            $output->writeln("- " . $board->getId() . " " . $board->getName() . " " . $board->getSlug());
+            $output->writeln("  SCRIPTS:");
+            $scripts = $board->getScripts();
+            foreach ($scripts as $script) {
+                $output->writeln("  - " . $script->getName());
+            }
         }
 
     }

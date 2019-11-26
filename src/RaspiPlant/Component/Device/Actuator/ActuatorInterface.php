@@ -18,8 +18,4 @@ interface ActuatorInterface extends DeviceInterface
 
     public function readStatus();
 
-    public function getName();
-
-    public function setName($name);
-
 }

@@ -17,11 +17,16 @@ use RaspiPlant\Bundle\DeviceBundle\DependencyInjection\DeviceExtension;
 use RaspiPlant\Bundle\DeviceBundle\Protocol\ProtocolInterface;
 use RaspiPlant\Component\Device\AddressableInterface;
 use RaspiPlant\Component\Device\DeviceInterface;
+use RaspiPlant\Component\Event\DeviceEvents;
 use RaspiPlant\Component\WiringPi\WiringPi;
+use RaspiPlant\Component\Event\BoardEvents;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Wrep\Daemonizable\Command\EndlessContainerAwareCommand;
@@ -57,9 +62,13 @@ class BoardStartCommand extends EndlessContainerAwareCommand
     /** @var AnalyticsManager  */
     private $analyticsManager;
 
+    /** @var EventDispatcher  */
+    private $dispatcher;
+
     /**
      * BoardStartCommand constructor.
      * @param ParameterBagInterface $params
+     * @param EventDispatcherInterface $dispatcher
      * @param BoardManager $boardManager
      * @param ActuatorManager $actuatorManager
      * @param SensorManager $sensorManager
@@ -68,6 +77,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
      */
     public function __construct(
         ParameterBagInterface $params,
+        EventDispatcherInterface $dispatcher,
         BoardManager $boardManager,
         ActuatorManager $actuatorManager,
         SensorManager $sensorManager,
@@ -76,6 +86,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
     )
     {
         $this->params = $params;
+        $this->dispatcher = $dispatcher;
         $this->boardManager = $boardManager;
         $this->actuatorManager = $actuatorManager;
         $this->sensorManager = $sensorManager;
@@ -148,6 +159,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
 
         foreach ($boards as $board) {
             if ($board->isActive()) {
+
                 $this->boardInitialize($board);
                 $this->boards[] = $board;
             }
@@ -166,6 +178,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand
      */
     protected function boardInitialize(Board $board)
     {
+        $event = new GenericEvent($board);
+        $this->dispatcher->dispatch(BoardEvents::BOARD_PRE_START, $event);
+
         $this->output->writeln("Starting Board :" . $board->getName());
 
         $deviceTypes = DeviceExtension::DEVICE_TYPES;
@@ -181,7 +196,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand
             }
         }
 
-        //dd($this->devices);
+        $event = new GenericEvent($board);
+        $this->dispatcher->dispatch(BoardEvents::BOARD_POST_START, $event);
     }
 
     /**
@@ -191,6 +207,9 @@ class BoardStartCommand extends EndlessContainerAwareCommand
      */
     protected function deviceInitialize(DeviceModelInterface $device)
     {
+        $event = new GenericEvent($device);
+        $this->dispatcher->dispatch(DeviceEvents::DEVICE_PRE_START, $event);
+
         $deviceClass = $device->getClass();
         $reflectedClass = new \ReflectionClass($deviceClass);
         $fd = null;
@@ -214,7 +233,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
         // @todo find a dynamic way for scripts
         if ($constructParameters[0] == "RaspiPlant\\Component\\Device\\I2CProtocol") {
             //address is a varchar and need hexdec before being sent
-            $fd = WiringPi::wiringPiI2CSetup(hexdec($device->getAddress()));
+            //$fd = WiringPi::wiringPiI2CSetup(hexdec($device->getAddress()));
         }
 
         // We retrieve the protocol class through the reflection class
@@ -232,7 +251,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand
             throw new \Exception("Initialization error of device: " . $deviceClass);
         }
 
-        //$this->devices[$device->getId()]['sensors'][$sensor->getId()] = $this->sensorInitialize($sensor, $deviceLink);
+        $event = new GenericEvent($device);
+        $this->dispatcher->dispatch(DeviceEvents::DEVICE_POST_START, $event);
 
         return $device;
     }
@@ -315,6 +335,8 @@ class BoardStartCommand extends EndlessContainerAwareCommand
         }
 
         $output->writeln("");
+
+        dd($this->devices);
 
         dd('should work');
 
@@ -517,11 +539,6 @@ class BoardStartCommand extends EndlessContainerAwareCommand
         }
 
         return false;
-    }
-
-    private function getProtocol($class, $fd = null)
-    {
-        return new $class($fd);
     }
 
     /**

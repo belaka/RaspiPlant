@@ -7,7 +7,7 @@ use RaspiPlant\Bundle\BoardBundle\Entity\Device;
 use RaspiPlant\Component\Traits\ActivableTrait;
 use RaspiPlant\Component\Traits\SluggableTrait;
 
-class ActuatorModel extends AbstractModel implements DeviceModelInterface, ActivableInterface
+class ActuatorModel extends AbstractModel implements DeviceModelInterface, ActivableInterface, SluggableInterface
 {
     use ActivableTrait, SluggableTrait;
 

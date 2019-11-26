@@ -7,42 +7,35 @@ use RaspiPlant\Bundle\BoardBundle\Entity\Actuator;
 use RaspiPlant\Bundle\BoardBundle\Entity\Communicator;
 use RaspiPlant\Bundle\BoardBundle\Entity\Display;
 use RaspiPlant\Bundle\BoardBundle\Entity\Sensor;
+use RaspiPlant\Bundle\ScriptBundle\Model\ScriptableInterface;
+use RaspiPlant\Bundle\ScriptBundle\Traits\ScriptableTrait;
 use RaspiPlant\Component\Model\AbstractModel;
 use RaspiPlant\Component\Traits\ActivableTrait;
 use RaspiPlant\Component\Traits\SluggableTrait;
 
-class BoardModel extends AbstractModel implements ActivableInterface
+class BoardModel extends AbstractModel implements ActivableInterface, SluggableInterface, ScriptableInterface
 {
-    use ActivableTrait, SluggableTrait;
+    use ActivableTrait, SluggableTrait, ScriptableTrait;
 
-    /**
-     *
-     * @var string
-     */
+    /** @var string */
     protected $name;
 
-    /**
-     *
-     * @var ArrayCollection
-     */
+    /** @var double */
+    protected $latitude;
+
+    /** @var double */
+    protected $longitude;
+
+    /** @var ArrayCollection */
     protected $sensors;
 
-    /**
-     *
-     * @var ArrayCollection
-     */
+    /** @var ArrayCollection  */
     protected $actuators;
 
-    /**
-     *
-     * @var ArrayCollection
-     */
+    /** @var ArrayCollection  */
     protected $communicators;
 
-    /**
-     *
-     * @var ArrayCollection
-     */
+    /** @var ArrayCollection  */
     protected $displays;
 
     /**
@@ -52,10 +45,13 @@ class BoardModel extends AbstractModel implements ActivableInterface
      */
     public function __construct($data = array())
     {
+        $this->longitude = null;
+        $this->latitude = null;
         $this->sensors = new ArrayCollection();
         $this->actuators = new ArrayCollection();
         $this->communicators = new ArrayCollection();
         $this->displays = new ArrayCollection();
+        $this->scripts = new ArrayCollection();
         parent::__construct($data);
     }
 
@@ -178,5 +174,42 @@ class BoardModel extends AbstractModel implements ActivableInterface
     {
         $this->displays[] = $display;
     }
+
+    /**
+     * @return double|null
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * @return double|null
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * @param double $latitude
+     * @return $this
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    /**
+     * @param double $longitude
+     * @return $this
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+        return $this;
+    }
+
 
 }

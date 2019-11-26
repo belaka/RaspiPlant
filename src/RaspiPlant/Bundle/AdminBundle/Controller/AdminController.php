@@ -4,9 +4,25 @@ namespace RaspiPlant\Bundle\AdminBundle\Controller;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends EasyAdminController
 {
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function indexAction(Request $request)
+    {
+        $this->initialize($request);
+
+        if (null === $request->query->get('entity')) {
+            return $this->render('@AdminBundle/Resources/views/default/dashboard.html.twig');
+        }
+
+        return parent::indexAction($request);
+    }
+
     public function createNewUserEntity()
     {
         return $this->get('fos_user.user_manager')->createUser();
