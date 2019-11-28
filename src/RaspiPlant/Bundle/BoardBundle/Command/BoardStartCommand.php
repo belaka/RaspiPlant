@@ -20,6 +20,7 @@ use RaspiPlant\Component\Device\DeviceInterface;
 use RaspiPlant\Component\Event\DeviceEvents;
 use RaspiPlant\Component\WiringPi\WiringPi;
 use RaspiPlant\Component\Event\BoardEvents;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -121,13 +122,13 @@ class BoardStartCommand extends EndlessContainerAwareCommand
 
         //Start alt commands eg:start motors|start motion)
         // @todo find a way to dynamize this !!!!!!!
-        $command = $this->getApplication()->find('raspiplant:motors:manage');
-        $arguments = array(
-            'command' => 'raspiplant:motors:manage',
-            'action' => 'start'
-        );
+        //$command = $this->getApplication()->find('raspiplant:motors:manage');
+        //$arguments = array(
+        //    'command' => 'raspiplant:motors:manage',
+        //    'action' => 'start'
+        //);
 
-        $motorsInput = new ArrayInput($arguments);
+        //$motorsInput = new ArrayInput($arguments);
         //$command->run($motorsInput, $output);
 
         $this->debug = false;

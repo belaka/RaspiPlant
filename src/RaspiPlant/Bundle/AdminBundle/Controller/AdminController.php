@@ -4,19 +4,26 @@ namespace RaspiPlant\Bundle\AdminBundle\Controller;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use FOS\UserBundle\Model\UserManagerInterface;
+use RaspiPlant\Bundle\ScriptBundle\Command\ScriptCommandInterface;
+use RaspiPlant\Component\Event\BoardEvents;
+use RaspiPlant\Component\Event\DeviceEvents;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class AdminController extends EasyAdminController
 {
-    /**
-     * @var UserManagerInterface
-     */
+    /** @var UserManagerInterface  */
     private $userManager;
 
-    public function __construct(UserManagerInterface $userManager)
+    /** @var  KernelInterface */
+    private $kernel;
+
+    public function __construct(UserManagerInterface $userManager, KernelInterface $kernel)
     {
         $this->userManager = $userManager;
+        $this->kernel = $kernel;
     }
 
     /**
@@ -136,5 +143,61 @@ class AdminController extends EasyAdminController
         ]);
 
         return $formBuilder;
+    }
+
+    public function createScriptEntityFormBuilder($entity, $view)
+    {
+        $formBuilder = parent::createEntityFormBuilder($entity, $view);
+
+        $scripts = $this->getScripts();
+        $events = $this->getEvents();
+
+        $formBuilder
+            ->add('script', ChoiceType::class, [
+            'choices'  => array_combine(
+                $scripts,
+                $scripts
+            )
+        ])
+            ->add('event', ChoiceType::class, [
+            'choices'  => array_combine(
+                $events,
+                $events
+            )
+        ]);
+
+        return $formBuilder;
+    }
+
+    private function getScripts()
+    {
+        $scripts = [];
+
+        $application = new Application($this->kernel);
+
+        $classes = $application->all('raspiplant:script');
+
+        foreach ($classes as $key => $class) {
+            if (in_array(ScriptCommandInterface::class , class_implements($class))) {
+                $actions = $class::getActions();
+                foreach ($actions as $action) {
+                    $scripts[get_class($class) . $action] = $key . ' ' . $action;
+                }
+            }
+        }
+
+        return $scripts;
+    }
+
+    private function getEvents()
+    {
+        $events = [];
+
+        $boardEvents = BoardEvents::getEvents();
+        $deviceEvents = DeviceEvents::getEvents();
+
+        $events = array_merge($boardEvents, $deviceEvents);
+
+        return $events;
     }
 }

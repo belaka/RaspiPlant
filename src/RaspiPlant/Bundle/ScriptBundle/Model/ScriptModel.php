@@ -16,9 +16,9 @@ class ScriptModel extends AbstractModel implements ActivableInterface, Sluggable
     protected $name;
 
     /** @var string */
-    protected $type;
+    protected $event;
 
-    /** @var  */
+    /** @var string */
     protected $script;
 
     /**
@@ -28,7 +28,6 @@ class ScriptModel extends AbstractModel implements ActivableInterface, Sluggable
      */
     public function __construct($data = array())
     {
-        $this->type = 'command';
         parent::__construct($data);
     }
 
@@ -59,25 +58,25 @@ class ScriptModel extends AbstractModel implements ActivableInterface, Sluggable
     /**
      * @return string
      */
-    public function getType(): string
+    public function getEvent(): ?string
     {
-        return $this->type;
+        return $this->event;
     }
 
     /**
      * @return mixed
      */
-    public function getScript()
+    public function getScript(): ?string
     {
         return $this->script;
     }
 
     /**
-     * @param string $type
+     * @param string $event
      */
-    public function setType(string $type): void
+    public function setEvent(string $event): void
     {
-        $this->type = $type;
+        $this->event = $event;
     }
 
     /**

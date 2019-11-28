@@ -27,7 +27,7 @@
         <field name="active" column="active" type="boolean" />
 
         <many-to-many field="sensors" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Sensor">
-            <join-table name="board_sensors">
+            <join-table name="board__sensors">
                 <join-columns>
                     <join-column name="board_id" />
                 </join-columns>
@@ -38,7 +38,7 @@
         </many-to-many>
 
         <many-to-many field="actuators" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Actuator">
-            <join-table name="board_actuators">
+            <join-table name="board__actuators">
                 <join-columns>
                     <join-column name="board_id" />
                 </join-columns>
@@ -49,7 +49,7 @@
         </many-to-many>
 
         <many-to-many field="communicators" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Communicator">
-            <join-table name="board_communicators">
+            <join-table name="board__communicators">
                 <join-columns>
                     <join-column name="board_id" />
                 </join-columns>
@@ -60,7 +60,7 @@
         </many-to-many>
 
         <many-to-many field="displays" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Display">
-            <join-table name="board_displays">
+            <join-table name="board__displays">
                 <join-columns>
                     <join-column name="board_id" />
                 </join-columns>
@@ -71,7 +71,7 @@
         </many-to-many>
 
         <many-to-many field="scripts" target-entity="RaspiPlant\Bundle\ScriptBundle\Entity\Script">
-            <join-table name="board_scripts">
+            <join-table name="board__scripts">
                 <join-columns>
                     <join-column name="board_id" />
                 </join-columns>

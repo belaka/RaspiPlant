@@ -93,6 +93,6 @@ easy_admin:
             form:
                 fields:
                     - name
-                    - type
-                    - script
+                    - { property: 'script', type: 'choice', type_options: { choices: [], required: true } }
+                    - { property: 'event', type: 'choice', type_options: { choices: [], required: true } }
                     - active
