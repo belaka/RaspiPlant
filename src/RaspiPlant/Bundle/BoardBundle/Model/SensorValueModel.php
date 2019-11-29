@@ -107,7 +107,7 @@ class SensorValueModel extends AbstractModel
     }
 
     /**
-     * @return int|null
+     * @return Sensor
      */
     public function getSensor() {
         return $this->sensor;

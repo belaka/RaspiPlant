@@ -69,8 +69,8 @@ easy_admin:
                 fields:
                     - name
                     - { property: 'class', type: 'choice', type_options: { choices: [], required: true } }
-                    - scripts
                     - pin
+                    - scripts
                     - active
         Actuator:
             list:
@@ -83,6 +83,7 @@ easy_admin:
                     - { property: 'class', type: 'choice', type_options: { choices: [], required: true } }
                     - pin
                     - state
+                    - scripts
                     - active
         Communicator:
             class: RaspiPlant\Bundle\BoardBundle\Entity\Communicator
@@ -91,6 +92,7 @@ easy_admin:
                     - name
                     - { property: 'class', type: 'choice', type_options: { choices: [], required: true } }
                     - pin
+                    - scripts
                     - active
         Display:
             list:
@@ -102,6 +104,7 @@ easy_admin:
                     - name
                     - { property: 'class', type: 'choice', type_options: { choices: [], required: true } }
                     - pin
+                    - scripts
                     - active
 
         Script:

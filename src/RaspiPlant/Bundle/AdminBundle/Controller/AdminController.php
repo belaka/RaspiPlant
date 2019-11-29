@@ -2,13 +2,18 @@
 
 namespace RaspiPlant\Bundle\AdminBundle\Controller;
 
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\AnnotationChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\BarChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\CalendarChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\GanttChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\GaugeChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\LineChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\OrgChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Timeline;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use FOS\UserBundle\Model\UserManagerInterface;
+use RaspiPlant\Bundle\BoardBundle\Manager\BoardManager;
 use RaspiPlant\Bundle\ScriptBundle\Command\ScriptCommandInterface;
 use RaspiPlant\Component\Event\BoardEvents;
 use RaspiPlant\Component\Event\DeviceEvents;
@@ -22,11 +27,15 @@ class AdminController extends EasyAdminController
     /** @var UserManagerInterface  */
     private $userManager;
 
+    /** @var  BoardManager */
+    private $boardManager;
+
     /** @var  KernelInterface */
     private $kernel;
 
-    public function __construct(UserManagerInterface $userManager, KernelInterface $kernel)
+    public function __construct(UserManagerInterface $userManager, BoardManager $boardManager, KernelInterface $kernel)
     {
+        $this->boardManager = $boardManager;
         $this->userManager = $userManager;
         $this->kernel = $kernel;
     }
@@ -41,44 +50,66 @@ class AdminController extends EasyAdminController
 
         if (null === $request->query->get('entity')) {
 
-            $gantt = new GanttChart();
-            $gantt->getData()->setArrayToDataTable([
-                [['label' => 'Task ID', 'type' => 'string'], ['label' => 'Task Name', 'type' => 'string'],
-                    ['label' => 'Resource', 'type' => 'string'], ['label' => 'Start Date', 'type' => 'date'],
-                    ['label' => 'End Date', 'type' => 'date'], ['label' => 'Duration', 'type' => 'number'],
-                    ['label' => 'Percent Complete', 'type' => 'number'], ['label' => 'Dependencies', 'type' => 'string']],
-                ['2014Spring', 'Spring 2014', 'spring',
-                    new \DateTime('2014-02-22'), new \DateTime('2014-05-20'), null, 100, null],
-                ['2014Summer', 'Summer 2014', 'summer',
-                    new \DateTime('2014-05-21'), new \DateTime('2014-08-20'), null, 100, null],
-                ['2014Autumn', 'Autumn 2014', 'autumn',
-                    new \DateTime('2014-08-21'), new \DateTime('2014-11-20'), null, 100, null],
-                ['2014Winter', 'Winter 2014', 'winter',
-                    new \DateTime('2014-11-21'), new \DateTime('2015-02-21'), null, 100, null],
-                ['2015Spring', 'Spring 2015', 'spring',
-                    new \DateTime('2015-2-22'), new \DateTime('2015-5-20'), null, 50, null],
-                ['2015Summer', 'Summer 2015', 'summer',
-                    new \DateTime('2015-5-21'), new \DateTime('2015-8-20'), null, 0, null],
-                ['2015Autumn', 'Autumn 2015', 'autumn',
-                    new \DateTime('2015-8-21'), new \DateTime('2015-11-20'), null, 0, null],
-                ['2015Winter', 'Winter 2015', 'winter',
-                    new \DateTime('2015-11-21'), new \DateTime('2016-2-21'), null, 0, null],
-                ['Football', 'Football Season', 'sports',
-                    new \DateTime('2014-8-4'), new \DateTime('2015-1-1'), null, 100, null],
-                ['Baseball', 'Baseball Season', 'sports',
-                    new \DateTime('2015-2-31'), new \DateTime('2015-9-20'), null, 14, null],
-                ['Basketball', 'Basketball Season', 'sports',
-                    new \DateTime('2014-9-28'), new \DateTime('2015-5-20'), null, 86, null],
-                ['Hockey', 'Hockey Season', 'sports',
-                    new \DateTime('2014-9-8'), new \DateTime('2015-5-21'), null, 89, null]
-            ]);
-            $gantt->getOptions()->setHeight(400);
-            $gantt->getOptions()->getGantt()->setTrackHeight(30);
-            $gantt->getOptions()->setWidth(900);
+            $array = [
+                [['v' => 'Boards', 'f' => '<div style="color:red; font-style:italic">Boards</div>'], '', 'Boards']
+            ];
+
+            $boards = $this->boardManager->findAll();
+
+            foreach ($boards as $board) {
+                array_push($array, [['v' => $board->getName(), 'f' => '<div style="color:red; font-style:italic">'.$board->getName().'</div>'], 'Boards', $board->getName()]);
+                array_push($array, [['v' => 'Sensors', 'f' => '<div style="color:red; font-style:italic">Sensors</div>'], $board->getName(), 'Sensors']);
+                array_push($array, [['v' => 'Actuators', 'f' => '<div style="color:red; font-style:italic">Actuators</div>'], $board->getName(), 'Actuators']);
+                array_push($array, [['v' => 'Displays', 'f' => '<div style="color:red; font-style:italic">Displays</div>'], $board->getName(), 'Displays']);
+                array_push($array, [['v' => 'Communicators', 'f' => '<div style="color:red; font-style:italic">Communicators</div>'], $board->getName(), 'Communicators']);
+                array_push($array, [['v' => 'Scripts', 'f' => '<div style="color:red; font-style:italic">Scripts</div>'], $board->getName(), 'Scripts']);
+
+                foreach ($board->getSensors() as $sensor) {
+                    array_push($array, [['v' => $sensor->getName(), 'f' => '<div style="color:red; font-style:italic">'.$sensor->getName().'</div>'], 'Sensors', $sensor->getName()]);
+                    array_push($array, [['v' => $sensor->getName() . ' Scripts', 'f' => '<div style="color:red; font-style:italic">Scripts</div>'], $sensor->getName(), $sensor->getName() . ' Scripts']);
+                    foreach ($sensor->getScripts() as $sensorScript) {
+                        array_push($array, [['v' => $sensorScript->getName(), 'f' => '<div style="color:red; font-style:italic">'.$sensorScript->getName().'</div>'], $sensor->getName() . ' Scripts', $sensorScript->getName()]);
+                    }
+                }
+
+                foreach ($board->getActuators() as $actuator) {
+                    array_push($array, [['v' => $actuator->getName(), 'f' => '<div style="color:red; font-style:italic">'.$actuator->getName().'</div>'], 'Actuators', $actuator->getName()]);
+                    array_push($array, [['v' => $actuator->getName() . ' Scripts', 'f' => '<div style="color:red; font-style:italic">Scripts</div>'], $actuator->getName(), $actuator->getName() . ' Scripts']);
+                    foreach ($actuator->getScripts() as $actuatorScript) {
+                        array_push($array, [['v' => $actuatorScript->getName(), 'f' => '<div style="color:red; font-style:italic">'.$actuatorScript->getName().'</div>'], $actuator->getName() . ' Scripts', $actuatorScript->getName()]);
+                    }
+                }
+
+                foreach ($board->getScripts() as $script) {
+                    array_push($array, [['v' => $script->getName(), 'f' => '<div style="color:red; font-style:italic">'.$script->getName().'</div>'], 'Scripts', $script->getName()]);
+                }
+            }
+
+            $org = new OrgChart();
+            $org->getData()->setArrayToDataTable($array, true);
+            /**
+            $org->getData()->setArrayToDataTable(
+                [
+                    [['v' => 'BoardName', 'f' => '<div style="color:#4dff2f; font-style:italic">BoardName</div>']],
+                    [['v' => 'Sensors', 'f' => '<div style="color:red; font-style:italic">Sensors</div>'], 'BoardName', 'Sensors'],
+                    [['v' => 'Actuators', 'f' => '<div style="color:red; font-style:italic">Actuators</div>'], 'BoardName', 'Actuators'],
+                    [['v' => 'Displays', 'f' => '<div style="color:red; font-style:italic">Displays</div>'], 'BoardName', 'Displays'],
+                    [['v' => 'Scripts', 'f' => '<div style="color:red; font-style:italic">Scripts</div>'], 'BoardName', 'Scripts'],
+                    [['v' => 'Communicators', 'f' => '<div style="color:red; font-style:italic">Communicators</div>'], 'BoardName', 'Communicators'],
+                    ['Sensor1', 'Sensors', ''],
+                    ['Sensor2', 'Sensors', ''],
+                    ['Actuator1', 'Actuators', ''],
+                    ['Actuator2', 'Actuators', ''],
+                    ['SensorScript1', 'Sensor1', '']
+                ],
+                true
+            );
+             **/
+            $org->getOptions()->setAllowHtml(true);
 
             return $this->render(
                 '@AdminBundle/Resources/views/default/dashboard.html.twig',
-                array('cal' => $gantt)
+                array('chart' => $org)
             );
         }
 
