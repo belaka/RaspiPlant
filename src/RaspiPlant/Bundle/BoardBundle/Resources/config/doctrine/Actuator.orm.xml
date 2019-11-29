@@ -27,10 +27,16 @@
 
         <field name="active" column="active" type="boolean" />
 
-
-        <!--<many-to-one field="device" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Device" inversed-by="actuators">
-            <join-column name="device_id" />
-        </many-to-one>-->
+        <many-to-many field="scripts" target-entity="RaspiPlant\Bundle\ScriptBundle\Entity\Script">
+            <join-table name="actuator__scripts">
+                <join-columns>
+                    <join-column name="actuator_id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="script_id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
 
     </entity>
 

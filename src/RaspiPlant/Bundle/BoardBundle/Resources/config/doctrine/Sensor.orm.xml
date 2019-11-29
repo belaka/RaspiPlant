@@ -43,10 +43,6 @@
             </join-table>
         </many-to-many>
 
-        <!--<many-to-one field="device" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Device" inversed-by="sensors">
-            <join-column name="device_id" />
-        </many-to-one>-->
-
     </entity>
 
 </doctrine-mapping>

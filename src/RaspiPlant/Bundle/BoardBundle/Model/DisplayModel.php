@@ -2,13 +2,15 @@
 
 namespace RaspiPlant\Bundle\BoardBundle\Model;
 
+use RaspiPlant\Bundle\ScriptBundle\Model\ScriptableInterface;
+use RaspiPlant\Bundle\ScriptBundle\Traits\ScriptableTrait;
 use RaspiPlant\Component\Model\AbstractModel;
 use RaspiPlant\Component\Traits\ActivableTrait;
 use RaspiPlant\Component\Traits\SluggableTrait;
 
-class DisplayModel extends AbstractModel implements DeviceModelInterface, ActivableInterface, SluggableInterface
+class DisplayModel extends AbstractModel implements DeviceModelInterface, ActivableInterface, SluggableInterface, ScriptableInterface
 {
-    use ActivableTrait, SluggableTrait;
+    use ActivableTrait, SluggableTrait, ScriptableTrait;
 
     /**
      *
