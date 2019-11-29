@@ -1,4 +1,10 @@
 easy_admin:
+    list:
+        collapse_actions: true
+        actions:
+            - { name: 'edit', icon: 'pencil' }
+            - { name: 'show', icon: 'eye' }
+            - { name: 'delete', icon: 'trash' }
     site_name: '<em style="font-size: 80%;">RaspiPlant.</em>'
     design:
         brand_color: '#FF5733'
@@ -55,14 +61,21 @@ easy_admin:
                     - longitude
                     - active
         Sensor:
+            list:
+                actions:
+                    - { name: 'charts', icon: 'chart-line' }
             class: RaspiPlant\Bundle\BoardBundle\Entity\Sensor
             form:
                 fields:
                     - name
                     - { property: 'class', type: 'choice', type_options: { choices: [], required: true } }
+                    - scripts
                     - pin
                     - active
         Actuator:
+            list:
+                actions:
+                    - { name: 'forms', icon: 'check-square' }
             class: RaspiPlant\Bundle\BoardBundle\Entity\Actuator
             form:
                 fields:
@@ -80,6 +93,9 @@ easy_admin:
                     - pin
                     - active
         Display:
+            list:
+                actions:
+                    - { name: 'screen', icon: 'desktop' }
             class: RaspiPlant\Bundle\BoardBundle\Entity\Display
             form:
                 fields:

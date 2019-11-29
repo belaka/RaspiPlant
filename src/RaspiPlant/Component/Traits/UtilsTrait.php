@@ -3,9 +3,8 @@
 namespace RaspiPlant\Component\Traits;
 
 /**
- * Utils trait.
- *
- * @author Vincent Honnorat <vincenth@effi-net.com>
+ * Trait UtilsTrait
+ * @package RaspiPlant\Component\Traits
  */
 trait UtilsTrait
 {

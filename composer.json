@@ -7,6 +7,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "api-platform/api-pack": "^1.2",
+        "cmen/google-charts-bundle": "^3.2",
         "cocur/slugify": "^3.2",
         "easycorp/easyadmin-bundle": "^2.0",
         "friendsofsymfony/user-bundle": "^2.1",

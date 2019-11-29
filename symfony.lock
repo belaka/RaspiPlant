@@ -16,6 +16,9 @@
             "src/Entity/.gitignore"
         ]
     },
+    "cmen/google-charts-bundle": {
+        "version": "3.2.0"
+    },
     "cocur/slugify": {
         "version": "v3.2"
     },

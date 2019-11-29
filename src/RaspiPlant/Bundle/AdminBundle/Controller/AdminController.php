@@ -2,6 +2,11 @@
 
 namespace RaspiPlant\Bundle\AdminBundle\Controller;
 
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\BarChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\CalendarChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\GanttChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Timeline;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use FOS\UserBundle\Model\UserManagerInterface;
 use RaspiPlant\Bundle\ScriptBundle\Command\ScriptCommandInterface;
@@ -35,7 +40,46 @@ class AdminController extends EasyAdminController
         $this->initialize($request);
 
         if (null === $request->query->get('entity')) {
-            return $this->render('@AdminBundle/Resources/views/default/dashboard.html.twig');
+
+            $gantt = new GanttChart();
+            $gantt->getData()->setArrayToDataTable([
+                [['label' => 'Task ID', 'type' => 'string'], ['label' => 'Task Name', 'type' => 'string'],
+                    ['label' => 'Resource', 'type' => 'string'], ['label' => 'Start Date', 'type' => 'date'],
+                    ['label' => 'End Date', 'type' => 'date'], ['label' => 'Duration', 'type' => 'number'],
+                    ['label' => 'Percent Complete', 'type' => 'number'], ['label' => 'Dependencies', 'type' => 'string']],
+                ['2014Spring', 'Spring 2014', 'spring',
+                    new \DateTime('2014-02-22'), new \DateTime('2014-05-20'), null, 100, null],
+                ['2014Summer', 'Summer 2014', 'summer',
+                    new \DateTime('2014-05-21'), new \DateTime('2014-08-20'), null, 100, null],
+                ['2014Autumn', 'Autumn 2014', 'autumn',
+                    new \DateTime('2014-08-21'), new \DateTime('2014-11-20'), null, 100, null],
+                ['2014Winter', 'Winter 2014', 'winter',
+                    new \DateTime('2014-11-21'), new \DateTime('2015-02-21'), null, 100, null],
+                ['2015Spring', 'Spring 2015', 'spring',
+                    new \DateTime('2015-2-22'), new \DateTime('2015-5-20'), null, 50, null],
+                ['2015Summer', 'Summer 2015', 'summer',
+                    new \DateTime('2015-5-21'), new \DateTime('2015-8-20'), null, 0, null],
+                ['2015Autumn', 'Autumn 2015', 'autumn',
+                    new \DateTime('2015-8-21'), new \DateTime('2015-11-20'), null, 0, null],
+                ['2015Winter', 'Winter 2015', 'winter',
+                    new \DateTime('2015-11-21'), new \DateTime('2016-2-21'), null, 0, null],
+                ['Football', 'Football Season', 'sports',
+                    new \DateTime('2014-8-4'), new \DateTime('2015-1-1'), null, 100, null],
+                ['Baseball', 'Baseball Season', 'sports',
+                    new \DateTime('2015-2-31'), new \DateTime('2015-9-20'), null, 14, null],
+                ['Basketball', 'Basketball Season', 'sports',
+                    new \DateTime('2014-9-28'), new \DateTime('2015-5-20'), null, 86, null],
+                ['Hockey', 'Hockey Season', 'sports',
+                    new \DateTime('2014-9-8'), new \DateTime('2015-5-21'), null, 89, null]
+            ]);
+            $gantt->getOptions()->setHeight(400);
+            $gantt->getOptions()->getGantt()->setTrackHeight(30);
+            $gantt->getOptions()->setWidth(900);
+
+            return $this->render(
+                '@AdminBundle/Resources/views/default/dashboard.html.twig',
+                array('cal' => $gantt)
+            );
         }
 
         return parent::indexAction($request);

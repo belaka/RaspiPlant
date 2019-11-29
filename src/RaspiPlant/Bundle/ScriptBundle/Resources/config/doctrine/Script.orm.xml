@@ -22,7 +22,7 @@
         <field name="slug" column="slug" length="191" unique="true"/>
 
         <field name="script" column="script" length="191" />
-        <field name="event" column="type" length="191"  />
+        <field name="event" column="event" length="191"  />
 
         <field name="active" column="active" type="boolean" />
 

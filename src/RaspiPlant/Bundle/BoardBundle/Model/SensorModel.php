@@ -4,13 +4,15 @@ namespace RaspiPlant\Bundle\BoardBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use RaspiPlant\Bundle\BoardBundle\Entity\SensorValue;
+use RaspiPlant\Bundle\ScriptBundle\Model\ScriptableInterface;
+use RaspiPlant\Bundle\ScriptBundle\Traits\ScriptableTrait;
 use RaspiPlant\Component\Model\AbstractModel;
 use RaspiPlant\Component\Traits\ActivableTrait;
 use RaspiPlant\Component\Traits\SluggableTrait;
 
-class SensorModel extends AbstractModel implements DeviceModelInterface, ActivableInterface, SluggableInterface
+class SensorModel extends AbstractModel implements DeviceModelInterface, ActivableInterface, SluggableInterface, ScriptableInterface
 {
-    use ActivableTrait, SluggableTrait;
+    use ActivableTrait, SluggableTrait, ScriptableTrait;
 
     /**
      *

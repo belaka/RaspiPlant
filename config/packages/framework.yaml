@@ -1,6 +1,7 @@
 parameters:
     raspiplant_version: '0.1'
     raspiplant_name: 'RaspiPlant'
+    stills_directory: 'web/motion'
 
 framework:
     secret: '%env(APP_SECRET)%'

@@ -3,9 +3,8 @@
 namespace RaspiPlant\Component\Traits;
 
 /**
- * Sluggable entities trait.
- *
- * @author Vincent Honnorat <vincenth@effi-net.com>
+ * Trait SluggableTrait
+ * @package RaspiPlant\Component\Traits
  */
 trait SluggableTrait
 {

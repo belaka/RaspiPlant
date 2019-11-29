@@ -3,9 +3,8 @@
 namespace RaspiPlant\Component\Traits;
 
 /**
- * Activable entities trait.
- *
- * @author Vincent Honnorat <vincenth@effi-net.com>
+ * Trait ActivableTrait
+ * @package RaspiPlant\Component\Traits
  */
 trait ActivableTrait
 {

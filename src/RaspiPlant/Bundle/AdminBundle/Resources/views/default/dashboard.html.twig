@@ -1,5 +1,10 @@
 {# dashboard.html.twig #}
 {% extends '@EasyAdmin/default/layout.html.twig' %}
-{% block content_title %}
-    <h1 class="title">Hello world</h1>
-{% endblock %}
+{% block content %}
+<div id="div_chart"></div>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        {{ gc_draw(cal, 'div_chart') }}
+    </script>
+{% endblock content %}

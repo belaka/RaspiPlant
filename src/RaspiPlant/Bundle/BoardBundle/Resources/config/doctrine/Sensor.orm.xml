@@ -32,6 +32,17 @@
             </cascade>
         </one-to-many>
 
+        <many-to-many field="scripts" target-entity="RaspiPlant\Bundle\ScriptBundle\Entity\Script">
+            <join-table name="sensor__scripts">
+                <join-columns>
+                    <join-column name="sensor_id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="script_id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
         <!--<many-to-one field="device" target-entity="RaspiPlant\Bundle\BoardBundle\Entity\Device" inversed-by="sensors">
             <join-column name="device_id" />
         </many-to-one>-->

@@ -119,18 +119,6 @@ class BoardStartCommand extends EndlessContainerAwareCommand
     {
         $this->output = $output;
         $this->light = 0;
-
-        //Start alt commands eg:start motors|start motion)
-        // @todo find a way to dynamize this !!!!!!!
-        //$command = $this->getApplication()->find('raspiplant:motors:manage');
-        //$arguments = array(
-        //    'command' => 'raspiplant:motors:manage',
-        //    'action' => 'start'
-        //);
-
-        //$motorsInput = new ArrayInput($arguments);
-        //$command->run($motorsInput, $output);
-
         $this->debug = false;
         $this->tick = 0;
 
@@ -160,7 +148,6 @@ class BoardStartCommand extends EndlessContainerAwareCommand
 
         foreach ($boards as $board) {
             if ($board->isActive()) {
-
                 $this->boardInitialize($board);
                 $this->boards[] = $board;
             }
@@ -246,62 +233,16 @@ class BoardStartCommand extends EndlessContainerAwareCommand
         }
 
         $deviceClass = $device->getClass();
-        $device = new $deviceClass($deviceLink, $device->getPin(), $device->getName(), false);
+        $deviceInstance = new $deviceClass($deviceLink, $device->getPin(), $device->getName(), false);
 
-        if (!($device  instanceof DeviceInterface)) {
+        if (!($deviceInstance  instanceof DeviceInterface)) {
             throw new \Exception("Initialization error of device: " . $deviceClass);
         }
 
         $event = new GenericEvent($device);
         $this->dispatcher->dispatch(DeviceEvents::DEVICE_POST_START, $event);
 
-        return $device;
-    }
-
-    /**
-     * @param Sensor $sensor
-     * @param $deviceLink
-     * @return mixed
-     * @throws \Exception
-     */
-    protected function sensorInitialize(Sensor $sensor, $deviceLink)
-    {
-
-        $this->output->writeln("Starting Sensor :" . $sensor->getName() . " with pin " . $sensor->getPin());
-
-        $class = $sensor->getClass();
-        $s = new $class($deviceLink, $sensor->getPin(), $sensor->getName());
-
-        if (!($s instanceof SensorInterface)) {
-            throw new \Exception("Initialization error of sensor: " . $class);
-        }
-
-        usleep(100000);
-
-        return $s;
-    }
-
-    /**
-     * @param Actuator $actuator
-     * @param $deviceLink
-     * @return mixed
-     * @throws \Exception
-     */
-    protected function actuatorInitialize(Actuator $actuator, $deviceLink)
-    {
-
-        $this->output->writeln("Starting Actuator :" . $actuator->getName() . " with pin " . $actuator->getPin());
-
-        $class = $actuator->getClass();
-        $a = new $class($deviceLink, $actuator->getPin(), $actuator->getName());
-
-        if (!($a instanceof ActuatorInterface)) {
-            throw new \Exception("Initialization error of actuator: " . $class);
-        }
-
-        usleep(100000);
-
-        return $a;
+        return $deviceInstance;
     }
 
     /**
@@ -337,17 +278,15 @@ class BoardStartCommand extends EndlessContainerAwareCommand
 
         $output->writeln("");
 
-        dd($this->devices);
-
-        dd('should work');
-
-        if (($this->tick % 120) === 0) {
+        //if (($this->tick % 120) === 0) {
             $output->writeln("Data added to database " . $firedAt->format(self::ISO8601));
             $output->writeln("");
             foreach ($this->data as $sensorId => $sensorData) {
                 $this->persistValues($sensorData, $sensorId, $firedAt);
             }
-        }
+        //}
+
+        dd($this->data);
 
         if ((($this->tick % 7200) === 0) && ($this->light > 100)) {
             //Tak a picture in folder web/motion
@@ -466,6 +405,7 @@ class BoardStartCommand extends EndlessContainerAwareCommand
      * @param $firedAt
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \ReflectionException
      */
     protected function setSensorMinMax(Sensor $sensor, $key, $value, $firedAt)
     {

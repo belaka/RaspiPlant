@@ -20,4 +20,5 @@ return [
     RaspiPlant\Bundle\UserBundle\UserBundle::class => ['all' => true],
     RaspiPlant\Bundle\DeviceBundle\DeviceBundle::class => ['all' => true],
     RaspiPlant\Bundle\ScriptBundle\ScriptBundle::class => ['all' => true],
+    CMEN\GoogleChartsBundle\CMENGoogleChartsBundle::class => ['all' => true],
 ];
