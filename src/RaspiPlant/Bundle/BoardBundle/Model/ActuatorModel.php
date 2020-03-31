@@ -5,7 +5,6 @@ namespace RaspiPlant\Bundle\BoardBundle\Model;
 use RaspiPlant\Bundle\ScriptBundle\Model\ScriptableInterface;
 use RaspiPlant\Bundle\ScriptBundle\Traits\ScriptableTrait;
 use RaspiPlant\Component\Model\AbstractModel;
-use RaspiPlant\Bundle\BoardBundle\Entity\Device;
 use RaspiPlant\Component\Traits\ActivableTrait;
 use RaspiPlant\Component\Traits\SluggableTrait;
 
@@ -21,7 +20,7 @@ class ActuatorModel extends AbstractModel implements DeviceModelInterface, Activ
 
     /**
      *
-     * @var class
+     * @var string
      */
     protected $class;
 
@@ -63,7 +62,7 @@ class ActuatorModel extends AbstractModel implements DeviceModelInterface, Activ
     }
 
     /**
-     * @return class
+     * @return string
      */
     public function getClass() {
         return $this->class;
