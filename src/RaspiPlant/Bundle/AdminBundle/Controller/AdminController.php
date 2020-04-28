@@ -57,7 +57,17 @@ class AdminController extends EasyAdminController
             $boards = $this->boardManager->findAll();
 
             foreach ($boards as $board) {
-                array_push($array, [['v' => $board->getName(), 'f' => '<div style="color:red; font-style:italic">'.$board->getName().'</div>'], 'Boards', $board->getName()]);
+                array_push(
+                    $array,
+                    [
+                        [
+                            'v' => $board->getName(),
+                            'f' => '<div ><a href="/admin/?entity=Board&action=show&id='. $board->getId() . '" class="text-success font-weight-bold">'.$board->getName().'</a></div>'
+                        ],
+                        'Boards',
+                        $board->getName()
+                    ]
+                );
                 array_push($array, [['v' => 'Sensors', 'f' => '<div style="color:red; font-style:italic">Sensors</div>'], $board->getName(), 'Sensors']);
                 array_push($array, [['v' => 'Actuators', 'f' => '<div style="color:red; font-style:italic">Actuators</div>'], $board->getName(), 'Actuators']);
                 array_push($array, [['v' => 'Displays', 'f' => '<div style="color:red; font-style:italic">Displays</div>'], $board->getName(), 'Displays']);
@@ -65,23 +75,33 @@ class AdminController extends EasyAdminController
                 array_push($array, [['v' => 'Scripts', 'f' => '<div style="color:red; font-style:italic">Scripts</div>'], $board->getName(), 'Scripts']);
 
                 foreach ($board->getSensors() as $sensor) {
-                    array_push($array, [['v' => $sensor->getName(), 'f' => '<div style="color:red; font-style:italic">'.$sensor->getName().'</div>'], 'Sensors', $sensor->getName()]);
+                    array_push(
+                        $array,
+                        [
+                            [
+                                'v' => $sensor->getName(),
+                                'f' => '<a href="/admin/?entity=Sensor&action=show&id='. $sensor->getId() . '" class="text-success font-weight-bold">'.$sensor->getName().'</a></div>'
+                            ],
+                            'Sensors',
+                            $sensor->getName()
+                        ]
+                    );
                     array_push($array, [['v' => $sensor->getName() . ' Scripts', 'f' => '<div style="color:red; font-style:italic">Scripts</div>'], $sensor->getName(), $sensor->getName() . ' Scripts']);
                     foreach ($sensor->getScripts() as $sensorScript) {
-                        array_push($array, [['v' => $sensorScript->getName(), 'f' => '<div style="color:red; font-style:italic">'.$sensorScript->getName().'</div>'], $sensor->getName() . ' Scripts', $sensorScript->getName()]);
+                        array_push($array, [['v' => $sensorScript->getName(), 'f' => '<div ><a href="/admin/?entity=Script&action=show&id='. $sensorScript->getId() . '" class="text-success font-weight-bold">'.$sensorScript->getName().'</a></div>'], $sensorScript->getName() . ' Scripts', $sensorScript->getName()]);
                     }
                 }
 
                 foreach ($board->getActuators() as $actuator) {
-                    array_push($array, [['v' => $actuator->getName(), 'f' => '<div style="color:red; font-style:italic">'.$actuator->getName().'</div>'], 'Actuators', $actuator->getName()]);
+                    array_push($array, [['v' => $actuator->getName(), 'f' => '<div ><a href="/admin/?entity=Actuator&action=show&id='. $actuator->getId() . '" class="text-success font-weight-bold">'.$actuator->getName().'</a></div>'], 'Actuators', $actuator->getName()]);
                     array_push($array, [['v' => $actuator->getName() . ' Scripts', 'f' => '<div style="color:red; font-style:italic">Scripts</div>'], $actuator->getName(), $actuator->getName() . ' Scripts']);
                     foreach ($actuator->getScripts() as $actuatorScript) {
-                        array_push($array, [['v' => $actuatorScript->getName(), 'f' => '<div style="color:red; font-style:italic">'.$actuatorScript->getName().'</div>'], $actuator->getName() . ' Scripts', $actuatorScript->getName()]);
+                        array_push($array, [['v' => $actuatorScript->getName(), 'f' => '<div ><a href="/admin/?entity=Script&action=show&id='. $actuatorScript->getId() . '" class="text-success font-weight-bold">'.$actuatorScript->getName().'</a></div>'], $actuator->getName() . ' Scripts', $actuatorScript->getName()]);
                     }
                 }
 
                 foreach ($board->getScripts() as $script) {
-                    array_push($array, [['v' => $script->getName(), 'f' => '<div style="color:red; font-style:italic">'.$script->getName().'</div>'], 'Scripts', $script->getName()]);
+                    array_push($array, [['v' => $script->getName(), 'f' => '<div ><a href="/admin/?entity=Script&action=show&id='. $script->getId() . '" class="text-success font-weight-bold">'.$script->getName().'</a></div>'], 'Scripts', $script->getName()]);
                 }
             }
 
