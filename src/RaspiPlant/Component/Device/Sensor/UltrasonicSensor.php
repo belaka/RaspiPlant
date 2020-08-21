@@ -43,12 +43,6 @@ class UltrasonicSensor extends AbstractSensor
 
     /**
      *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     *
      * @param I2CProtocol $protocol
      * @param int $pin
      * @param string $name

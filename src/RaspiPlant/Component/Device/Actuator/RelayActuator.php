@@ -20,11 +20,6 @@ class RelayActuator extends AbstractActuator
      */
     protected $pin;
 
-    /**
-     *
-     * @var string
-     */
-    protected $name;
 
     /**
      *

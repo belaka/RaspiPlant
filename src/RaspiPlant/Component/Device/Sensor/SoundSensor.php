@@ -30,12 +30,6 @@ class SoundSensor extends AbstractSensor
     protected $pin;
 
     /**
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
      * SoundSensor constructor.
      * @param I2CProtocol $protocol
      * @param $pin

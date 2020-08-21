@@ -40,12 +40,6 @@ class DHTSensor extends AbstractSensor
     protected $pin;
 
     /**
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
      * DHTSensor constructor.
      * @param I2CProtocol $protocol
      * @param $pin

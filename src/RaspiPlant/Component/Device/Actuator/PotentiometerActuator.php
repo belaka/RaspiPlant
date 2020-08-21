@@ -27,11 +27,6 @@ class PotentiometerActuator extends AbstractActuator
      */
     protected $pin;
 
-    /**
-     *
-     * @var string
-     */
-    protected $name;
 
     /**
      *

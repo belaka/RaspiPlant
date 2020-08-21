@@ -28,12 +28,6 @@ class RTCSensor extends AbstractSensor
      */
     protected $debug;
 
-    /**
-     *
-     * @var string
-     */
-    protected $name;
-
     protected $sec = 0;
     protected $min = 0;
     protected $hours = 0;

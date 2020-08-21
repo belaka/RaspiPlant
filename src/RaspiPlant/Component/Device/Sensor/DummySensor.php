@@ -33,12 +33,6 @@ class DummySensor extends AbstractSensor implements AddressableInterface
     protected $pin;
 
     /**
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
      * DummySensor constructor.
      * @param I2CProtocol $protocol
      * @param $pin

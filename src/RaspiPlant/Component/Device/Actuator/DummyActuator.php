@@ -29,12 +29,6 @@ class DummyActuator extends AbstractActuator implements AddressableInterface
 
     /**
      *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     *
      * @var boolean
      */
     protected $debug;

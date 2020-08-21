@@ -29,11 +29,6 @@ class MoistureSensor extends AbstractSensor
      */
     protected $pin;
 
-    /**
-     *
-     * @var string
-     */
-    protected $name;
 
     /**
      * MoistureSensor constructor.

@@ -115,11 +115,6 @@ class BME280Sensor extends AbstractSensor
      */
     protected $debug;
 
-    /**
-     *
-     * @var string
-     */
-    protected $name;
 
     /**
      * BME280Sensor constructor.

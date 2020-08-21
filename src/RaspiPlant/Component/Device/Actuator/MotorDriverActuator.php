@@ -31,11 +31,6 @@ class MotorDriverActuator extends AbstractActuator {
      */
     protected $pin;
 
-    /**
-     *
-     * @var string
-     */
-    protected $name;
 
     /**
      *

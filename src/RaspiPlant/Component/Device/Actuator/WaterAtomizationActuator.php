@@ -22,12 +22,6 @@ class WaterAtomizationActuator extends AbstractActuator
 
     /**
      *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     *
      * @var boolean
      */
     protected $debug;

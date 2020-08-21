@@ -20,11 +20,6 @@ class SpeakerActuator extends AbstractActuator
      */
     protected $pin;
 
-    /**
-     *
-     * @var string
-     */
-    protected $name;
 
     /**
      *

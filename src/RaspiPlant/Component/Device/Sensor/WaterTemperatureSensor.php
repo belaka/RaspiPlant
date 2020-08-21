@@ -29,12 +29,6 @@ class WaterTemperatureSensor extends AbstractSensor {
     protected $pin;
 
     /**
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
      * WaterTemperatureSensor constructor.
      * @param W1Protocol $protocol
      * @param $pin

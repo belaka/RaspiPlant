@@ -29,11 +29,6 @@ class LightSensor extends AbstractSensor
      */
     protected $pin;
 
-    /**
-     *
-     * @var string
-     */
-    protected $name;
 
     /**
      *

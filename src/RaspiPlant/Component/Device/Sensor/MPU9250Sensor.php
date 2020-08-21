@@ -94,12 +94,6 @@ class MPU9250Sensor extends AbstractSensor
     protected $debug;
 
     /**
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
      * MPU9250Sensor constructor.
      * @param I2CProtocol $protocol
      * @param $pin

@@ -22,12 +22,6 @@ class DummyCommunicator extends AbstractCommunicator
 
     /**
      *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     *
      * @var boolean
      */
     protected $debug;
